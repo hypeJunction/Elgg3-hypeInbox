@@ -1,3 +1,23 @@
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/hypeJunction/Elgg3-hypeInbox/compare/7.0.0...8.0.0) (2019-07-08)
+
+
+### Bug Fixes
+
+* **forms:** fixed PHP warnings ([6da4007](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/6da4007))
+* **menus:** add missing inbox menu ([d8afd1b](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/d8afd1b))
+* **menus:** add missing title menu ([c62e1f3](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/c62e1f3))
+
+
+### Features
+
+* **notifications:** notifications templates on Russian ([75168b5](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/75168b5))
+* **releases:** upgrade for Elgg 3 ([81a9f56](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/81a9f56))
+* **ui:** code refactoring ([f2c8b0b](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/f2c8b0b))
+* **ui:** replace 'Message Types' to 'Administer' section ([afec751](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/afec751))
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/hypeJunction/hypeInbox/compare/6.1.0...v7.0.0) (2017-08-14)
 
