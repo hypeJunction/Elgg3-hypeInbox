@@ -36,8 +36,15 @@ $params = array(
 );
 
 elgg_push_context('sent-form');
-echo elgg_view('framework/inbox/controls/inbox', $params);
-echo elgg_view('framework/inbox/list', $params);
+
+$header = elgg_view('framework/inbox/controls/inbox', $params);
+$body = elgg_view('framework/inbox/list', $params);
+
+echo elgg_view_module('aside', null, $body, [
+	'header' => $header,
+	'class' => 'inbox-module has-list',
+]);
+
 echo elgg_view('input/submit', array(
 	'class' => 'hidden',
 ));

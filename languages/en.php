@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(dirname(__FILE__)). '/autoloader.php';
+require_once dirname(dirname(__FILE__)) . '/autoloader.php';
 
-$translations = array(
+$translations = [
 	'admin:inbox' => 'Inbox Settings',
 	'admin:inbox:message_types' => 'Message Types',
 	'item:object:message:create' => 'Add new message type',
@@ -126,8 +126,8 @@ $translations = array(
 	'inbox:search' => 'Search',
 
 	'messages:forward:byline' => 'Forwarded message from %s (originally sent on %s)',
-	
-);
+
+];
 
 $message_types = hypeInbox()->config->getMessageTypes();
 

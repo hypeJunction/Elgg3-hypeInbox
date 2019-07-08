@@ -14,7 +14,7 @@ class Userpicker {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param string     $message_type Message type
 	 * @param ElggEntity $sender       Sender
 	 */
@@ -26,8 +26,9 @@ class Userpicker {
 
 	/**
 	 * Sets message type
-	 * 
+	 *
 	 * @param string $message_type Message type
+	 *
 	 * @return Userpicker
 	 */
 	public function setMessageType($message_type = '') {
@@ -35,6 +36,7 @@ class Userpicker {
 			$message_type = Message::TYPE_PRIVATE;
 		}
 		$this->message_type = $message_type;
+
 		return $this;
 	}
 
@@ -49,8 +51,9 @@ class Userpicker {
 	/**
 	 * Sets sender entity
 	 * Defaults to logged in user, or site if there isn't one
-	 * 
+	 *
 	 * @param ElggEntity $sender Sender entity
+	 *
 	 * @return Userpicker
 	 */
 	public function setSender($sender = null) {
@@ -61,6 +64,7 @@ class Userpicker {
 			$sender = elgg_get_site_entity();
 		}
 		$this->sender = $sender;
+
 		return $this;
 	}
 
@@ -80,32 +84,32 @@ class Userpicker {
 		if (!isset($this->ruleset)) {
 			$this->ruleset = hypeInbox()->config->getRuleset($this->getMessageType());
 		}
+
 		return $this->ruleset;
 	}
 
 	/**
 	 * Returns getter options to retrieve potential recipients in relation to this sender for the given message type
-	 * 
+	 *
 	 * @param array $options Default options
+	 *
 	 * @return array
 	 */
-	public function getFilterOptions(array $options = array()) {
+	public function getFilterOptions(array $options = []) {
 
 		$policies = $this->getRuleset()->getPolicies();
 		$sender = $this->getSender();
 
-		$options['joins'][] = "JOIN {$this->dbprefix}users_entity ue ON e.guid = ue.guid";
-		$options['order_by'] = "ue.name ASC";
+		$options['order_by_metadata'] = ['name' => 'name', 'direction' => 'ASC'];
 
-		$wheres = array();
+		$wheres = [];
 
 		foreach ($policies as $policy) {
-
 			if (!$policy->validateSenderType($sender)) {
 				continue;
 			}
 
-			$where = array();
+			$where = [];
 
 			$clauses = $policy->getRelationshipClauses($sender);
 			$options['joins'][] = $clauses['join'];

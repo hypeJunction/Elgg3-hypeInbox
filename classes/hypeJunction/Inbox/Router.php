@@ -8,79 +8,6 @@ use hypeJunction\Inbox\Message;
 class Router {
 
 	/**
-	 * Messages page handler
-	 *   /messages/inbox/<username>?message_type=<message_type>
-	 *   /messages/sent/<username>?message_type=<message_type>
-	 *   /messages/read/<guid>
-	 *   /messages/thread/<hash>
-	 *   /messages/compose?send_to=<guid>
-	 *
-	 * @param array $segments An array of URL segments
-	 * @return boolean Outputs a page or returns false on failure
-	 */
-	public static function handleMessages($segments) {
-
-		$page = array_shift($segments);
-
-		switch ($page) {
-
-			default :
-			case 'inbox' :
-			case 'incoming' :
-				echo elgg_view_resource('messages/inbox');
-				return true;
-
-			case 'outbox' :
-			case 'outgoing' :
-			case 'sent' :
-				echo elgg_view_resource('messages/sent');
-				return true;
-
-			case 'read' :
-			case 'view' :
-			case 'reply' :
-				$guid = array_shift($segments);
-				set_input('guid', $guid);
-				echo elgg_view_resource('messages/read', [
-					'guid' => $guid,
-				]);
-				return true;
-
-			case 'forward' :
-				$guid = array_shift($segments);
-				set_input('guid', $guid);
-				echo elgg_view_resource('messages/forward', [
-					'guid' => $guid,
-				]);
-				return true;
-
-			case 'thread' :
-				$hash = array_shift($segments);
-				set_input('hash', $hash);
-				echo elgg_view_resource('messages/thread', [
-					'hash' => $hash,
-				]);
-				return true;
-
-			case 'compose' :
-			case 'add' :
-				$guid = array_shift($segments);
-				set_input('guid', $guid);
-				echo elgg_view_resource('messages/compose', [
-					'guid' => $guid,
-				]);
-				return true;
-
-			case 'search' :
-				echo elgg_view_resource('messages/search');
-				return true;
-
-		}
-
-		return false;
-	}
-
-	/**
 	 * Helper handler to correctly resolve page owners
 	 *
 	 * @see default_page_owner_handler()
@@ -190,22 +117,6 @@ class Router {
 		if ($sender) {
 			return $sender->getIconURL($size);
 		}
-	}
-
-	/**
-	 * Messages page handler
-	 *   /messages/inbox/<username>?message_type=<message_type>
-	 *   /messages/sent/<username>?message_type=<message_type>
-	 *   /messages/read/<guid>
-	 *   /messages/thread/<hash>
-	 *   /messages/compose?send_to=<guid>
-	 *
-	 * @param array $segments An array of URL segments
-	 * @return boolean Outputs a page or returns false on failure
-	 * @deprecated 6.0
-	 */
-	public function handlePages($segments) {
-		return Router::handleMessages($segments);
 	}
 
 	/**

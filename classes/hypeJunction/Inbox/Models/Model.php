@@ -367,29 +367,6 @@ class Model {
 	}
 
 	/**
-	 * Tokeninput callback
-	 *
-	 * @param string $term Query string
-	 * @return array
-	 */
-	public function searchRecipients($term) {
-
-		$term = sanitize_string($term);
-
-		// replace mysql vars with escaped strings
-		$q = str_replace(array('_', '%'), array('\_', '\%'), $term);
-
-		$message_type = get_input('message_type', Message::TYPE_PRIVATE);
-		$options = $this->getUserQueryOptions($message_type);
-
-		$options['query'] = $q;
-		$search_results = (array) elgg_trigger_plugin_hook('search', 'user', $options, []);
-		$results = elgg_extract('entities', $search_results, []);
-
-		return $results;
-	}
-
-	/**
 	 * Get entity URL wrapped in an <a></a> tag
 	 * @return string
 	 */

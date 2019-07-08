@@ -35,7 +35,9 @@ $layout = elgg_view_layout('content', [
 	'title' => $title,
 	'filter' => false,
 	'content' => elgg_view('framework/inbox/compose', $params),
-	'class' => 'inbox-layout inbox-form-layout'
+	'class' => 'inbox-layout inbox-form-layout',
+	'page_menu_params' => ['sort_by' => 'priority'],
+	'show_owner_block' => false,
 ]);
 
 echo elgg_view_page($title, $layout);

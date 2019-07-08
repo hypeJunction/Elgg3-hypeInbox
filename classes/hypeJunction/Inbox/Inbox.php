@@ -2,6 +2,10 @@
 
 namespace hypeJunction\Inbox;
 
+use Elgg\Database\Clauses\GroupByClause;
+use Elgg\Database\Clauses\OrderByClause;
+use Elgg\Database\Clauses\SelectClause;
+use Elgg\Database\QueryBuilder;
 use ElggUser;
 use InvalidArgumentException;
 
@@ -9,25 +13,25 @@ class Inbox {
 
 	/**
 	 * User that "owns" the inbox
-	 * @var ElggUser 
+	 * @var ElggUser
 	 */
 	protected $owner;
 
 	/**
 	 * Message type
-	 * @var string 
+	 * @var string
 	 */
 	protected $msgType;
 
 	/**
 	 * Read status
-	 * @var boolean 
+	 * @var boolean
 	 */
 	protected $readYet;
 
 	/**
 	 * Flag to display messages as threads
-	 * @var bool 
+	 * @var bool
 	 */
 	protected $threaded;
 
@@ -52,7 +56,7 @@ class Inbox {
 	const DIRECTION_SENT = 'sent';
 	const DIRECTION_RECEIVED = 'received';
 	const DIRECTION_ALL = 'all';
-	
+
 	/**
 	 * Constructor
 	 */
@@ -62,22 +66,25 @@ class Inbox {
 
 	/**
 	 * Get a count of unread messages
-	 * 
+	 *
 	 * @param ElggUser $user    Recipient
 	 * @param string   $msgType Message type
 	 * @param array    $options Additional options to pass to the getter
+	 *
 	 * @return int
 	 */
 	public static function countUnread(ElggUser $user, $msgType = '', array $options = []) {
 		$instance = new Inbox();
 		$instance->setOwner($user)->setMessageType($msgType)->setReadStatus(false);
+
 		return $instance->getCount($options);
 	}
 
 	/**
 	 * Set inbox owner
-	 * 
+	 *
 	 * @param ElggUser $user Owning user
+	 *
 	 * @return Inbox
 	 * @throws InvalidArgumentException
 	 */
@@ -85,13 +92,15 @@ class Inbox {
 		if (!$user instanceof ElggUser) {
 			throw new InvalidArgumentException(get_class() . '::setOwner() expects an instanceof ElggUser');
 		}
+
 		$this->owner = $user;
+
 		return $this;
 	}
 
 	/**
 	 * Get inbox owner
-	 * @return ElgUser
+	 * @return \ElggUser
 	 */
 	public function getOwner() {
 		return $this->owner;
@@ -99,12 +108,14 @@ class Inbox {
 
 	/**
 	 * Set message type
-	 * 
+	 *
 	 * @param string $msgType Message type
+	 *
 	 * @return Inbox
 	 */
 	public function setMessageType($msgType = '') {
 		$this->msgType = $msgType;
+
 		return $this;
 	}
 
@@ -118,14 +129,16 @@ class Inbox {
 
 	/**
 	 * Set read / not read status
-	 * 
+	 *
 	 * @param boolean $readYet True for read, false for not read
+	 *
 	 * @return Inbox
 	 */
 	public function setReadStatus($readYet = null) {
 		if (!is_null($readYet)) {
 			$this->readYet = $readYet ? '1' : '0';
 		}
+
 		return $this;
 	}
 
@@ -139,12 +152,14 @@ class Inbox {
 
 	/**
 	 * Sets message display to threaded
-	 * 
+	 *
 	 * @param bool $threaded Flag
+	 *
 	 * @return Inbox;
 	 */
 	public function displayThreaded($threaded = true) {
 		$this->threaded = (bool) $threaded;
+
 		return $this;
 	}
 
@@ -160,6 +175,7 @@ class Inbox {
 	 * Set types of messages to display
 	 *
 	 * @param string $direction 'sent', 'received' or 'all'
+	 *
 	 * @return Inbox
 	 */
 	public function setDirection($direction = '') {
@@ -170,6 +186,7 @@ class Inbox {
 		])) {
 			$this->direction = $direction;
 		}
+
 		return $this;
 	}
 
@@ -178,146 +195,107 @@ class Inbox {
 	 * @return string
 	 */
 	public function getDirection() {
-		return ($this->direction) ?: self::DIRECTION_ALL;
+		return ($this->direction) ? : self::DIRECTION_ALL;
 	}
 
 	/**
 	 * Get messages
-	 * 
+	 *
 	 * @param array $options Additional options to pass to the getter
-	 * @return Message[]
+	 *
+	 * @return Message[]|false|int
 	 */
 	public function getMessages(array $options = []) {
 		$options = $this->getFilterOptions($options);
+
 		return elgg_get_entities($options);
 	}
 
 	/**
 	 * Get count of messages
-	 * 
+	 *
 	 * @param array $options Additional options to pass to the getter
+	 *
 	 * @return int
 	 */
 	public function getCount(array $options = []) {
 		if ($this->threaded) {
 			$options = $this->getFilterOptions($options);
-			$options['selects'][] = 'COUNT(DISTINCT md_msgHash.value_id) AS total';
+
 			unset($options['group_by']);
+			$options['selects'][] = new SelectClause('COUNT(DISTINCT msgHash.value) AS total');
+
 			$options['limit'] = 1;
-			$options['callback'] = array($this, 'getCountCallback');
+			$options['callback'] = [$this, 'getCountCallback'];
+
 			$messages = elgg_get_entities($options);
+
 			return $messages[0]->total;
 		} else {
 			$options['count'] = true;
+
 			return $this->getMessages($options);
 		}
 	}
-	
+
 	public static function getCountCallback($row) {
 		return $row;
 	}
 
 	/**
 	 * Filter getter options
-	 * 
+	 *
 	 * @param array $options Default options
+	 *
 	 * @return array
 	 */
-	public function getFilterOptions($options = []) {
-
-		if (!is_array($options)) {
-			$options = [];
-		}
-
+	public function getFilterOptions(array $options = []) {
 		$options['types'] = 'object';
 		$options['subtypes'] = Message::SUBTYPE;
 		$options['owner_guids'] = $this->owner->guid;
 
-		$metastrings = [
-			$this->owner->guid, 
-			'readYet',
-			$this->readYet,
-			'msgType',
-			$this->msgType,
-			'msgHash',
-			'toId',
-			'fromId',
+		$options['wheres'][] = function (QueryBuilder $qb) {
+			$qb->joinMetadataTable('e', 'guid', 'msgHash', 'inner', 'msgHash');
+		};
+
+		$options['metadata_name_value_pairs'][] = [
+			'name' => 'msgHash',
+			'operand' => 'IS NOT NULL',
 		];
 
-		$map = $this->getMetaMap($metastrings);
-
-		$options['joins']['md_msgHash'] = "
-			JOIN {$this->dbprefix}metadata md_msgHash
-			ON e.guid = md_msgHash.entity_guid
-		";
-		$options['wheres'][] = "md_msgHash.name_id = {$map['msgHash']}";
-
 		$direction = $this->getDirection();
+
 		if ($direction == self::DIRECTION_SENT) {
-			$options['joins']['md_fromId'] = "
-				JOIN {$this->dbprefix}metadata md_fromId
-				ON e.guid = md_fromId.entity_guid
-			";
-			$options['wheres'][] = "
-				md_fromId.name_id = {$map['fromId']}
-				AND md_fromId.value_id = {$map[$this->owner->guid]}
-			";
+			$options['metadata_name_value_pairs'][] = [
+				'name' => 'fromId',
+				'value' => $this->owner->guid,
+			];
 		} else if ($direction == self::DIRECTION_RECEIVED) {
-			$options['joins']['md_toId'] = "
-				JOIN {$this->dbprefix}metadata md_toId
-				ON e.guid = md_toId.entity_guid
-			";
-			$options['wheres'][] = "
-				md_toId.name_id = {$map['toId']}
-				AND md_toId.value_id = {$map[$this->owner->guid]}
-			";
+			$options['metadata_name_value_pairs'][] = [
+				'name' => 'toId',
+				'value' => $this->owner->guid,
+			];
 		} else if ($this->threaded) {
-			$options['selects'][] = 'MAX(e.guid) as lastMsg';
-			$options['group_by'] = "md_msgHash.value_id";
-			$options['order_by'] = 'MAX(e.guid) DESC';
+			$options['selects'][] = new SelectClause('MAX(e.guid) as lastMsg');
+			$options['group_by'] = [new GroupByClause('msgHash.value')];
+			$options['order_by'] = [new OrderByClause('MAX(e.guid)', 'DESC')];
 		}
-		
+
 		if ($this->msgType) {
-			$options['joins']['md_msgType'] = "
-				JOIN {$this->dbprefix}metadata md_msgType
-				ON e.guid = md_msgType.entity_guid
-			";
-			$options['wheres'][] = "
-				md_msgType.name_id = {$map['msgType']}
-				AND md_msgType.value_id = {$map[$this->msgType]}
-			";
+			$options['metadata_name_value_pairs'][] = [
+				'name' => 'msgType',
+				'value' => $this->msgType,
+			];
 		}
 
 		if (!is_null($this->readYet)) {
-			$options['joins']['md_readYet'] = "
-				JOIN {$this->dbprefix}metadata md_readYet
-				ON e.guid = md_readYet.entity_guid
-			";
-			$options['wheres'][] = "
-				md_readYet.name_id = {$map['readYet']}
-				AND md_readYet.value_id = {$map[$this->readYet]}
-			";
-			$options['joins']['md_fromId'] = "
-				JOIN {$this->dbprefix}metadata md_fromId
-				ON e.guid = md_fromId.entity_guid
-			";
-			$options['wheres'][] = "
-				md_fromId.name_id = {$map['fromId']}
-				AND md_fromId.value_id != {$map[$this->owner->guid]}
-			";
+			$options['metadata_name_value_pairs'][] = [
+				'name' => 'readYet',
+				'value' => $this->readYet,
+			];
 		}
 
 		return $options;
-	}
-
-	/**
-	 * Metastring ID mapping
-	 * 
-	 * @param array $metastrings An array of metastrings
-	 * @return array
-	 */
-	private static function getMetaMap($metastrings = []) {
-		return elgg_get_metastring_map($metastrings);
 	}
 
 }

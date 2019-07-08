@@ -6,8 +6,7 @@ $guids = get_input('guids', []);
 $threaded = get_input('threaded');
 
 if (!is_array($guids) || empty($guids)) {
-	register_error(elgg_echo('inbox:markread:error'));
-	forward(REFERRER);
+	return elgg_error_response(elgg_echo('inbox:markread:error'));
 }
 
 $count = count($guids);
@@ -24,9 +23,9 @@ foreach ($guids as $guid) {
 }
 
 if ($count > 1) {
-	$msg[] = elgg_echo('inbox:markread:success', array($success));
+	$msg[] = elgg_echo('inbox:markread:success', [$success]);
 	if ($notfound > 0) {
-		$msg[] = elgg_echo('inbox:error:notfound', array($notfound));
+		$msg[] = elgg_echo('inbox:error:notfound', [$notfound]);
 	}
 } else if ($success) {
 	$msg[] = elgg_echo('inbox:markread:success:single');
@@ -35,8 +34,9 @@ if ($count > 1) {
 }
 
 $msg = implode('<br />', $msg);
+
 if ($success < $count) {
-	register_error($msg);
-} else {
-	system_message($msg);
+	return elgg_error_response($msg);
 }
+
+return elgg_ok_response('', $msg);
