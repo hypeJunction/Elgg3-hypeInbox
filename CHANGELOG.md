@@ -1,3 +1,13 @@
+<a name="8.0.1"></a>
+## [8.0.1](https://github.com/hypeJunction/Elgg3-hypeInbox/compare/8.0.0...8.0.1) (2019-08-15)
+
+
+### Bug Fixes
+
+* **composer:** set correct dependencies ([236b0a0](https://github.com/hypeJunction/Elgg3-hypeInbox/commit/236b0a0))
+
+
+
 <a name="8.0.0"></a>
 # [8.0.0](https://github.com/hypeJunction/Elgg3-hypeInbox/compare/7.0.0...8.0.0) (2019-07-08)
 
