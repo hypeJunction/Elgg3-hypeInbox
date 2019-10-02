@@ -411,6 +411,8 @@ class Menus {
 			]),
 		]));
 
+		$menu->remove('messages');
+
 		return $menu;
 	}
 

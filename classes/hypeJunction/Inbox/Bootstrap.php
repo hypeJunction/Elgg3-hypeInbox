@@ -51,7 +51,7 @@ class Bootstrap extends PluginBootstrap {
 
 		// Top bar
 		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
-		elgg_register_plugin_hook_handler('register', 'menu:topbar', [Menus::class, 'setupTopbarMenu']);
+		elgg_register_plugin_hook_handler('register', 'menu:topbar', [Menus::class, 'setupTopbarMenu'], 800);
 		elgg_register_plugin_hook_handler('output', 'ajax', [Ajax::class, 'setUnreadMessagesCount']);
 		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
 
