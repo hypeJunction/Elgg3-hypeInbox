@@ -56,4 +56,10 @@ final class Plugin extends DiContainer {
 	 */
 	public function init() {}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getDefinitionSources(): array {
+		return [];
+	}
 }
