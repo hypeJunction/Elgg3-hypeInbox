@@ -5,7 +5,7 @@ use hypeJunction\Inbox\Message;
 $page_owner = elgg_get_page_owner_entity();
 
 if (!$page_owner instanceof ElggUser || !$page_owner->canEdit()) {
-	throw new \Elgg\EntityNotFoundException();
+	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
 }
 
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);

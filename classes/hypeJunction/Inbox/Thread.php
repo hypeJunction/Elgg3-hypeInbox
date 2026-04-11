@@ -19,7 +19,7 @@ class Thread {
 	 *
 	 * @param Message $message Message entity
 	 *
-	 * @throws \IOException
+	 * @throws \Elgg\Exceptions\FileSystem\IOException
 	 */
 	public function __construct(Message $message) {
 		$this->message = $message;
