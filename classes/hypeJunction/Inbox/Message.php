@@ -462,9 +462,9 @@ class Message extends ElggObject {
 
 	/**
 	 * Saves a message and sets its hash
-	 * @return int GUID of the saved message
+	 * @return bool
 	 */
-	public function save() {
+	public function save(): bool {
 
 		$defaults = array(
 			'msgHash' => $this->calcHash(),

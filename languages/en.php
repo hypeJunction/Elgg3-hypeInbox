@@ -129,13 +129,19 @@ $translations = [
 
 ];
 
-$message_types = hypeInbox()->config->getMessageTypes();
+// Elgg 4.x loads language files before the plugin's classes/ autoloader is
+// fully registered, so hypeInbox() / \hypeJunction\Inbox\Plugin may not yet
+// resolve. Skip the dynamic labels in that case — they get re-registered by
+// the Bootstrap::init hook once the plugin is fully booted.
+if (class_exists(\hypeJunction\Inbox\Plugin::class)) {
+	$message_types = hypeInbox()->config->getMessageTypes();
 
-// Register label translations for custom message types
-foreach ($message_types as $type => $options) {
-	$ruleset = hypeInbox()->config->getRuleset($type);
-	$translations[$ruleset->getSingularLabel(false)] = $ruleset->getSingularLabel('en');
-	$translations[$ruleset->getPluralLabel(false)] = $ruleset->getPluralLabel('en');
+	// Register label translations for custom message types
+	foreach ($message_types as $type => $options) {
+		$ruleset = hypeInbox()->config->getRuleset($type);
+		$translations[$ruleset->getSingularLabel(false)] = $ruleset->getSingularLabel('en');
+		$translations[$ruleset->getPluralLabel(false)] = $ruleset->getPluralLabel('en');
+	}
 }
 
 return $translations;

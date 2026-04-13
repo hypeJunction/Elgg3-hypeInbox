@@ -42,7 +42,7 @@ final class Plugin extends DiContainer {
 	/**
 	 * @deprecated 6.0
 	 */
-	public static function factory() {
+	public static function factory(array $options = []) {
 		return hypeInbox();
 	}
 
@@ -59,7 +59,7 @@ final class Plugin extends DiContainer {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getDefinitionSources(): array {
+	public static function getDefinitionSources(): array {
 		return [];
 	}
 }
