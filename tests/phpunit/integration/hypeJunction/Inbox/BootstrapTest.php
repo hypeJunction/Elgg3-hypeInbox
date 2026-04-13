@@ -11,12 +11,13 @@ use Elgg\IntegrationTestCase;
  * changes are caught before they regress activation, entity mapping, action
  * registration, hook wiring, or plugin-id callsite semantics.
  *
- * Intentionally characterizes the current broken state of several camelCase
- * plugin-id callsites (autoloader, Bootstrap::activate, settings action) —
- * Elgg 4.x plugin ids are lowercase, so elgg_get_plugin_from_id('hypeInbox')
- * and elgg_get_plugin_setting(..., 'hypeInbox') both silently return null.
- * The tests assert that current behavior so fixing them surfaces as a test
- * update, not a silent semantics change.
+ * Pins the lowercased plugin-id callsites that the 4.x cleanup landed.
+ * The 3.x source called elgg_get_plugin_from_id('hypeInbox') and
+ * elgg_get_plugin_setting(..., 'hypeInbox') with camelCase ids, which
+ * silently return null/false in Elgg 4.x. Bead elgg-migrate-fflc rewrote
+ * every callsite to lowercase 'hypeinbox' so the lookups resolve. These
+ * tests assert the fixed behavior so a regression to camelCase surfaces
+ * as a test failure.
  */
 class BootstrapTest extends IntegrationTestCase {
 
@@ -48,29 +49,40 @@ class BootstrapTest extends IntegrationTestCase {
 		$this->assertTrue($p->isActive());
 	}
 
-	// --- camelCase plugin-id footguns (characterize broken-state) ---
+	// --- lowercase plugin-id callsites (post-fflc cleanup) ---
 
-	public function testCamelCaseIdLookupReturnsNull() {
-		// autoloader.php line 18 + actions/settings/save.php both use
-		// elgg_get_plugin_from_id('hypeInbox') (camelCase). Elgg 4.x plugin
-		// ids are lowercase — the call silently returns null.
+	public function testLowercaseIdLookupResolvesPlugin() {
+		// autoloader.php + actions/settings/save.php now use 'hypeinbox'
+		// (lowercase) so elgg_get_plugin_from_id resolves the plugin.
+		$this->assertInstanceOf(\ElggPlugin::class, elgg_get_plugin_from_id('hypeinbox'));
+	}
+
+	public function testCamelCaseIdLookupStillReturnsNull() {
+		// Regression guard: the 3.x camelCase plugin-id form must still
+		// fail (returns null) — confirms that fixes elsewhere don't add
+		// a backwards-compat shim that papers over the underlying issue.
 		$this->assertNull(elgg_get_plugin_from_id('hypeInbox'));
 	}
 
-	public function testCamelCaseSettingReadReturnsFalse() {
-		// Bootstrap::activate stores default_message_types with a camelCase
-		// plugin id. In Elgg 4.x the plugin-id lookup fails silently and
-		// elgg_get_plugin_setting returns bool(false) — NOT null. That's
-		// different from a lowercase lookup against a real plugin, which
-		// returns null for an unset key. The two values are semantically
-		// distinct (false = "no such plugin", null = "no such setting").
-		$this->assertSame(false, elgg_get_plugin_setting('default_message_types', 'hypeInbox'));
+	public function testLowercasePluginSettingRoundTrips() {
+		// Pin the lowercase plugin-id callsite fix end-to-end:
+		// $plugin->setSetting + elgg_get_plugin_setting on 'hypeinbox'
+		// must round-trip a value. Pre-fflc the camelCase 'hypeInbox'
+		// lookups failed silently and the setter returned false; after
+		// fflc both directions hit the real plugin.
+		$plugin = elgg_get_plugin_from_id('hypeinbox');
+		$key = '__test_round_trip_' . bin2hex(random_bytes(4));
+		try {
+			$this->assertTrue($plugin->setSetting($key, 'value-42'));
+			$this->assertSame('value-42', elgg_get_plugin_setting($key, 'hypeinbox'));
+		} finally {
+			$plugin->unsetSetting($key);
+		}
 	}
 
 	public function testLowercaseSettingReadReturnsNullForUnsetKey() {
-		// Control: confirm that lowercase lookups DO find the plugin and
-		// return null for unset keys, proving the camelCase fallthrough is
-		// a plugin-id resolution failure, not a generic missing-setting.
+		// Control: lowercase lookups DO find the plugin and return null
+		// for unset keys.
 		$this->assertNull(elgg_get_plugin_setting('does_not_exist', 'hypeinbox'));
 	}
 

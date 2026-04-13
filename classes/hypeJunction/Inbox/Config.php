@@ -87,7 +87,7 @@ class Config {
 	public function setLegacyConfig() {
 
 		// legacy definitions
-		define('HYPEINBOX', 'hypeInbox');
+		define('HYPEINBOX', 'hypeinbox');
 		define('HYPEINBOX_NOTIFICATION', self::TYPE_NOTIFICATION);
 		define('HYPEINBOX_PRIVATE', self::TYPE_PRIVATE);
 	}

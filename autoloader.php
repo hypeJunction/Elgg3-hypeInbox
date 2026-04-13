@@ -15,7 +15,7 @@ function hypeInbox() {
 
 	static $instance;
 	if (null === $instance) {
-		$plugin = elgg_get_plugin_from_id('hypeInbox');
+		$plugin = elgg_get_plugin_from_id('hypeinbox');
 		$instance = new \hypeJunction\Inbox\Plugin($plugin);
 	}
 

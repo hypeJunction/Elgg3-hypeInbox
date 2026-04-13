@@ -21,7 +21,7 @@ $params['forward'] = $message;
 
 $params['subject'] = "Fwd: $message->title";
 
-$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
+$enable_html = elgg_get_plugin_setting('enable_html', 'hypeinbox');
 if ($enable_html) {
 	$params['body'] = '<p>' . elgg_echo('messages:forward:byline', [
 				$message->getSender()->getDisplayName(),

@@ -40,14 +40,10 @@ class Bootstrap extends PluginBootstrap {
 		elgg_register_plugin_hook_handler('register', 'menu:user_hover', [Menus::class, 'setupUserHoverMenu']);
 		elgg_register_plugin_hook_handler('register', 'menu:title', [Menus::class, 'setupTitleMenu']);
 
-		// Export
-		if (elgg_is_active_plugin('hypeApps')) {
-			elgg_register_plugin_hook_handler('aliases', 'graph', [Graph::class, 'getGraphAlias']);
-			elgg_register_plugin_hook_handler('graph:properties', 'object:messages', [
-				Graph::class,
-				'getMessageProperties'
-			]);
-		}
+		// (4.x) Graph API export removed — bodyology uses a Nuxt frontend
+		// with its own API layer, and the hypeApps Property/Values shim is
+		// no longer maintained for Elgg 4.x. See bodyology/MIGRATION.md
+		// "Replacement plan #3" (Option A) and bead elgg-migrate-fflc.
 
 		// Top bar
 		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
@@ -92,8 +88,8 @@ class Bootstrap extends PluginBootstrap {
 			],
 		];
 
-		if (is_null(elgg_get_plugin_setting('default_message_types', 'hypeInbox'))) {
-			elgg_set_plugin_setting('default_message_types', serialize($message_types), 'hypeInbox');
+		if (is_null(elgg_get_plugin_setting('default_message_types', 'hypeinbox'))) {
+			elgg_set_plugin_setting('default_message_types', serialize($message_types), 'hypeinbox');
 		}
 	}
 

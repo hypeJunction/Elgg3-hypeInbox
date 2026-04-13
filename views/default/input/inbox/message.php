@@ -11,7 +11,7 @@ $defaults = [
 	'visual' => false,
 ];
 
-$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
+$enable_html = elgg_get_plugin_setting('enable_html', 'hypeinbox');
 
 $class = (array) elgg_extract('class', $vars, []);
 $class[] = 'elgg-input-message-body';

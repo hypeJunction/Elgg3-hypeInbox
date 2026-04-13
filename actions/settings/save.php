@@ -42,7 +42,7 @@ function prepareMessageTypes() {
 	return $config;
 }
 
-$plugin = elgg_get_plugin_from_id('hypeInbox');
+$plugin = elgg_get_plugin_from_id('hypeinbox');
 $params = (array) get_input('params', array());
 
 $message_types = prepareMessageTypes();
@@ -51,7 +51,7 @@ if (isset($message_types)) {
 }
 
 if (!$plugin instanceof ElggPlugin) {
-	register_error(elgg_echo('plugins:settings:save:fail', array('hypeInbox')));
+	register_error(elgg_echo('plugins:settings:save:fail', array('hypeinbox')));
 	return false;
 }
 
