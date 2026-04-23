@@ -53,19 +53,18 @@ $summary = elgg_format_element('div', ['class' => 'inbox-message-content'], $sum
 
 $body = $checkbox . $summary;
 
-$attrs = elgg_format_attributes(array(
-	'data-href' => ($full) ? false : $entity->getURL(),
-	'data-guid' => $entity->guid,
-	'class' => implode(' ', array_filter(array(
-		elgg_extract('class', $vars, null),
-		'inbox-message',
-		($entity->isRead($threaded)) ? 'inbox-message-read' : 'inbox-message-unread',
-		($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
-		(elgg_in_context('inbox-form') || elgg_in_context('sent-form')) ? 'inbox-message-form-row' : '',
-	))),
-));
+$data_href = ($full) ? '' : htmlspecialchars($entity->getURL(), ENT_QUOTES);
+$data_guid = (int) $entity->guid;
+$class = htmlspecialchars(implode(' ', array_filter(array(
+	elgg_extract('class', $vars, null),
+	'inbox-message',
+	($entity->isRead($threaded)) ? 'inbox-message-read' : 'inbox-message-unread',
+	($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
+	(elgg_in_context('inbox-form') || elgg_in_context('sent-form')) ? 'inbox-message-form-row' : '',
+))), ENT_QUOTES);
+$attrs = ($data_href ? "data-href=\"{$data_href}\" " : '') . "data-guid=\"{$data_guid}\" class=\"{$class}\"";
 
-echo "<article $attrs>$body</article>";
+echo "<article {$attrs}>{$body}</article>";
 
 if ($full && !$entity->isRead()) {
 	$entity->markRead();

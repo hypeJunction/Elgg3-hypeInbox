@@ -2,24 +2,24 @@
 
 namespace hypeJunction\Inbox;
 
-use Elgg\HooksRegistrationService\Hook;
+use Elgg\Event;
 use ElggMenuItem;
 
 class Menus {
 
-	public static function setupPageMenu(Hook $hook) {
+	public static function setupPageMenu(Event $event) {
 		if (!elgg_in_context('messages')) {
 			return;
 		}
 
-		$entity = $hook->getEntityParam();
+		$entity = $event->getParam('entity');
 		if ($entity instanceof \ElggEntity) {
 			return;
 		}
 
 		$user = elgg_get_page_owner_entity();
 
-		$menu = $hook->getValue();
+		$menu = $event->getValue();
 
 		$intypes = hypeInbox()->model->getIncomingMessageTypes($user);
 
@@ -97,7 +97,8 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupAdminPageMenu($hook, $type, $return, $params) {
+	public static function setupAdminPageMenu(Event $event) {
+		$return = $event->getValue();
 
 		if (!elgg_in_context('admin')) {
 			return;
@@ -125,9 +126,9 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupUserHoverMenu($hook, $type, $return, $params) {
-
-		$recipient = elgg_extract('entity', $params);
+	public static function setupUserHoverMenu(Event $event) {
+		$return = $event->getValue();
+		$recipient = $event->getParam('entity');
 		$sender = elgg_get_logged_in_user_entity();
 
 		if (!$sender || !$recipient) {
@@ -217,16 +218,16 @@ class Menus {
 		return $return;
 	}
 
-	public static function setupMessageMenu(Hook $hook) {
+	public static function setupMessageMenu(Event $event) {
 
-		$entity = $hook->getEntityParam();
-		$menu = $hook->getValue();
+		$entity = $event->getParam('entity');
+		$menu = $event->getValue();
 
 		if (!$entity instanceof Message || !$entity->canEdit()) {
 			return;
 		}
 
-		$threaded = elgg_extract('threaded', $hook->getParams(), false);
+		$threaded = $event->getParam('threaded', false);
 
 		$action_params = [
 			'guids' => [$entity->guid],
@@ -271,9 +272,9 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupInboxMenu($hook, $type, $return, $params) {
-
-		$count = elgg_extract('count', $params);
+	public static function setupInboxMenu(Event $event) {
+		$return = $event->getValue();
+		$count = $event->getParam('count');
 
 		if ($count) {
 			$chkbx = elgg_view('input/checkbox', [
@@ -324,8 +325,8 @@ class Menus {
 		return $return;
 	}
 
-	public static function setupInboxThreadMenu(Hook $hook) {
-		$entity = $hook->getEntityParam();
+	public static function setupInboxThreadMenu(Event $event) {
+		$entity = $event->getParam('entity');
 
 		if (!$entity instanceof Message || !$entity->canEdit()) {
 			return;
@@ -336,7 +337,7 @@ class Menus {
 			'threaded' => true,
 		];
 
-		$menu = $hook->getValue();
+		$menu = $event->getValue();
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'reply',
@@ -380,12 +381,12 @@ class Menus {
 		return $menu;
 	}
 
-	public static function setupTopbarMenu(Hook $hook) {
+	public static function setupTopbarMenu(Event $event) {
 		if (!elgg_is_logged_in()) {
 			return;
 		}
 
-		$menu = $hook->getValue();
+		$menu = $event->getValue();
 
 		$count = hypeInbox()->model->countUnreadMessages();
 		if ($count > 99) {
@@ -416,12 +417,12 @@ class Menus {
 		return $menu;
 	}
 
-	public function setupTitleMenu(Hook $hook) {
+	public static function setupTitleMenu(Event $event) {
 		if (!elgg_in_context('messages')) {
 			return;
 		}
 
-		$menu = $hook->getValue();
+		$menu = $event->getValue();
 
 		$outgoing_message_types = hypeInbox()->model->getOutgoingMessageTypes();
 

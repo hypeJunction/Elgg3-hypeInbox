@@ -2,6 +2,8 @@
 
 namespace hypeJunction\Inbox;
 
+use Elgg\Event;
+
 class Config {
 
 	private $messageTypes;
@@ -159,7 +161,7 @@ class Config {
 				),
 			);
 
-			$this->userTypes = elgg_trigger_plugin_hook('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', null, $config);
 		}
 		return $this->userTypes;
 	}
@@ -222,7 +224,16 @@ class Config {
 	 */
 	public function getSetting($name = '') {
 		$value = $this->$name;
-		return (is_string($value)) ? unserialize($value) : array();
+		if (!is_string($value)) {
+			return [];
+		}
+		$decoded = json_decode($value, true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			return (array) $decoded;
+		}
+		// Legacy: stored as serialize() before 5.x migration — safe because
+		// allowed_classes=false prevents PHP object injection.
+		return (array) unserialize($value, ['allowed_classes' => false]);
 	}
 
 	/**
@@ -234,7 +245,8 @@ class Config {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function filterUserTypes($hook, $type, $return, $params) {
+	public static function filterUserTypes(Event $event) {
+		$return = $event->getValue();
 
 		if (elgg_is_active_plugin('hypeApprove')) {
 			$return['editor'] = array(

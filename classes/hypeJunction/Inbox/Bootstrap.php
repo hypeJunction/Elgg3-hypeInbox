@@ -23,22 +23,22 @@ class Bootstrap extends PluginBootstrap {
 		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
 
 		// URL and page handling
-		elgg_register_plugin_hook_handler('page_owner', 'system', [Router::class, 'resolvePageOwner']);
-		elgg_register_plugin_hook_handler('entity:url', 'object', [Router::class, 'messageUrlHandler']);
-		elgg_register_plugin_hook_handler('entity:icon:url', 'object', [Router::class, 'messageIconUrlHandler']);
+		elgg_register_event_handler('page_owner', 'system', [Router::class, 'resolvePageOwner']);
+		elgg_register_event_handler('entity:url', 'object', [Router::class, 'messageUrlHandler']);
+		elgg_register_event_handler('entity:icon:url', 'object', [Router::class, 'messageIconUrlHandler']);
 
 		// Third party integrations
-		elgg_register_plugin_hook_handler('config:user_types', 'framework:inbox', [Config::class, 'filterUserTypes']);
+		elgg_register_event_handler('config:user_types', 'framework:inbox', [Config::class, 'filterUserTypes']);
 
-		elgg_unregister_plugin_hook_handler('register', 'menu:user_hover', 'messages_user_hover_menu');
+		elgg_unregister_event_handler('register', 'menu:user_hover', 'messages_user_hover_menu');
 
-		elgg_register_plugin_hook_handler('register', 'menu:page', [Menus::class, 'setupPageMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:page', [Menus::class, 'setupAdminPageMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:page', [Menus::class, 'setupInboxThreadMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:inbox', [Menus::class, 'setupInboxMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:entity', [Menus::class, 'setupMessageMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:user_hover', [Menus::class, 'setupUserHoverMenu']);
-		elgg_register_plugin_hook_handler('register', 'menu:title', [Menus::class, 'setupTitleMenu']);
+		elgg_register_event_handler('register', 'menu:page', [Menus::class, 'setupPageMenu']);
+		elgg_register_event_handler('register', 'menu:page', [Menus::class, 'setupAdminPageMenu']);
+		elgg_register_event_handler('register', 'menu:page', [Menus::class, 'setupInboxThreadMenu']);
+		elgg_register_event_handler('register', 'menu:inbox', [Menus::class, 'setupInboxMenu']);
+		elgg_register_event_handler('register', 'menu:entity', [Menus::class, 'setupMessageMenu']);
+		elgg_register_event_handler('register', 'menu:user_hover', [Menus::class, 'setupUserHoverMenu']);
+		elgg_register_event_handler('register', 'menu:title', [Menus::class, 'setupTitleMenu']);
 
 		// (4.x) Graph API export removed — bodyology uses a Nuxt frontend
 		// with its own API layer, and the hypeApps Property/Values shim is
@@ -46,13 +46,13 @@ class Bootstrap extends PluginBootstrap {
 		// "Replacement plan #3" (Option A) and bead elgg-migrate-fflc.
 
 		// Top bar
-		elgg_unregister_plugin_hook_handler('register', 'menu:topbar', 'messages_register_topbar');
-		elgg_register_plugin_hook_handler('register', 'menu:topbar', [Menus::class, 'setupTopbarMenu'], 800);
-		elgg_register_plugin_hook_handler('output', 'ajax', [Ajax::class, 'setUnreadMessagesCount']);
+		elgg_unregister_event_handler('register', 'menu:topbar', 'messages_register_topbar');
+		elgg_register_event_handler('register', 'menu:topbar', [Menus::class, 'setupTopbarMenu'], 800);
+		elgg_register_event_handler('output', 'ajax', [Ajax::class, 'setUnreadMessagesCount']);
 		elgg_extend_view('page/elements/topbar', 'framework/inbox/popup');
 
 		// Notification Templates
-		elgg_register_plugin_hook_handler('get_templates', 'notifications', [
+		elgg_register_event_handler('get_templates', 'notifications', [
 			Notifications::class,
 			'registerCustomTemplates'
 		]);
@@ -88,8 +88,8 @@ class Bootstrap extends PluginBootstrap {
 			],
 		];
 
-		if (is_null(elgg_get_plugin_setting('default_message_types', 'hypeinbox'))) {
-			elgg_set_plugin_setting('default_message_types', serialize($message_types), 'hypeinbox');
+		if (is_null($this->plugin->getSetting('default_message_types'))) {
+			$this->plugin->setSetting('default_message_types', json_encode($message_types));
 		}
 	}
 

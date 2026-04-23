@@ -66,24 +66,20 @@ class BootstrapTest extends IntegrationTestCase {
 
 	public function testLowercasePluginSettingRoundTrips() {
 		// Pin the lowercase plugin-id callsite fix end-to-end:
-		// $plugin->setSetting + elgg_get_plugin_setting on 'hypeinbox'
-		// must round-trip a value. Pre-fflc the camelCase 'hypeInbox'
-		// lookups failed silently and the setter returned false; after
-		// fflc both directions hit the real plugin.
+		// setSetting/getSetting on 'hypeinbox' must round-trip a value.
 		$plugin = elgg_get_plugin_from_id('hypeinbox');
 		$key = '__test_round_trip_' . bin2hex(random_bytes(4));
 		try {
 			$this->assertTrue($plugin->setSetting($key, 'value-42'));
-			$this->assertSame('value-42', elgg_get_plugin_setting($key, 'hypeinbox'));
+			$this->assertSame('value-42', $plugin->getSetting($key));
 		} finally {
 			$plugin->unsetSetting($key);
 		}
 	}
 
 	public function testLowercaseSettingReadReturnsNullForUnsetKey() {
-		// Control: lowercase lookups DO find the plugin and return null
-		// for unset keys.
-		$this->assertNull(elgg_get_plugin_setting('does_not_exist', 'hypeinbox'));
+		// Control: lowercase lookups DO find the plugin and return null for unset keys.
+		$this->assertNull(elgg_get_plugin_from_id('hypeinbox')->getSetting('does_not_exist'));
 	}
 
 	// --- class autoloading ---
@@ -172,15 +168,13 @@ class BootstrapTest extends IntegrationTestCase {
 		$this->assertFalse($svc->exists('inbox/admin/import'));
 	}
 
-	// --- menu / hook wiring (Bootstrap::init) ---
+	// --- event wiring (Bootstrap::init, Elgg 5.x uses unified events) ---
 
 	public function testPageOwnerHookHandlerWired() {
-		$handlers = _elgg_services()->hooks->getAllHandlers();
-		$this->assertArrayHasKey('page_owner', $handlers);
+		$this->assertTrue(_elgg_services()->events->hasHandler('page_owner', 'system'));
 	}
 
 	public function testEntityUrlHookHandlerWired() {
-		$handlers = _elgg_services()->hooks->getAllHandlers();
-		$this->assertArrayHasKey('entity:url', $handlers);
+		$this->assertTrue(_elgg_services()->events->hasHandler('entity:url', 'object'));
 	}
 }

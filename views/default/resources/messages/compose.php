@@ -27,9 +27,21 @@ $title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:me
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";
 
-elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username");
-elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
-elgg_push_breadcrumb($title);
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_1',
+	'text' => elgg_echo('inbox'),
+	'href' => "messages/inbox/$page_owner->username",
+]));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_2',
+	'text' => elgg_echo('inbox:message_type', array($type_label)),
+	'href' => $type_url,
+]));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_3',
+	'text' => $title,
+	'href' => false,
+]));
 
 $layout = elgg_view_layout('content', [
 	'title' => $title,

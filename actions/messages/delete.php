@@ -23,7 +23,12 @@ foreach ($guids as $guid) {
 		$persistent++;
 		continue;
 	}
-	if (!$message->delete(true, $threaded)) {
+	if ($threaded) {
+			$deleted = $message->thread()->delete(true);
+		} else {
+			$deleted = $message->delete(true);
+		}
+		if (!$deleted) {
 		$error++;
 	} else {
 		$success++;

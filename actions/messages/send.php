@@ -22,7 +22,7 @@ if (empty(elgg_strip_tags($body))) {
 	forward(REFERRER);
 }
 
-$enable_html = elgg_get_plugin_setting('enable_html', 'hypeinbox');
+$enable_html = elgg_get_plugin_from_id('hypeinbox')->getSetting('enable_html');
 if (!$enable_html) {
 	$body = elgg_strip_tags($body);
 }

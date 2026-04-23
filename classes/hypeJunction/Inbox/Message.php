@@ -161,7 +161,7 @@ class Message extends ElggObject {
 	 * Returns title, or a generic string if not set
 	 * @return string
 	 */
-	public function getDisplayName() {
+	public function getDisplayName(): string {
 		$subject = $this->getSubject();
 		if (!$subject) {
 			$recipients = $this->getRecipients();
@@ -491,10 +491,7 @@ class Message extends ElggObject {
 	 * @param bool $threaded  Delete all messages in a thread
 	 * @return bool
 	 */
-	public function delete($recursive = true, $threaded = false) {
-		if ($threaded) {
-			return $this->thread()->delete($recursive);
-		}
+	public function delete(bool $recursive = true): bool {
 		return parent::delete($recursive);
 	}
 

@@ -11,6 +11,10 @@ return [
 		],
 	],
 
+	'upgrades' => [
+		\hypeJunction\Inbox\Upgrades\MigrateSettingsToJson::class,
+	],
+
 	'entities' => [
 		[
 			'type' => 'object',
