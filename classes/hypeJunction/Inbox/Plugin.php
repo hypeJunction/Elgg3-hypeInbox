@@ -24,18 +24,30 @@ final class Plugin extends DiContainer {
 	 */
 	public function __construct(ElggPlugin $plugin) {
 
-		$this->setValue('plugin', $plugin);
+		// PHP-DI v6 (Elgg 4.x): initialize the parent Container so that
+		// $this->definitionSource is not null before calling set().
+		parent::__construct();
 
-		$this->setFactory('config', function (Plugin $p) {
-			return new Config($p->plugin);
+		// use set() instead of the removed setValue/setFactory/setClassName
+		// helpers from Elgg 3.x. Passing a Closure to set() wraps it in a
+		// FactoryDefinition (lazy).
+		$this->set('plugin', $plugin);
+
+		$this->set('config', function () use ($plugin) {
+			return new Config($plugin);
 		});
 
-		$this->setClassName('hooks', HookHandlers::class);
-		
-		$this->setClassName('router', Router::class);
+		$this->set('hooks', function () {
+			return new HookHandlers();
+		});
 
-		$this->setFactory('model', function (Plugin $c) {
-			return new Model($c->config);
+		$this->set('router', function () {
+			return new Router();
+		});
+
+		$self = $this;
+		$this->set('model', function () use ($self) {
+			return new Model($self->get('config'));
 		});
 	}
 
