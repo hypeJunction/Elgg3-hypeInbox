@@ -3,6 +3,14 @@
 return [
 	'bootstrap' => \hypeJunction\Inbox\Bootstrap::class,
 
+	'plugin' => [
+		'dependencies' => [
+			'hypelists' => [
+				'position' => 'after',
+			],
+		],
+	],
+
 	'entities' => [
 		[
 			'type' => 'object',

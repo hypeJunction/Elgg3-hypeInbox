@@ -5,12 +5,11 @@ namespace hypeJunction\Inbox\Models;
 use ElggBatch;
 use ElggObject;
 use ElggUser;
-use hypeJunction\Access\EntitySet;
 use hypeJunction\Inbox\Config;
+use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Inbox;
 use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Userpicker;
-use hypeJunction\Lists\ElggList;
 use stdClass;
 
 class Model {
@@ -224,7 +223,7 @@ class Model {
 			$message_type = Message::TYPE_PRIVATE;
 		}
 
-		$recipient_guids = EntitySet::create($recipient_guids)->guids();
+		$recipient_guids = Group::create($recipient_guids)->guids();
 
 		$ruleset = hypeInbox()->config->getRuleset($message_type);
 
