@@ -1,13 +1,13 @@
 <?php
 
-use hypeJunction\Access\EntitySet;
+use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Message;
 
 $original_msg_guid = get_input('original_guid');
 $original_message = get_entity($original_msg_guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
-$recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
+$recipient_guids = Group::create(get_input('recipients', []))->guids();
 
 $subject = htmlspecialchars(get_input('subject', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');

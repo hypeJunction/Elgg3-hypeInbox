@@ -1,3 +1,11 @@
+## [9.0.1] — 2026-04-24
+
+### Code Quality
+
+* Remove dead legacy plugin integrations: drop `hypeApprove`/`hypeObserver` user-type branches from `Config::filterUserTypes()`, remove `hypeUI` guard from `object/messages` view, replace `hypeJunction\Access\EntitySet` with local `Group` in `send.php`, drop `hypeJunction\Ajax\Context` from `SearchRecipients`, delete orphaned `AccessCollection` class.
+
+---
+
 ## [9.0.0] — 2026-04-23
 
 ### Breaking Changes

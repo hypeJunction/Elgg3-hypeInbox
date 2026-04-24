@@ -23,11 +23,7 @@ $subtitle = [];
 $subtitle[] = elgg_view('object/messages/elements/byline', $vars);
 $subtitle[] = elgg_view('object/messages/elements/time', $vars);
 
-if (elgg_is_active_plugin('hypeUI')) {
-	$metadata = null;
-} else {
-	$metadata = elgg_view('object/messages/elements/menu', $vars);
-}
+$metadata = elgg_view('object/messages/elements/menu', $vars);
 $content .= elgg_view('object/messages/elements/body', $vars);
 $content .= elgg_view('object/messages/elements/attachments', $vars);
 $content .= elgg_view('object/messages/elements/embeds', $vars);
