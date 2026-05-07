@@ -22,7 +22,7 @@ if ($message instanceof Message) {
 
 $params = hypeInbox()->model->prepareFormValues($recipients, $message_type, $entity);
 
-$title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:message:$message_type:singular")));
+$title = elgg_echo("inbox:$action:message_type", [elgg_echo("item:object:message:$message_type:singular")]);
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";
@@ -34,7 +34,7 @@ elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 ]));
 elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 	'name' => 'bc_2',
-	'text' => elgg_echo('inbox:message_type', array($type_label)),
+	'text' => elgg_echo('inbox:message_type', [$type_label]),
 	'href' => $type_url,
 ]));
 elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([

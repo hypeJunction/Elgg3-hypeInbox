@@ -10,12 +10,12 @@ if (!$full) {
 	return true;
 }
 
-$qualifiers = elgg_trigger_event_results('extract:qualifiers', 'messages', array('source' => $entity->getBody()), array());
+$qualifiers = elgg_trigger_event_results('extract:qualifiers', 'messages', ['source' => $entity->getBody()], []);
 
 if (!empty($qualifiers['urls'])) {
 	foreach ($qualifiers['urls'] as $url) {
-		echo elgg_trigger_event_results('format:src', 'embed', array(
+		echo elgg_trigger_event_results('format:src', 'embed', [
 			'src' => $url,
-				), '');
+		], '');
 	}
 }

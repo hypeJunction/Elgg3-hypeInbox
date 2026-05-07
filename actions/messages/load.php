@@ -14,7 +14,7 @@ $inbox->setOwner($user)
 $count = $inbox->getCount();
 $messages = $inbox->getMessages();
 
-$latest_messages = array();
+$latest_messages = [];
 // Fix for 'GROUP_BY' statememtn returning wrong order
 foreach ($messages as $msg) {
 	$lastMsg = $msg->getVolatileData('select:lastMsg');
@@ -24,6 +24,7 @@ foreach ($messages as $msg) {
 		$latest_messages[] = $msg;
 	}
 }
+
 $messages = $latest_messages;
 
 $unread = Inbox::countUnread($user);

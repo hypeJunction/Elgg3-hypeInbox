@@ -12,8 +12,8 @@ if (!in_array($message_type, $outtypes)) {
 }
 
 $action = "messages/send/$message_type";
-$form = elgg_view_exists("forms/$action") ? $action : "messages/send";
+$form = elgg_view_exists("forms/$action") ? $action : 'messages/send';
 
-echo elgg_view_form($form, array(
-	'action' => elgg_action_exists($action) ? "action/$action" : "action/messages/send",
-		), $vars);
+echo elgg_view_form($form, [
+	'action' => elgg_action_exists($action) ? "action/$action" : 'action/messages/send',
+], $vars);

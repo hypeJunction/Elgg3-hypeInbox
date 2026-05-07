@@ -11,7 +11,10 @@ if (!is_array($guids) || empty($guids)) {
 }
 
 $count = count($guids);
-$error = $success = $persistent = $notfound = 0;
+$error = 0;
+$success = 0;
+$persistent = 0;
+$notfound = 0;
 
 foreach ($guids as $guid) {
 	$message = get_entity($guid);
@@ -19,16 +22,19 @@ foreach ($guids as $guid) {
 		$notfound++;
 		continue;
 	}
+
 	if ($message->isPersistent()) {
 		$persistent++;
 		continue;
 	}
+
 	if ($threaded) {
 			$deleted = $message->thread()->delete(true);
-		} else {
-			$deleted = $message->delete(true);
-		}
-		if (!$deleted) {
+	} else {
+		$deleted = $message->delete(true);
+	}
+
+	if (!$deleted) {
 		$error++;
 	} else {
 		$success++;
@@ -36,16 +42,19 @@ foreach ($guids as $guid) {
 }
 
 if ($count > 1) {
-	$msg[] = elgg_echo('inbox:delete:success', array($success));
+	$msg[] = elgg_echo('inbox:delete:success', [$success]);
 	if ($notfound > 0) {
-		$msg[] = elgg_echo('inbox:error:notfound', array($notfound));
+		$msg[] = elgg_echo('inbox:error:notfound', [$notfound]);
 	}
+
 	if ($persistent > 0) {
-		$msg[] = elgg_echo('inbox:error:canedit', array($persistent));
+		$msg[] = elgg_echo('inbox:error:canedit', [$persistent]);
 	}
+
 	if ($error > 0) {
-		$msg[] = elgg_echo('inbox:error:unknown', array($error));
+		$msg[] = elgg_echo('inbox:error:unknown', [$error]);
 	}
+
 	$forward = REFERRER;
 } else if ($success) {
 	$msg[] = elgg_echo('inbox:delete:success:single');

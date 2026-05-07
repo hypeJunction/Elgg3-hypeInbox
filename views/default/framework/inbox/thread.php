@@ -17,14 +17,15 @@ $thread = new Thread($entity);
 if (is_null($offset)) {
 	$offset = $thread->getOffset($limit);
 }
-$messages = $thread->getMessages(array(
+
+$messages = $thread->getMessages([
 	'limit' => $limit,
 	'offset' => $offset,
-));
+]);
 $count = $thread->getCount();
 
 elgg_push_context('inbox-thread');
-echo elgg_view('framework/inbox/list', array(
+echo elgg_view('framework/inbox/list', [
 	'items' => $messages,
 	'count' => $count,
 	'limit' => $limit,
@@ -34,7 +35,7 @@ echo elgg_view('framework/inbox/list', array(
 	'list_class' => 'elgg-list-inbox inbox-messages-thread-full',
 	
 	// hypeList options
-	'list_id' => "inbox-thread-" . $entity->getHash(),
+	'list_id' => 'inbox-thread-' . $entity->getHash(),
 	'pagination' => true,
 	'position' => 'both',
 	'pagination_type' => 'infinite',
@@ -42,7 +43,7 @@ echo elgg_view('framework/inbox/list', array(
 	'reversed' => true,
 	'data-key-text-before' => 'inbox:load:before',
 	'data-key-text-after' => 'inbox:load:after',
-));
+]);
 
 elgg_pop_context();
 

@@ -43,10 +43,12 @@ define(function (require) {
 					return false;
 				}
 			}
+
 			var $form = $elem.closest('form');
 			if ($form.length === 0) {
 				return;
 			}
+
 			e.preventDefault();
 
 			$form.attr('action', $elem.attr('href')).trigger('submit');

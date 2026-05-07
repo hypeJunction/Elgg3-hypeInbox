@@ -10,6 +10,9 @@ use Elgg\Request;
 use ElggEntity;
 use Psr\Log\LogLevel;
 
+/**
+ * SearchRecipients class.
+ */
 class SearchRecipients {
 
 	/**

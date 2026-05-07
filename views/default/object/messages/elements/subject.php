@@ -7,7 +7,6 @@ if ($full) {
 
 $entity = elgg_extract('entity', $vars);
 if ($entity->title) {
-
 	if (elgg_is_active_plugin('search') && get_input('query')) {
 		if ($entity->getVolatileData('search_matched_title')) {
 			$title = $entity->getVolatileData('search_matched_title');
@@ -18,7 +17,7 @@ if ($entity->title) {
 		$title = $entity->title;
 	}
 
-	echo elgg_format_element('span', array(
+	echo elgg_format_element('span', [
 		'class' => 'inbox-message-subject',
-	), $title);
+	], $title);
 }

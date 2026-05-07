@@ -12,6 +12,9 @@ use hypeJunction\Inbox\Message;
 use hypeJunction\Inbox\Userpicker;
 use stdClass;
 
+/**
+ * Model class.
+ */
 class Model {
 
 	const EGE = 'elgg_get_entities';
@@ -23,12 +26,15 @@ class Model {
 	 * @var Config
 	 */
 	private $config;
-	private $incomingMessageTypes = array();
-	private $outgoingMessageTypes = array();
+
+	private $incomingMessageTypes = [];
+
+	private $outgoingMessageTypes = [];
 
 	/**
 	 * Constructor
-	 * @param Config $config
+	 *
+	 * @param Config $config Config
 	 */
 	public function __construct(Config $config) {
 		$this->config = $config;
@@ -65,11 +71,11 @@ class Model {
 	 * @return array
 	 */
 	public function getAdminQueryOptions() {
-		return array(
-			'wheres' => array(
+		return [
+			'wheres' => [
 				"ue.admin = 'yes'"
-			)
-		);
+			]
+		];
 	}
 
 	/**
@@ -80,7 +86,7 @@ class Model {
 	 */
 	public function getIncomingMessageTypes($user = null) {
 
-		$return = array();
+		$return = [];
 
 		if (!$user instanceof \ElggUser) {
 			$user = elgg_get_logged_in_user_entity();
@@ -97,7 +103,6 @@ class Model {
 		$user_types = $this->config->getUserTypes();
 
 		foreach ($message_types as $type => $options) {
-
 			if ($type == Config::TYPE_NOTIFICATION) {
 				$methods = get_user_notification_settings($user->guid);
 				if (!$methods || !isset($methods->site)) {
@@ -112,7 +117,6 @@ class Model {
 			}
 
 			foreach ($policies as $policy) {
-
 				$recipient_type = $policy['recipient'];
 
 				if ($recipient_type == 'all') {
@@ -140,7 +144,7 @@ class Model {
 	 */
 	public function getOutgoingMessageTypes($user = null) {
 
-		$return = array();
+		$return = [];
 
 		if (!$user instanceof \ElggUser) {
 			$user = elgg_get_logged_in_user_entity();
@@ -157,13 +161,13 @@ class Model {
 		$user_types = $this->config->getUserTypes();
 
 		foreach ($message_types as $type => $options) {
-
 			$policies = $options['policy'];
 
 			if (!$policies) {
 				if ($type != Config::TYPE_NOTIFICATION) {
 					$return[] = $type;
 				}
+
 				continue;
 			}
 
@@ -173,7 +177,6 @@ class Model {
 			$valid_recipients_count = $this->getEntities($getter_options);
 
 			foreach ($policies as $policy) {
-
 				$sender_type = $policy['sender'];
 
 				if ($sender_type == 'all' && $valid_recipients_count) {
@@ -203,9 +206,11 @@ class Model {
 		if (is_null($user)) {
 			$user = elgg_get_logged_in_user_entity();
 		}
+
 		if (!$user instanceof ElggUser) {
 			return 0;
 		}
+
 		return Inbox::countUnread($user, $message_type);
 	}
 
@@ -227,7 +232,7 @@ class Model {
 
 		$ruleset = hypeInbox()->config->getRuleset($message_type);
 
-		$values = array(
+		$values = [
 			'entity' => $entity,
 			'multiple' => $ruleset->allowsMultipleRecipients(),
 			'has_subject' => $ruleset->hasSubject(),
@@ -236,7 +241,7 @@ class Model {
 			'body' => '',
 			'recipient_guids' => $recipient_guids,
 			'message_type' => $message_type,
-		);
+		];
 
 		if (elgg_is_sticky_form('messages')) {
 			$sticky = elgg_get_sticky_values('messages');
@@ -262,18 +267,18 @@ class Model {
 	public function hasRole($user, $role_name) {
 
 		switch ($role_name) {
-			case 'editor' :
+			case 'editor':
 				if (is_callable('hj_approve_is_editor')) {
 					return call_user_func('hj_approve_is_editor', $user);
 				}
 				break;
 
-			case 'supervisor' :
+			case 'supervisor':
 				if (is_callable('hj_approve_is_supervisor')) {
 					return call_user_func('hj_approve_is_supervisor', $user);
 				}
 				break;
-			case 'observer' :
+			case 'observer':
 				if (is_callable('hj_observer_is_observer')) {
 					return call_user_func('hj_observer_is_observer', $user);
 				}
@@ -303,12 +308,12 @@ class Model {
 		$relationship = sanitize_string($relationship);
 
 		$dbprefix = elgg_get_config('dbprefix');
-		return array(
-			'wheres' => array(
+		return [
+			'wheres' => [
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
 				WHERE {$table}.guid_one = e.guid AND {$table}.relationship = '{$relationship}')"
-			)
-		);
+			]
+		];
 	}
 
 	/**
@@ -331,12 +336,12 @@ class Model {
 		$table = "inb$INBOX_TABLE_ITERATOR";
 
 		$dbprefix = elgg_get_config('dbprefix');
-		return array(
-			'wheres' => array(
+		return [
+			'wheres' => [
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
 				WHERE {$table}.guid_one = e.guid AND {$table}.relationship = 'has_role' AND {$table}.guid_two = {$role_guid})"
-			)
-		);
+			]
+		];
 	}
 
 	/**
@@ -345,20 +350,20 @@ class Model {
 	 * @param array $options Getter options
 	 * @return ElggBatch
 	 */
-	public function getUnhashedMessages(array $options = array()) {
+	public function getUnhashedMessages(array $options = []) {
 
 		$name_id = elgg_get_metastring_id('msgHash');
 		$dbprefix = elgg_get_config('dbprefix');
 
-		$defaults = array(
+		$defaults = [
 			'types' => 'object',
 			'subtypes' => Message::SUBTYPE,
-			'wheres' => array(
+			'wheres' => [
 				"NOT EXISTS (SELECT 1 FROM {$dbprefix}metadata md WHERE md.entity_guid = e.guid
 			AND md.name_id = {$name_id})"
-			),
+			],
 			'order_by' => 'e.guid ASC',
-		);
+		];
 
 		$options = array_merge($defaults, $options);
 
@@ -367,16 +372,19 @@ class Model {
 
 	/**
 	 * Get entity URL wrapped in an <a></a> tag
+	 *
+	 * @param \ElggEntity $entity Entity
 	 * @return string
 	 */
 	public function getLinkTag($entity) {
 		if ($entity instanceof \ElggEntity) {
-			return elgg_view('output/url', array(
+			return elgg_view('output/url', [
 				'text' => $entity->getDisplayName(),
 				'href' => $entity->getURL(),
 				'is_trusted' => true,
-			));
+			]);
 		}
+
 		return '';
 	}
 
@@ -388,14 +396,14 @@ class Model {
 	 * @param callable $ege      ege* callable
 	 * @return ElggBatch|array
 	 */
-	protected function getEntities(array $options = array(), $as_guids = false, callable $ege = null) {
+	protected function getEntities(array $options = [], $as_guids = false, callable $ege = null) {
 
 		if (!$ege) {
 			$ege = self::EGE;
 		}
 
 		if (!is_callable($ege)) {
-			return array();
+			return [];
 		}
 
 		if (!empty($options['count'])) {
@@ -403,7 +411,7 @@ class Model {
 		}
 
 		if ($as_guids) {
-			$options['callback'] = array($this, 'rowToGUID');
+			$options['callback'] = [$this, 'rowToGUID'];
 		}
 
 		return new ElggBatch($ege, $options);
@@ -411,12 +419,11 @@ class Model {
 
 	/**
 	 * Callback function for ege* to only return guids
-	 * 
+	 *
 	 * @param stdClass $row DB row
 	 * @return int
 	 */
 	public static function rowToGUID($row) {
 		return (int) $row->guid;
 	}
-
 }

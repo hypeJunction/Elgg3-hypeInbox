@@ -1,15 +1,19 @@
 <?php
 
+/**
+ * prepareMessageTypes.
+ *
+ * @return mixed
+ */
 function prepareMessageTypes() {
 
-	$config = array();
+	$config = [];
 	$message_types = get_input('message_types');
 	if (!is_array($message_types)) {
 		return;
 	}
 	
 	foreach ($message_types as $name => $options) {
-
 		if (empty($options['name'])) {
 			continue;
 		}
@@ -18,23 +22,23 @@ function prepareMessageTypes() {
 			$name = strtolower(str_replace(' ', '_', $options['name']));
 		}
 
-		$config[$name] = array(
+		$config[$name] = [
 			'labels' => $options['labels'],
 			'attachments' => elgg_extract('attachments', $options, false),
 			'persistent' => elgg_extract('persistent', $options, false),
 			'multiple' => elgg_extract('multiple', $options, false),
 			'no_subject' => elgg_extract('no_subject', $options, false),
-		);
+		];
 
 		if (isset($options['policy'])) {
 			for ($i = 0; $i < count($options['policy']['sender']); $i++) {
-				$config[$name]['policy'][$i] = array(
+				$config[$name]['policy'][$i] = [
 					'sender' => $options['policy']['sender'][$i],
 					'recipient' => $options['policy']['recipient'][$i],
 					'relationship' => $options['policy']['relationship'][$i],
 					'inverse_relationship' => $options['policy']['inverse_relationship'][$i],
 					'group_relationship' => $options['policy']['group_relationship'][$i],
-				);
+				];
 			}
 		}
 	}
@@ -43,7 +47,7 @@ function prepareMessageTypes() {
 }
 
 $plugin = elgg_get_plugin_from_id('hypeinbox');
-$params = (array) get_input('params', array());
+$params = (array) get_input('params', []);
 
 $message_types = prepareMessageTypes();
 if (isset($message_types)) {
@@ -51,7 +55,7 @@ if (isset($message_types)) {
 }
 
 if (!$plugin instanceof ElggPlugin) {
-	register_error(elgg_echo('plugins:settings:save:fail', array('hypeinbox')));
+	register_error(elgg_echo('plugins:settings:save:fail', ['hypeinbox']));
 	return false;
 }
 
@@ -61,14 +65,15 @@ foreach ($params as $k => $v) {
 	if (is_array($v)) {
 		$v = json_encode($v);
 	}
+
 	$result = $plugin->setSetting($k, $v);
 	if (!$result) {
-		register_error(elgg_echo('plugins:settings:save:fail', array($plugin_name)));
+		register_error(elgg_echo('plugins:settings:save:fail', [$plugin_name]));
 	}
 }
 
 if ($result) {
-	system_message(elgg_echo('plugins:settings:save:ok', array($plugin_name)));
+	system_message(elgg_echo('plugins:settings:save:ok', [$plugin_name]));
 }
 
 elgg_flush_caches();

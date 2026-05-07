@@ -7,13 +7,13 @@ $entity = elgg_extract('entity', $vars);
 
 $full = elgg_extract('full_view', $vars, false);
 $threaded = elgg_extract('threaded', $vars, !$full);
-$count = $entity->hasAttachments(array(), $threaded);
+$count = $entity->hasAttachments([], $threaded);
 
 if (!$count) {
 	return true;
 }
 
-echo elgg_format_element('span', array(
+echo elgg_format_element('span', [
 	'class' => 'inbox-icon-attachment',
-	'title' => elgg_echo('inbox:attachments:count', array($count))
-));
+	'title' => elgg_echo('inbox:attachments:count', [$count])
+]);

@@ -39,4 +39,3 @@ define(function (require) {
 
 	return input;
 });
-

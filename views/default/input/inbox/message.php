@@ -6,7 +6,7 @@
 $defaults = [
 	'rows' => 5,
 	'placeholder' => elgg_echo('inbox:message:body'),
-	'id' => "elgg-input-" . base_convert(mt_rand(), 10, 36),
+	'id' => 'elgg-input-' . base_convert(mt_rand(), 10, 36),
 	'editor' => true,
 	'visual' => false,
 ];

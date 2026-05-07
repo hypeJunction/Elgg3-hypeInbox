@@ -6,6 +6,9 @@ use ElggEntity;
 use ElggObject;
 use ElggSite;
 
+/**
+ * Message class.
+ */
 class Message extends ElggObject {
 
 	const CLASSNAME = __CLASS__;
@@ -27,26 +30,26 @@ class Message extends ElggObject {
 	/**
 	 * Create a message from options
 	 * @param array $options An array of options
-	 *   'sender'       => Sender guid or entity
-	 *   'recipients'   => Recipient guid or entity, or an array of guids or entities
-	 *   'subject'      => Message subject
-	 *   'body'         => Message body
-	 *   'hash'         => Message hash
-	 *   'message_type' => Message type
-	 *   'attachments'  => Entities to attach, or their guids
+	 *                       'sender'       => Sender guid or entity
+	 *                       'recipients'   => Recipient guid or entity, or an array of guids or entities
+	 *                       'subject'      => Message subject
+	 *                       'body'         => Message body
+	 *                       'hash'         => Message hash
+	 *                       'message_type' => Message type
+	 *                       'attachments'  => Entities to attach, or their guids
 	 * @return Message
 	 */
-	public static function factory(array $options = array()) {
+	public static function factory(array $options = []) {
 
-		$defaults = array(
+		$defaults = [
 			'sender' => 0,
-			'recipients' => array(),
+			'recipients' => [],
 			'subject' => '',
 			'body' => '',
 			'hash' => '',
-			'message_type' => Message::TYPE_PRIVATE,
-			'attachments' => array(),
-		);
+			'message_type' => self::TYPE_PRIVATE,
+			'attachments' => [],
+		];
 		$options = array_merge($defaults, $options);
 
 		$message = new Message;
@@ -81,7 +84,7 @@ class Message extends ElggObject {
 
 	/**
 	 * Set message recipients
-	 * 
+	 *
 	 * @param mixed $recipients A guid or entity, or an array of guids or entities
 	 * @return Message
 	 */
@@ -89,6 +92,7 @@ class Message extends ElggObject {
 		if (isset($this->toId)) {
 			return $this;
 		}
+
 		$this->toId = $this->group()->add($recipients)->guids();
 		return $this;
 	}
@@ -106,7 +110,7 @@ class Message extends ElggObject {
 
 	/**
 	 * Set sender of the message
-	 * 
+	 *
 	 * @param ElggEntity|int $sender Sender guid or entity
 	 * @return Message
 	 */
@@ -114,9 +118,11 @@ class Message extends ElggObject {
 		if ($this->fromId) {
 			return $this;
 		}
+
 		if (!$sender) {
 			$sender = $this->getDefaultSender();
 		}
+
 		$this->fromId = $this->group()->add($sender)->guids();
 		return $this;
 	}
@@ -132,7 +138,7 @@ class Message extends ElggObject {
 
 	/**
 	 * Sets message subject
-	 * 
+	 *
 	 * @param string $subject Subject
 	 * @return Message
 	 */
@@ -166,17 +172,18 @@ class Message extends ElggObject {
 		if (!$subject) {
 			$recipients = $this->getRecipients();
 			if (count($recipients) == 1) {
-				return elgg_echo('inbox:conversation:user', array($recipients[0]->name));
+				return elgg_echo('inbox:conversation:user', [$recipients[0]->name]);
 			} else {
 				return elgg_echo('inbox:conversation:group');
 			}
 		}
+
 		return $subject;
 	}
 
 	/**
 	 * Sets message body
-	 * 
+	 *
 	 * @param string $body Message body
 	 * @return Message
 	 */
@@ -206,7 +213,7 @@ class Message extends ElggObject {
 
 	/**
 	 * Sets message hash
-	 * 
+	 *
 	 * @param string $hash Hash
 	 * @return Message
 	 */
@@ -214,6 +221,7 @@ class Message extends ElggObject {
 		if (!isset($this->msgHash) && $hash) {
 			$this->msgHash = $hash;
 		}
+
 		return $this;
 	}
 
@@ -226,20 +234,22 @@ class Message extends ElggObject {
 		if (!$hash) {
 			$hash = $this->calcHash();
 		}
+
 		return $hash;
 	}
 
 	/**
 	 * Sets message type
 	 * Defaults to private
-	 * 
+	 *
 	 * @param string $message_type Message type
 	 * @return Message
 	 */
 	public function setMessageType($message_type = '') {
 		if (!$message_type) {
-			$message_type = Message::TYPE_PRIVATE;
+			$message_type = self::TYPE_PRIVATE;
 		}
+
 		$this->msgType = $message_type;
 		return $this;
 	}
@@ -249,12 +259,12 @@ class Message extends ElggObject {
 	 * @return string
 	 */
 	public function getMessageType() {
-		return (isset($this->msgType)) ? $this->msgType : Message::TYPE_PRIVATE;
+		return (isset($this->msgType)) ? $this->msgType : self::TYPE_PRIVATE;
 	}
 
 	/**
 	 * Checks if the message has been already read
-	 * 
+	 *
 	 * @param bool $threaded Threaded display
 	 * @return boolean
 	 */
@@ -262,12 +272,13 @@ class Message extends ElggObject {
 		if (!$threaded) {
 			return (bool) $this->readYet;
 		}
+
 		return $this->thread()->isRead();
 	}
 
 	/**
 	 * Mark message as read
-	 * 
+	 *
 	 * @param bool $threaded Mark all messages in a thread
 	 * @return Message
 	 */
@@ -277,12 +288,13 @@ class Message extends ElggObject {
 		} else {
 			$this->readYet = true;
 		}
+
 		return $this;
 	}
 
 	/**
 	 * Mark message as unread
-	 * 
+	 *
 	 * @param bool $threaded Mark all messages in a thread
 	 * @return Message
 	 */
@@ -292,6 +304,7 @@ class Message extends ElggObject {
 		} else {
 			$this->readYet = false;
 		}
+
 		return $this;
 	}
 
@@ -310,7 +323,7 @@ class Message extends ElggObject {
 	 * @param mixed $attachments An array of guids or entities
 	 * @return Message
 	 */
-	public function setAttachments($attachments = array()) {
+	public function setAttachments($attachments = []) {
 		$this->setVolatileData('attachments', $attachments);
 		return $this;
 	}
@@ -318,13 +331,13 @@ class Message extends ElggObject {
 	/**
 	 * Attaches an entity to a message
 	 *
-	 * @param mixed $attachments An array of guids or entities
 	 * @return int Number of successful attachments
 	 */
 	public function attach() {
 		if (!$this->guid) {
 			return false;
 		}
+
 		$success = 0;
 		$guids = $this->group()->add($this->getVolatileData('attachments'))->guids();
 		foreach ($guids as $guid) {
@@ -332,32 +345,33 @@ class Message extends ElggObject {
 				$success++;
 			}
 		}
+
 		return $success;
 	}
 
 	/**
 	 * Returns getter options for message attachments
-	 * 
+	 *
 	 * @param array $options Additional options
 	 * @return array
 	 */
-	public function getAttachmentsFilterOptions(array $options = array()) {
-		$defaults = array(
+	public function getAttachmentsFilterOptions(array $options = []) {
+		$defaults = [
 			'relationship' => 'attached',
 			'relationship_guid' => $this->guid,
 			'inverse_relationship' => false,
-		);
+		];
 		return array_merge($defaults, $options);
 	}
 
 	/**
 	 * Returns an array of attached entities
-	 * 
+	 *
 	 * @param array $options  Additional options
 	 * @param bool  $threaded Threaded display
 	 * @return ElggEntity[]|false
 	 */
-	public function getAttachments(array $options = array(), $threaded = false) {
+	public function getAttachments(array $options = [], $threaded = false) {
 		if ($threaded) {
 			return $this->thread()->getAttachments($options);
 		} else {
@@ -370,11 +384,11 @@ class Message extends ElggObject {
 	 * Check if message has attachments
 	 * Returns a count of attachments
 	 *
-	 * @param array $options Additional options
+	 * @param array $options  Additional options
 	 * @param bool  $threaded Threaded display
 	 * @return int
 	 */
-	public function hasAttachments(array $options = array(), $threaded = false) {
+	public function hasAttachments(array $options = [], $threaded = false) {
 		if ($threaded) {
 			return $this->thread()->hasAttachments($options);
 		} else {
@@ -400,17 +414,21 @@ class Message extends ElggObject {
 		if (!$sender) {
 			return false;
 		}
+
 		$recipients = $this->getRecipients();
 		if (!is_array($recipients) || !count($recipients)) {
 			return false;
 		}
+
 		$body = $this->getBody();
 		if (!$body) {
 			return false;
 		}
+
 		if (elgg_trigger_before_event('send', 'object', $this) === false) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -445,6 +463,7 @@ class Message extends ElggObject {
 			if ($recipient->guid == $owner->guid) {
 				continue;
 			}
+
 			$copy = clone $this;
 			$copy->owner_guid = $recipient->guid;
 			$copy->container_guid = $recipient->guid;
@@ -453,6 +472,7 @@ class Message extends ElggObject {
 				$copy->attach();
 			}
 		}
+
 		elgg_set_ignore_access($ia);
 
 		elgg_trigger_after_event('send', 'object', $this);
@@ -466,14 +486,14 @@ class Message extends ElggObject {
 	 */
 	public function save(): bool {
 
-		$defaults = array(
+		$defaults = [
 			'msgHash' => $this->calcHash(),
 			'msgType' => $this->getMessageType(),
 			'readYet' => false,
 			'hiddenFrom' => false, // legacy flag
 			'hiddenTo' => false, // legacy flag
 			'msg' => true, // legacy flag
-		);
+		];
 		
 		foreach ($defaults as $key => $value) {
 			if (!isset($this->$key)) {
@@ -486,9 +506,8 @@ class Message extends ElggObject {
 
 	/**
 	 * Delete message
-	 * 
+	 *
 	 * @param bool $recursive Delete recursively
-	 * @param bool $threaded  Delete all messages in a thread
 	 * @return bool
 	 */
 	public function delete(bool $recursive = true): bool {
@@ -513,25 +532,49 @@ class Message extends ElggObject {
 
 	/**
 	 * Alias for factory
-	 * 
+	 *
 	 * @param array $options Options
 	 * @return Message
 	 * @deprecated since version 3.1
 	 */
-	public static function construct(array $options = array()) {
+	public static function construct(array $options = []) {
 		return self::factory($options);
 	}
 
+	/**
+	 * getThreadIdProp.
+	 *
+	 * @param \hypeJunction\Data\PropertyInterface $prop    prop
+	 * @param Message                              $message message
+	 *
+	 * @return mixed
+	 */
 	public static function getThreadIdProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
 		return $message->getHash();
 	}
 
+	/**
+	 * getMessageTypeProp.
+	 *
+	 * @param \hypeJunction\Data\PropertyInterface $prop    prop
+	 * @param Message                              $message message
+	 *
+	 * @return mixed
+	 */
 	public static function getMessageTypeProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
 		return $message->getMessageType();
 	}
 
+	/**
+	 * getAttachmentsProp.
+	 *
+	 * @param \hypeJunction\Data\PropertyInterface $prop    prop
+	 * @param Message                              $message message
+	 *
+	 * @return mixed
+	 */
 	public static function getAttachmentsProp(\hypeJunction\Data\PropertyInterface $prop, Message $message) {
-		$options = $message->getAttachmentsFilterOptions(array('limit' => 0));
+		$options = $message->getAttachmentsFilterOptions(['limit' => 0]);
 		return new \hypeJunction\Graph\BatchResult('elgg_get_entities_from_relationship', $options);
 	}
 }

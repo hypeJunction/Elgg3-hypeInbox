@@ -7,14 +7,14 @@ if (file_exists("{$path}/vendor/autoload.php")) {
 
 /**
  * Plugin container
- * 
+ *
  * @return \hypeJunction\Inbox\Plugin
  * @access private since 6.0
  */
 function hypeInbox() {
 
 	static $instance;
-	if (null === $instance) {
+	if ($instance === null) {
 		$plugin = elgg_get_plugin_from_id('hypeinbox');
 		$instance = new \hypeJunction\Inbox\Plugin($plugin);
 	}

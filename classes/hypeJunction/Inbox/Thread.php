@@ -7,9 +7,13 @@ use Elgg\Database\QueryBuilder;
 use ElggBatch;
 use ElggEntity;
 
+/**
+ * Thread class.
+ */
 class Thread {
 
 	protected $message;
+
 	private $dbprefix;
 
 	const LIMIT = 10;
@@ -63,6 +67,7 @@ class Thread {
 		if ($limit === 0) {
 			return 0;
 		}
+
 		$before = $this->getMessagesBefore(['count' => true, 'offset' => 0]);
 
 		return floor($before / $limit) * $limit;
@@ -281,5 +286,4 @@ class Thread {
 
 		return $this->getAttachments($options);
 	}
-
 }

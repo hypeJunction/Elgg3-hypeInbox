@@ -4,20 +4,42 @@ namespace hypeJunction\Inbox;
 
 use Elgg\PluginBootstrap;
 
+/**
+ * Bootstrap class.
+ */
 class Bootstrap extends PluginBootstrap {
 
+	/**
+	 * getPath.
+	 *
+	 * @return mixed
+	 */
 	public function getPath() {
 		return $this->plugin->getPath();
 	}
 
+	/**
+	 * load.
+	 *
+	 * @return mixed
+	 */
 	public function load() {
 		require_once $this->getPath() . 'autoloader.php';
 	}
 
+	/**
+	 * boot.
+	 *
+	 * @return mixed
+	 */
 	public function boot() {
-
 	}
 
+	/**
+	 * init.
+	 *
+	 * @return mixed
+	 */
 	public function init() {
 		elgg_extend_view('elgg.css', 'framework/inbox.css');
 		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
@@ -58,14 +80,27 @@ class Bootstrap extends PluginBootstrap {
 		]);
 	}
 
+	/**
+	 * ready.
+	 *
+	 * @return mixed
+	 */
 	public function ready() {
-
 	}
 
+	/**
+	 * shutdown.
+	 *
+	 * @return mixed
+	 */
 	public function shutdown() {
-
 	}
 
+	/**
+	 * activate.
+	 *
+	 * @return mixed
+	 */
 	public function activate() {
 		$message_types = [
 			'__private' => [
@@ -93,11 +128,19 @@ class Bootstrap extends PluginBootstrap {
 		}
 	}
 
+	/**
+	 * deactivate.
+	 *
+	 * @return mixed
+	 */
 	public function deactivate() {
-
 	}
 
+	/**
+	 * upgrade.
+	 *
+	 * @return mixed
+	 */
 	public function upgrade() {
-
 	}
 }

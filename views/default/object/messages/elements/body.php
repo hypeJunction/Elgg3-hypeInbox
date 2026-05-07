@@ -10,18 +10,17 @@ $full = elgg_extract('full_view', $vars, false);
 if ($full) {
 	$body = $entity->getBody();
 	if (elgg_view_exists('output/linkify')) {
-		$body = elgg_view('output/linkify', array(
+		$body = elgg_view('output/linkify', [
 			'value' => $body,
-		));
+		]);
 	}
-	echo elgg_view('output/longtext', array(
+
+	echo elgg_view('output/longtext', [
 		'value' => $body,
 		'class' => 'inbox-message-body',
-			));
+	]);
 } else {
-
 	if (elgg_is_active_plugin('search') && get_input('query')) {
-
 		if ($entity->getVolatileData('search_matched_description')) {
 			$body = $entity->getVolatileData('search_matched_description');
 		} else {
@@ -31,7 +30,7 @@ if ($full) {
 		$body = elgg_get_excerpt($entity->description);
 	}
 	
-	echo elgg_format_element('div', array(
+	echo elgg_format_element('div', [
 		'class' => 'inbox-message-body-excerpt',
-			), $body);
+	], $body);
 }

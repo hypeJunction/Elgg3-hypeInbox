@@ -52,6 +52,10 @@ final class Plugin extends DiContainer {
 	}
 
 	/**
+	 * Factory.
+	 *
+	 * @param array $options Options
+	 * @return mixed
 	 * @deprecated 6.0
 	 */
 	public static function factory(array $options = []) {
@@ -59,14 +63,22 @@ final class Plugin extends DiContainer {
 	}
 
 	/**
+	 * Boot.
+	 *
+	 * @return void
 	 * @deprecated 6.0
 	 */
-	public function boot() {}
+	public function boot() {
+	}
 
 	/**
+	 * Init.
+	 *
+	 * @return void
 	 * @deprecated 6.0
 	 */
-	public function init() {}
+	public function init() {
+	}
 
 	/**
 	 * {@inheritdoc}

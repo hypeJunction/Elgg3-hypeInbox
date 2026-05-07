@@ -13,7 +13,7 @@ if ($threaded) {
 	$count = $entity->thread()->getUnreadCount();
 }
 
-echo elgg_format_element('span', array(
+echo elgg_format_element('span', [
 	'class' => 'inbox-message-unread-indicator',
-	'title' => elgg_echo('inbox:thread:unread', array($count))
-		), $count);
+	'title' => elgg_echo('inbox:thread:unread', [$count])
+], $count);

@@ -9,6 +9,7 @@ define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 			if (elgg.config.inboxAdmin) {
 				return;
 			}
+
 			$(document).on('click', '#inbox-admin-import', function (e) {
 				e.preventDefault();
 
@@ -40,6 +41,7 @@ define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 				if (!confirm(elgg.echo('question:areyousure'))) {
 					return false;
 				}
+
 				$(this).closest('.inbox-policy').fadeOut().remove();
 			});
 			
@@ -76,5 +78,3 @@ define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 
 	inbox.init();
 });
-
-

@@ -9,6 +9,9 @@ use Elgg\Database\QueryBuilder;
 use ElggUser;
 use InvalidArgumentException;
 
+/**
+ * Inbox class.
+ */
 class Inbox {
 
 	/**
@@ -195,7 +198,7 @@ class Inbox {
 	 * @return string
 	 */
 	public function getDirection() {
-		return ($this->direction) ? : self::DIRECTION_ALL;
+		return ($this->direction) ?: self::DIRECTION_ALL;
 	}
 
 	/**
@@ -238,6 +241,13 @@ class Inbox {
 		}
 	}
 
+	/**
+	 * getCountCallback.
+	 *
+	 * @param mixed $row row
+	 *
+	 * @return mixed
+	 */
 	public static function getCountCallback($row) {
 		return $row;
 	}
@@ -297,5 +307,4 @@ class Inbox {
 
 		return $options;
 	}
-
 }
