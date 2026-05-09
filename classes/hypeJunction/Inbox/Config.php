@@ -9,20 +9,26 @@ use Elgg\Event;
  */
 class Config {
 
-	private $messageTypes;
+	/** @var mixed */
+    private $messageTypes;
 
-	private $userTypes;
+	/** @var mixed */
+    private $userTypes;
 
-	private $userRelationships;
+	/** @var mixed */
+    private $userRelationships;
 
-	private $userGroupRelationships;
+	/** @var mixed */
+    private $userGroupRelationships;
 
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
 
-	private $plugin;
+	/** @var mixed */
+    private $plugin;
 
-	private $settings;
+	/** @var mixed */
+    private $settings;
 
 	/**
 	 * Constructor

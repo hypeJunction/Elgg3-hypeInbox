@@ -27,9 +27,11 @@ class Model {
 	 */
 	private $config;
 
-	private $incomingMessageTypes = [];
+	/** @var mixed */
+    private $incomingMessageTypes = [];
 
-	private $outgoingMessageTypes = [];
+	/** @var mixed */
+    private $outgoingMessageTypes = [];
 
 	/**
 	 * Constructor

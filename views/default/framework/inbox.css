@@ -8,9 +8,7 @@
 	font-size: 85%;
 }
 
-@media $(media-tablet-up
-
-) {
+@media (min-width: 768px) {
 	#inbox-popup {
 		width: 25rem;
 	}
@@ -29,7 +27,7 @@
 }
 
 #inbox-popup .elgg-foot {
-	border-top: 1px solid $(border-color-mild);
+	border-top: 1px solid var(--border-color-mild);
 }
 
 #inbox-popup .elgg-foot a {
@@ -54,12 +52,12 @@
 }
 
 .inbox-module > .elgg-foot {
-	border-top: 1px solid $(border-color-mild);
+	border-top: 1px solid var(--border-color-mild);
 }
 
 .inbox-thread-reply-form {
 	padding: 1rem;
-	background-color: $(background-color-soft);
+	background-color: var(--background-color-soft);
 }
 
 .inbox-thread-reply-form .attachments-toggler,
