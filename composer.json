@@ -5,7 +5,10 @@
 	"description": "Enhanced messaging capabilities",
 	"homepage": "http://hypejunction.com",
 	"keywords": [
-		"elgg", "plugin", "inbox", "messages"
+		"elgg",
+		"plugin",
+		"inbox",
+		"messages"
 	],
 	"license": "GPL-2.0",
 	"authors": [
@@ -18,7 +21,7 @@
 		"installer-name": "hypeInbox"
 	},
 	"require": {
-		"composer/installers": "~1.0",
+		"composer/installers": "^1.0 || ^2.0",
 		"hypejunction/acl_builder_api": "*"
 	},
 	"autoload": {
@@ -27,4 +30,3 @@
 		}
 	}
 }
-
