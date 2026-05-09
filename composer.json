@@ -2,8 +2,8 @@
 	"name": "hypejunction/hypeinbox",
 	"version": "9.0.0",
 	"type": "elgg-plugin",
-	"description": "Enhanced messaging capabilities",
-	"homepage": "http://hypejunction.com",
+	"description": "Enhanced messaging for Elgg — multiple inboxes, message threading, and real-time updates.",
+	"homepage": "https://github.com/hypeJunction/hypeInbox",
 	"keywords": [
 		"elgg",
 		"plugin",
@@ -14,7 +14,7 @@
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
+			"email": "ismayil.khayredinov@gmail.com"
 		}
 	],
 	"extra": {
