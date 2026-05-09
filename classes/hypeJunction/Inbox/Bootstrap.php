@@ -42,7 +42,7 @@ class Bootstrap extends PluginBootstrap {
 	 */
 	public function init() {
 		elgg_extend_view('elgg.css', 'framework/inbox.css');
-		elgg_extend_view('elgg.js', 'framework/inbox/message.js');
+		elgg_import_esm('framework/inbox/message');
 
 		// URL and page handling
 		elgg_register_event_handler('page_owner', 'system', [Router::class, 'resolvePageOwner']);

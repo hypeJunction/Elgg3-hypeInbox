@@ -7,7 +7,7 @@ if (!$page_owner || !$page_owner->canEdit()) {
 	forward('', '404');
 }
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 

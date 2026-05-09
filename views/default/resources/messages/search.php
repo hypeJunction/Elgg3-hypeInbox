@@ -6,7 +6,7 @@ if (!$page_owner || !$page_owner->canEdit()) {
 	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
 }
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 	'name' => 'bc_1',

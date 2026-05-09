@@ -6,7 +6,7 @@ elgg_entity_gatekeeper($guid, 'object', 'messages');
 
 $message = get_entity($guid);
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $message_type = $message->msgType;
 $subject = $message->getDisplayName();

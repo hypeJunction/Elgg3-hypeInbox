@@ -8,7 +8,7 @@ if (!elgg_is_logged_in()) {
 	return;
 }
 
-elgg_require_js('framework/inbox/popup');
+elgg_import_esm('framework/inbox/popup');
 
 $list = elgg_format_element('div', [
 	'id' => 'inbox-messages'

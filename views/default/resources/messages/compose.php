@@ -4,7 +4,7 @@ use hypeJunction\Inbox\Message;
 
 elgg_gatekeeper();
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $guid = get_input('guid');
 $message = get_entity($guid);

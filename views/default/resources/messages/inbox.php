@@ -31,7 +31,7 @@ elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 	]),
 ]));
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $content = elgg_view('framework/inbox/inbox', [
 	'message_type' => $message_type
