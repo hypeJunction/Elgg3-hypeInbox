@@ -17,11 +17,18 @@ class EntityCrudTest extends IntegrationTestCase {
 	public function up() {}
 	public function down() {}
 
-	public function getPluginID(): string {
+	/**
+     * @return string
+     */
+    public function getPluginID(): string {
 		return 'hypeinbox';
 	}
 
-	private function makeMessage(array $overrides = []): Message {
+	/**
+     * @param array $overrides
+     * @return Message
+     */
+    private function makeMessage(array $overrides = []): Message {
 		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($overrides) {
 			$user = $overrides['__user'] ?? $this->createUser();
 			$msg = new Message();
@@ -39,17 +46,26 @@ class EntityCrudTest extends IntegrationTestCase {
 		});
 	}
 
-	public function testInitializeAttributesSetsSubtype(): void {
+	/**
+     * @return void
+     */
+    public function testInitializeAttributesSetsSubtype(): void {
 		$msg = new Message();
 		$this->assertSame(Message::SUBTYPE, $msg->getSubtype());
 		$this->assertSame('messages', $msg->getSubtype());
 	}
 
-	public function testTypeConstantIsObject(): void {
+	/**
+     * @return void
+     */
+    public function testTypeConstantIsObject(): void {
 		$this->assertSame('object', Message::TYPE);
 	}
 
-	public function testCreatedMessageHasGuid(): void {
+	/**
+     * @return void
+     */
+    public function testCreatedMessageHasGuid(): void {
 		$msg = $this->makeMessage();
 		$this->assertGreaterThan(0, $msg->guid);
 		$this->assertSame('object', $msg->type);
@@ -57,7 +73,10 @@ class EntityCrudTest extends IntegrationTestCase {
 		$msg->delete();
 	}
 
-	public function testLoadedMessageIsMessageInstance(): void {
+	/**
+     * @return void
+     */
+    public function testLoadedMessageIsMessageInstance(): void {
 		$msg = $this->makeMessage();
 		$guid = $msg->guid;
 		_elgg_services()->entityCache->delete($guid);
@@ -66,7 +85,10 @@ class EntityCrudTest extends IntegrationTestCase {
 		$msg->delete();
 	}
 
-	public function testSubjectMetadataPersists(): void {
+	/**
+     * @return void
+     */
+    public function testSubjectMetadataPersists(): void {
 		$msg = $this->makeMessage(['subject' => 'Characterization subject']);
 		_elgg_services()->entityCache->delete($msg->guid);
 		$loaded = elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
@@ -74,7 +96,10 @@ class EntityCrudTest extends IntegrationTestCase {
 		$msg->delete();
 	}
 
-	public function testBodyMetadataPersists(): void {
+	/**
+     * @return void
+     */
+    public function testBodyMetadataPersists(): void {
 		$msg = $this->makeMessage(['body' => 'body goes here']);
 		_elgg_services()->entityCache->delete($msg->guid);
 		$loaded = elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
@@ -82,7 +107,10 @@ class EntityCrudTest extends IntegrationTestCase {
 		$msg->delete();
 	}
 
-	public function testSaveReturnsBoolTrueForNewMessage(): void {
+	/**
+     * @return void
+     */
+    public function testSaveReturnsBoolTrueForNewMessage(): void {
 		// Pins the post-migration signature: Message::save(): bool returns
 		// true for a successful save. 3.x returned an int GUID — the
 		// migration commit 22cf1a7 changed this, and this test pins the
@@ -99,18 +127,27 @@ class EntityCrudTest extends IntegrationTestCase {
 		$msg->delete();
 	}
 
-	public function testDeleteReturnsTruthy(): void {
+	/**
+     * @return void
+     */
+    public function testDeleteReturnsTruthy(): void {
 		$msg = $this->makeMessage();
 		$result = elgg_call(ELGG_IGNORE_ACCESS, fn() => $msg->delete());
 		$this->assertNotFalse($result);
 	}
 
-	public function testMessageTypeConstants(): void {
+	/**
+     * @return void
+     */
+    public function testMessageTypeConstants(): void {
 		$this->assertSame(Config::TYPE_PRIVATE, Message::TYPE_PRIVATE);
 		$this->assertSame(Config::TYPE_NOTIFICATION, Message::TYPE_NOTIFICATION);
 	}
 
-	public function testFactoryReturnsMessageInstance(): void {
+	/**
+     * @return void
+     */
+    public function testFactoryReturnsMessageInstance(): void {
 		$msg = Message::factory([
 			'subject' => 'via factory',
 			'body' => 'factory body',
