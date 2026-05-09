@@ -78,6 +78,8 @@ class Bootstrap extends PluginBootstrap {
 			Notifications::class,
 			'registerCustomTemplates'
 		]);
+
+		elgg_register_event_handler('seeds', 'database', [Seeder::class, 'addSeed']);
 	}
 
 	/**
