@@ -4,13 +4,25 @@ namespace hypeJunction\Inbox;
 
 use ElggEntity;
 
+/**
+ * Userpicker class.
+ */
 class Userpicker {
 
-	private $dbprefix;
-	protected $message_type;
-	protected $sender;
-	protected $policies;
-	protected $options;
+	/** @var mixed */
+    private $dbprefix;
+
+	/** @var mixed */
+    protected $message_type;
+
+	/** @var mixed */
+    protected $sender;
+
+	/** @var mixed */
+    protected $policies;
+
+	/** @var mixed */
+    protected $options;
 
 	/**
 	 * Constructor
@@ -35,6 +47,7 @@ class Userpicker {
 		if (!$message_type) {
 			$message_type = Message::TYPE_PRIVATE;
 		}
+
 		$this->message_type = $message_type;
 
 		return $this;
@@ -60,9 +73,11 @@ class Userpicker {
 		if (is_null($sender)) {
 			$sender = elgg_get_logged_in_user_entity();
 		}
+
 		if (!$sender) {
 			$sender = elgg_get_site_entity();
 		}
+
 		$this->sender = $sender;
 
 		return $this;
@@ -146,5 +161,4 @@ class Userpicker {
 
 		return $options;
 	}
-
 }

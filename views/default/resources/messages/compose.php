@@ -4,7 +4,7 @@ use hypeJunction\Inbox\Message;
 
 elgg_gatekeeper();
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $guid = get_input('guid');
 $message = get_entity($guid);
@@ -22,14 +22,26 @@ if ($message instanceof Message) {
 
 $params = hypeInbox()->model->prepareFormValues($recipients, $message_type, $entity);
 
-$title = elgg_echo("inbox:$action:message_type", array(elgg_echo("item:object:message:$message_type:singular")));
+$title = elgg_echo("inbox:$action:message_type", [elgg_echo("item:object:message:$message_type:singular")]);
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/inbox/$page_owner->username?message_type=$message_type";
 
-elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username");
-elgg_push_breadcrumb(elgg_echo('inbox:message_type', array($type_label)), $type_url);
-elgg_push_breadcrumb($title);
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_1',
+	'text' => elgg_echo('inbox'),
+	'href' => "messages/inbox/$page_owner->username",
+]));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_2',
+	'text' => elgg_echo('inbox:message_type', [$type_label]),
+	'href' => $type_url,
+]));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_3',
+	'text' => $title,
+	'href' => false,
+]));
 
 $layout = elgg_view_layout('content', [
 	'title' => $title,

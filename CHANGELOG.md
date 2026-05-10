@@ -1,3 +1,30 @@
+## [9.0.1] — 2026-04-24
+
+### Code Quality
+
+* Remove dead legacy plugin integrations: drop `hypeApprove`/`hypeObserver` user-type branches from `Config::filterUserTypes()`, remove `hypeUI` guard from `object/messages` view, replace `hypeJunction\Access\EntitySet` with local `Group` in `send.php`, drop `hypeJunction\Ajax\Context` from `SearchRecipients`, delete orphaned `AccessCollection` class.
+
+---
+
+## [9.0.0] — 2026-04-23
+
+### Breaking Changes
+
+* Requires Elgg 5.x and PHP 8.2+
+* `Message::delete()` signature changed to `delete(bool $recursive = true): bool` — callers passing `$threaded = true` must call `$message->thread()->delete()` directly
+
+### Migration
+
+* All plugin hook handlers migrated to the Elgg 5.x unified events system
+* `elgg_push_breadcrumb()` removed — replaced with `elgg_register_menu_item('breadcrumbs', ...)`
+* `elgg_format_attributes()` removed — replaced with manual HTML
+* `elgg_isinstance()` removed — replaced with `instanceof`
+* `get_user_by_username()` removed — replaced with `elgg_get_user_by_username()`
+* `elgg_set/get_plugin_setting()` removed — replaced with `$plugin->setSetting/getSetting()`
+* Plugin settings storage switched from `serialize()` to `json_encode()`; upgrade batch `MigrateSettingsToJson` migrates existing data
+
+---
+
 <a name="8.0.2"></a>
 ## [8.0.2](https://github.com/hypeJunction/Elgg3-hypeInbox/compare/8.0.1...8.0.2) (2019-10-02)
 

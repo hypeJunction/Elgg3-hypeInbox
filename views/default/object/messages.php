@@ -2,7 +2,7 @@
 
 /**
  * Display a message
- * 
+ *
  * @uses $vars['entity']   Message
  * @uses $vars['threaded'] Threaded message display
  */
@@ -19,27 +19,24 @@ $title = elgg_view('object/messages/elements/subject', $vars);
 if (!$title) {
 	$title = elgg_view('object/messages/elements/participants', $vars);
 }
+
 $subtitle = [];
 $subtitle[] = elgg_view('object/messages/elements/byline', $vars);
 $subtitle[] = elgg_view('object/messages/elements/time', $vars);
 
-if (elgg_is_active_plugin('hypeUI')) {
-	$metadata = null;
-} else {
-	$metadata = elgg_view('object/messages/elements/menu', $vars);
-}
+$metadata = elgg_view('object/messages/elements/menu', $vars);
 $content .= elgg_view('object/messages/elements/body', $vars);
 $content .= elgg_view('object/messages/elements/attachments', $vars);
 $content .= elgg_view('object/messages/elements/embeds', $vars);
 
-$summary = elgg_view('object/elements/summary', array(
+$summary = elgg_view('object/elements/summary', [
 	'entity' => $entity,
-	'title' => $title ? : false,
+	'title' => $title ?: false,
 	'subtitle' => implode(' ', $subtitle),
 	'metadata' => $metadata,
 	'content' => $content,
 	'icon' => $icon,
-));
+]);
 
 $checkbox = '';
 if (elgg_in_context('inbox-form') || elgg_in_context('sent-form')) {
@@ -53,23 +50,22 @@ $summary = elgg_format_element('div', ['class' => 'inbox-message-content'], $sum
 
 $body = $checkbox . $summary;
 
-$attrs = elgg_format_attributes(array(
-	'data-href' => ($full) ? false : $entity->getURL(),
-	'data-guid' => $entity->guid,
-	'class' => implode(' ', array_filter(array(
-		elgg_extract('class', $vars, null),
-		'inbox-message',
-		($entity->isRead($threaded)) ? 'inbox-message-read' : 'inbox-message-unread',
-		($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
-		(elgg_in_context('inbox-form') || elgg_in_context('sent-form')) ? 'inbox-message-form-row' : '',
-	))),
-));
+$data_href = ($full) ? '' : htmlspecialchars($entity->getURL(), ENT_QUOTES);
+$data_guid = (int) $entity->guid;
+$class = htmlspecialchars(implode(' ', array_filter([
+	elgg_extract('class', $vars, null),
+	'inbox-message',
+	($entity->isRead($threaded)) ? 'inbox-message-read' : 'inbox-message-unread',
+	($threaded) ? 'inbox-message-threaded' : 'inbox-message-full',
+	(elgg_in_context('inbox-form') || elgg_in_context('sent-form')) ? 'inbox-message-form-row' : '',
+])), ENT_QUOTES);
+$attrs = ($data_href ? "data-href=\"{$data_href}\" " : '') . "data-guid=\"{$data_guid}\" class=\"{$class}\"";
 
-echo "<article $attrs>$body</article>";
+echo "<article {$attrs}>{$body}</article>";
 
 if ($full && !$entity->isRead()) {
 	$entity->markRead();
-	echo elgg_view('notifier/view_listener', array(
+	echo elgg_view('notifier/view_listener', [
 		'entity' => $entity,
-	));
+	]);
 }

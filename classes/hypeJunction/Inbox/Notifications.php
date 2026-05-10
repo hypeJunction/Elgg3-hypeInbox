@@ -2,19 +2,23 @@
 
 namespace hypeJunction\Inbox;
 
+use Elgg\Event;
+
+/**
+ * Notifications class.
+ */
 class Notifications {
 
 	/**
-	 * Register custom template
+	 * registerCustomTemplates.
 	 *
-	 * @param string $hook   "get_templates"
-	 * @param string $type   "notifications"
-	 * @param string $return Template names
-	 * @param array  $params Hook params
-	 * @return array
+	 * @param Event $event event
+	 *
+	 * @return mixed
 	 */
-	public static function registerCustomTemplates($hook, $type, $return, $params) {
-		$return[] = "messages_send";
+	public static function registerCustomTemplates(Event $event) {
+		$return = $event->getValue();
+		$return[] = 'messages_send';
 		return $return;
 	}
 }

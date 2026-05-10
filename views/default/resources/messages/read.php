@@ -6,32 +6,38 @@ elgg_entity_gatekeeper($guid, 'object', 'messages');
 
 $message = get_entity($guid);
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $message_type = $message->msgType;
 $subject = $message->getDisplayName();
 
-elgg_push_breadcrumb(
-	elgg_echo('inbox'),
-	elgg_generate_url('collection:object:messages:owner', [
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_1',
+	'text' => elgg_echo('inbox'),
+	'href' => elgg_generate_url('collection:object:messages:owner', [
 		'type' => 'inbox',
 		'username' => $page_owner->username,
-	])
-);
+	]),
+]));
 
-elgg_push_breadcrumb(
-	elgg_echo('inbox:message_type', [
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_2',
+	'text' => elgg_echo('inbox:message_type', [
 		elgg_echo("item:object:message:$message_type:plural")
 	]),
-	elgg_generate_url('collection:object:messages:owner', [
+	'href' => elgg_generate_url('collection:object:messages:owner', [
 		'type' => 'inbox',
 		'username' => $page_owner->username,
 		'message_type' => $message_type,
-	])
-);
+	]),
+]));
 
 
-elgg_push_breadcrumb(elgg_get_excerpt($subject, 50));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_3',
+	'text' => elgg_get_excerpt($subject, 50),
+	'href' => false,
+]));
 
 $params = [
 	'entity' => $message,

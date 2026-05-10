@@ -3,6 +3,18 @@
 return [
 	'bootstrap' => \hypeJunction\Inbox\Bootstrap::class,
 
+	'plugin' => [
+		'dependencies' => [
+			'hypelists' => [
+				'position' => 'after',
+			],
+		],
+	],
+
+	'upgrades' => [
+		\hypeJunction\Inbox\Upgrades\MigrateSettingsToJson::class,
+	],
+
 	'entities' => [
 		[
 			'type' => 'object',

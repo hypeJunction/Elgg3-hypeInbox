@@ -10,4 +10,7 @@ robots.txt
 /mod/
 composer.lock
 Gemfile.lock
-coverage.clover
+coverage.clovertests/.phpunit.result.cache
+docker/.env
+tests/vitest/node_modules/
+tests/deps.local.txt

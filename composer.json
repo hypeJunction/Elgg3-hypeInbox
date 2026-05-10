@@ -1,30 +1,42 @@
 {
-	"name": "hypejunction/hypeinbox",
-	"version": "8.0.2",
-	"type": "elgg-plugin",
-	"description": "Enhanced messaging capabilities",
-	"homepage": "http://hypejunction.com",
-	"keywords": [
-		"elgg", "plugin", "inbox", "messages"
-	],
-	"license": "GPL-2.0",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
-		}
-	],
-	"extra": {
-		"installer-name": "hypeInbox"
-	},
-	"require": {
-		"composer/installers": "~1.0",
-		"hypejunction/acl_builder_api": "*"
-	},
-	"autoload": {
-		"psr-0": {
-			"": "classes/"
-		}
-	}
+    "name": "hypejunction/hypeinbox",
+    "version": "11.0.0",
+    "type": "elgg-plugin",
+    "description": "Enhanced messaging for Elgg — multiple inboxes, message threading, and real-time updates.",
+    "homepage": "https://github.com/hypeJunction/Elgg3-hypeInbox",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "inbox",
+        "messages"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "ismayil.khayredinov@gmail.com"
+        }
+    ],
+    "extra": {
+        "installer-name": "hypeinbox",
+        "elgg-plugin": {
+            "id": "hypeinbox"
+        }
+    },
+    "require": {
+        "composer/installers": "^2.0",
+        "php": ">=8.3",
+        "ext-intl": "*",
+        "elgg/elgg": "~7.0.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "classes/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
 }
-

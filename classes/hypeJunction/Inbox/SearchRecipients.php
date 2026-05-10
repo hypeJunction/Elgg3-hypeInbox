@@ -8,9 +8,11 @@ use Elgg\Http\ResponseBuilder;
 use Elgg\Exceptions\HttpException;
 use Elgg\Request;
 use ElggEntity;
-use hypeJunction\Ajax\Context;
 use Psr\Log\LogLevel;
 
+/**
+ * SearchRecipients class.
+ */
 class SearchRecipients {
 
 	/**
@@ -23,9 +25,7 @@ class SearchRecipients {
 	 * @throws HttpException
 	 */
 	public function __invoke(Request $request) {
-		if (elgg_is_xhr()) {
-			Context::restore($request);
-		} else {
+		if (!elgg_is_xhr()) {
 			elgg_signed_request_gatekeeper();
 		}
 

@@ -16,6 +16,7 @@ if ($sender->guid == elgg_get_logged_in_user_guid()) {
 			if (isset($participants[$user->guid]) || $user->guid == $sender->guid) {
 				continue;
 			}
+
 			$participants[$user->guid] = elgg_format_element('span', [
 				'class' => 'inbox-message-participant',
 			], ($logged_in->guid == $user->guid) ? elgg_echo('inbox:me') : $user->name);
@@ -23,7 +24,7 @@ if ($sender->guid == elgg_get_logged_in_user_guid()) {
 	}
 
 	if ($count > 5) {
-		$participants[] = elgg_echo('inbox:recipients:others', array($count));
+		$participants[] = elgg_echo('inbox:recipients:others', [$count]);
 	}
 
 	$to = implode(', ', array_filter($participants));

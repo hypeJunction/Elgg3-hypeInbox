@@ -5,57 +5,61 @@ namespace hypeJunction\Inbox;
 use ElggUser;
 use stdClass;
 
+/**
+ * Policy class.
+ */
 class Policy {
 
-	private $dbprefix;
+	/** @var mixed */
+    private $dbprefix;
 
 	/**
 	 * Config object
-	 * @var Config 
+	 * @var Config
 	 */
 	protected $config;
 
 	/**
 	 * Sender definition
-	 * @var stdClass 
+	 * @var stdClass
 	 */
 	protected $sender;
 
 	/**
 	 * Recipient definition
-	 * @var stdClass 
+	 * @var stdClass
 	 */
 	protected $recipient;
 	
 	/**
 	 * Relationship name that exists between sender and recipient
-	 * @var string 
+	 * @var string
 	 */
 	protected $relationship;
 	
 	/**
 	 * Is relationship between sender and recipient inverse
-	 * @var bool 
+	 * @var bool
 	 */
 	protected $inverse_relationship;
 	
 	/**
 	 * Relationship name that must exist between sender and recipient and a shared group
-	 * @var string 
+	 * @var string
 	 */
 	protected $group_relationship;
 	
 	/**
 	 * Iterate table aliases
-	 * @var int 
+	 * @var int
 	 */
-	static $iterator;
+	protected static $iterator;
 
 	/**
 	 * Constructor
 	 * @param array $policy An array of policy clauses
 	 */
-	public function __construct(array $policy = array()) {
+	public function __construct(array $policy = []) {
 		$this->dbprefix = elgg_get_config('dbprefix');
 
 		$policy = $this->normalizePolicy($policy);
@@ -68,27 +72,27 @@ class Policy {
 
 	/**
 	 * Normalize policy clauses
-	 * 
+	 *
 	 * @param array $policy Policy clauses
 	 * @return array
 	 */
-	public function normalizePolicy(array $policy = array()) {
+	public function normalizePolicy(array $policy = []) {
 
-		$defaults = array(
+		$defaults = [
 			'sender' => 'all',
 			'recipient' => 'all',
 			'relationship' => false,
 			'inverse_relationship' => false,
 			'group_relationship' => false,
-		);
+		];
 
 		return array_merge($defaults, $policy);
 	}
 
 	/**
 	 * Sets sender type and callbacks
-	 * 
-	 * @param string $type
+	 *
+	 * @param string $type Sender user type
 	 * @return Policy
 	 */
 	public function setSenderType($type) {
@@ -112,7 +116,7 @@ class Policy {
 
 	/**
 	 * Validate that user is of type defined as sender
-	 * 
+	 *
 	 * @param ElggUser $user Sender
 	 * @return bool
 	 */
@@ -132,8 +136,8 @@ class Policy {
 
 	/**
 	 * Sets recipient type and callbacks
-	 * 
-	 * @param string $type
+	 *
+	 * @param string $type Recipient user type
 	 * @return Policy
 	 */
 	public function setRecipientType($type) {
@@ -157,7 +161,7 @@ class Policy {
 
 	/**
 	 * Validate that user is of type defined as recipient
-	 * 
+	 *
 	 * @param ElggUser $user Recipient
 	 * @return bool
 	 */
@@ -180,10 +184,10 @@ class Policy {
 	 * @return array
 	 */
 	public function getRecipientClauses() {
-		$clauses = array(
+		$clauses = [
 			'join' => '',
 			'where' => '',
-		);
+		];
 
 		if ($this->getRecipientType() == 'all') {
 			return $clauses;
@@ -202,6 +206,7 @@ class Policy {
 				$clauses['join'] = $options['joins'];
 			}
 		}
+
 		if (isset($options['wheres'])) {
 			if (is_array($options['wheres'])) {
 				$clauses['where'] = implode(' AND ', $options['wheres']);
@@ -209,23 +214,24 @@ class Policy {
 				$clauses['where'] = $options['wheres'];
 			}
 		}
+
 		return $clauses;
 	}
 
 	/**
 	 * Returns relationships clauses to validate the relationship to the sender
-	 * 
+	 *
 	 * @param ElggUser $sender Sender
 	 * @return array
 	 */
 	public function getRelationshipClauses(ElggUser $sender) {
 
-		$alias = "rel" . self::$iterator++;
+		$alias = 'rel' . self::$iterator++;
 
-		$clauses = array(
+		$clauses = [
 			'join' => '',
 			'where' => '',
-		);
+		];
 		if (!$this->relationship || $this->relationship == 'all') {
 			return $clauses;
 		}
@@ -245,18 +251,18 @@ class Policy {
 
 	/**
 	 * Returns relationships clauses to validate the relationship to the recipient via group
-	 * 
+	 *
 	 * @param ElggUser $sender Sender
 	 * @return array
 	 */
 	public function getGroupRelationshipClauses(ElggUser $sender) {
 
-		$alias = "gerel" . self::$iterator++;
+		$alias = 'gerel' . self::$iterator++;
 
-		$clauses = array(
+		$clauses = [
 			'join' => '',
 			'where' => '',
-		);
+		];
 		if (!$this->group_relationship || $this->group_relationship == 'all') {
 			return $clauses;
 		}
@@ -270,5 +276,4 @@ class Policy {
 
 		return $clauses;
 	}
-
 }

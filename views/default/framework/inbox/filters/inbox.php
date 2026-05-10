@@ -34,7 +34,7 @@ $outtypes = hypeInbox()->model->getOutgoingMessageTypes($user);
 if ($outtypes) {
 	foreach ($outtypes as $type) {
 		$out = elgg_echo("item:object:message:$type:plural");
-		$text = elgg_echo('inbox:message_type:sent', array($out));
+		$text = elgg_echo('inbox:message_type:sent', [$out]);
 
 		$tabs["sent-$type"] = [
 			'text' => $text,

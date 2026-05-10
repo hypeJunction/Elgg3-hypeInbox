@@ -10,7 +10,8 @@ if (!is_array($guids) || empty($guids)) {
 }
 
 $count = count($guids);
-$success = $notfound = 0;
+$success = 0;
+$notfound = 0;
 
 foreach ($guids as $guid) {
 	$message = get_entity($guid);
@@ -18,6 +19,7 @@ foreach ($guids as $guid) {
 		$notfound++;
 		continue;
 	}
+
 	$message->markRead($threaded);
 	$success++;
 }

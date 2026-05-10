@@ -2,18 +2,33 @@
 
 namespace hypeJunction\Inbox;
 
+use Elgg\Event;
+
+/**
+ * Config class.
+ */
 class Config {
 
-	private $messageTypes;
-	private $userTypes;
-	private $userRelationships;
-	private $userGroupRelationships;
+	/** @var mixed */
+    private $messageTypes;
+
+	/** @var mixed */
+    private $userTypes;
+
+	/** @var mixed */
+    private $userRelationships;
+
+	/** @var mixed */
+    private $userGroupRelationships;
 
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
 
-	private $plugin;
-	private $settings;
+	/** @var mixed */
+    private $plugin;
+
+	/** @var mixed */
+    private $settings;
 
 	/**
 	 * Constructor
@@ -41,13 +56,15 @@ class Config {
 		if (!isset($this->settings)) {
 			$this->settings = array_merge($this->getDefaults(), $this->plugin->getAllSettings());
 		}
+
 		return $this->settings;
 	}
 
 	/**
 	 * Returns a plugin setting
 	 *
-	 * @param string $name Setting name
+	 * @param string $name    Setting name
+	 * @param mixed  $default Default value
 	 * @return mixed
 	 */
 	public function get($name, $default = null) {
@@ -74,10 +91,10 @@ class Config {
 	 * {@inheritdoc}
 	 */
 	public function getDefaults() {
-		return array(
+		return [
 			'dbprefix' => elgg_get_config('dbprefix'),
 			'pagehandler_id' => 'messages',
-		);
+		];
 	}
 
 	/**
@@ -87,7 +104,7 @@ class Config {
 	public function setLegacyConfig() {
 
 		// legacy definitions
-		define('HYPEINBOX', 'hypeInbox');
+		define('HYPEINBOX', 'hypeinbox');
 		define('HYPEINBOX_NOTIFICATION', self::TYPE_NOTIFICATION);
 		define('HYPEINBOX_PRIVATE', self::TYPE_PRIVATE);
 	}
@@ -103,10 +120,10 @@ class Config {
 		// Register label translations for custom message types
 		foreach ($message_types as $type => $options) {
 			$ruleset = $this->getRuleset($type);
-			add_translation('en', array(
+			add_translation('en', [
 				$ruleset->getSingularLabel(false) => $ruleset->getSingularLabel('en'),
 				$ruleset->getPluralLabel(false) => $ruleset->getPluralLabel('en')
-			));
+			]);
 		}
 	}
 
@@ -120,47 +137,50 @@ class Config {
 			$message_types = $this->getSetting('message_types');
 			$this->messageTypes = array_merge($default_message_types, $message_types);
 		}
+
 		return $this->messageTypes;
 	}
 
 	/**
 	 * Returns a set of rules for a given message type
-	 * 
+	 *
 	 * @param string $message_type Message type
 	 * @return Ruleset
 	 */
 	public function getRuleset($message_type = '') {
-		$ruleset = array();
+		$ruleset = [];
 		$types = $this->getMessageTypes();
 		if (isset($types[$message_type])) {
 			$ruleset = $types[$message_type];
 		}
+
 		return new Ruleset($message_type, $ruleset);
 	}
 
 	/**
 	 * Filters an array of configured sender and recipient types
 	 * These will be used when applying message type rules
-	 * - 'validation' callback function will be used to identify whether or not a user belongs to that user type group 
+	 * - 'validation' callback function will be used to identify whether or not a user belongs to that user type group
 	 *    (user entity will be passed to this callback function)
 	 * - 'getter' callback function will be used to populate tokeninput options
-	 * 
+	 *
 	 * Use 'config:user_types','framework:inbox' plugin hook to extend this array
 	 * Callbacks should only return an array with 'joins' and 'wheres'. User table will be joined automatically with 'ue' prefix
 	 * @return array
 	 */
 	public function getUserTypes() {
 		if (!isset($this->userTypes)) {
-			$config = array(
-				'all' => array(),
-				'admin' => array(
-					'validator' => array(hypeInbox()->model, 'isAdminUser'),
-					'getter' => array(hypeInbox()->model, 'getAdminQueryOptions'),
-				),
-			);
+			$config = [
+				'all' => [],
+				'admin' => [
+					'validator' => [hypeInbox()->model, 'isAdminUser'],
+					'getter' => [hypeInbox()->model, 'getAdminQueryOptions'],
+				],
+			];
 
-			$this->userTypes = elgg_trigger_plugin_hook('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', null, $config);
 		}
+
 		return $this->userTypes;
 	}
 
@@ -171,7 +191,7 @@ class Config {
 	public function getUserRelationships() {
 
 		if (!isset($this->userRelationships)) {
-			$relationships = array();
+			$relationships = [];
 
 			$query = "SELECT DISTINCT(er.relationship)
 				FROM {$this->dbprefix}entity_relationships er
@@ -186,6 +206,7 @@ class Config {
 
 			$this->userRelationships = $relationships;
 		}
+
 		return $this->userRelationships;
 	}
 
@@ -196,7 +217,7 @@ class Config {
 	public function getUserGroupRelationships() {
 
 		if (!isset($this->userGroupRelationships)) {
-			$relationships = array();
+			$relationships = [];
 
 			$query = "SELECT DISTINCT(er.relationship)
 				FROM {$this->dbprefix}entity_relationships er
@@ -211,56 +232,48 @@ class Config {
 
 			$this->userGroupRelationships = $relationships;
 		}
+
 		return $this->userGroupRelationships;
 	}
 
 	/**
 	 * Returns an unserialize plugin setting value
-	 * 
+	 *
 	 * @param string $name Plugin setting name
 	 * @return array
 	 */
 	public function getSetting($name = '') {
 		$value = $this->$name;
-		return (is_string($value)) ? unserialize($value) : array();
+		if (!is_string($value)) {
+			return [];
+		}
+
+		$decoded = json_decode($value, true);
+		if (json_last_error() === JSON_ERROR_NONE) {
+			return (array) $decoded;
+		}
+
+		// Legacy: stored as serialize() before 5.x migration — safe because
+		// allowed_classes=false prevents PHP object injection.
+		return (array) unserialize($value, ['allowed_classes' => false]);
 	}
 
 	/**
 	 * Add third party user types/roles to the config array
 	 *
-	 * @param string $hook   "config:user_types"
-	 * @param string $type   "framework:inbox"
-	 * @param array  $return User types config array
-	 * @param array  $params Hook params
+	 * @param Event $event Event
 	 * @return array
 	 */
-	public static function filterUserTypes($hook, $type, $return, $params) {
-
-		if (elgg_is_active_plugin('hypeApprove')) {
-			$return['editor'] = array(
-				'validator' => array(hypeInbox()->model, 'hasRole'),
-				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
-			);
-			$return['supervisor'] = array(
-				'validator' => array(hypeInbox()->model, 'hasRole'),
-				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
-			);
-		}
-
-		if (elgg_is_active_plugin('hypeObserver')) {
-			$return['observer'] = array(
-				'validator' => array(hypeInbox()->model, 'hasRole'),
-				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
-			);
-		}
+	public static function filterUserTypes(Event $event) {
+		$return = $event->getValue();
 
 		if (elgg_is_active_plugin('roles')) {
 			$roles = roles_get_all_selectable_roles();
 			foreach ($roles as $role) {
-				$return[$role->name] = array(
-					'validator' => array(hypeInbox()->model, 'hasRole'),
-					'getter' => array(hypeInbox()->model, 'getRoleTestQuery'),
-				);
+				$return[$role->name] = [
+					'validator' => [hypeInbox()->model, 'hasRole'],
+					'getter' => [hypeInbox()->model, 'getRoleTestQuery'],
+				];
 			}
 		}
 

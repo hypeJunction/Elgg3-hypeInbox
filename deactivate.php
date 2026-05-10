@@ -2,7 +2,7 @@
 
 use hypeJunction\Inbox\Message;
 
-$subtypes = array(Message::SUBTYPE);
+$subtypes = [Message::SUBTYPE];
 
 foreach ($subtypes as $subtype) {
 	update_subtype('object', $subtype);

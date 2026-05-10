@@ -1,13 +1,13 @@
 <?php
 
-use hypeJunction\Access\EntitySet;
+use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Message;
 
 $original_msg_guid = get_input('original_guid');
 $original_message = get_entity($original_msg_guid);
 
 $sender_guid = elgg_get_logged_in_user_guid();
-$recipient_guids = EntitySet::create(get_input('recipients', []))->guids();
+$recipient_guids = Group::create(get_input('recipients', []))->guids();
 
 $subject = htmlspecialchars(get_input('subject', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
@@ -22,7 +22,7 @@ if (empty(elgg_strip_tags($body))) {
 	forward(REFERRER);
 }
 
-$enable_html = elgg_get_plugin_setting('enable_html', 'hypeInbox');
+$enable_html = elgg_get_plugin_from_id('hypeinbox')->getSetting('enable_html');
 if (!$enable_html) {
 	$body = elgg_strip_tags($body);
 }
@@ -34,14 +34,14 @@ if ($original_message instanceof Message) {
 	$message_type = $original_message->getMessageType();
 }
 
-$message = Message::factory(array(
+$message = Message::factory([
 	'sender' => $sender_guid,
 	'recipients' => $recipient_guids,
 	'subject' => $subject,
 	'body' => $body,
 	'hash' => $message_hash,
 	'message_type' => $message_type,
-));
+]);
 
 $guid = $message->send();
 
@@ -67,27 +67,27 @@ foreach ($recipients as $recipient) {
 
 	$type_label = strtolower($ruleset->getSingularLabel($recipient->language));
 
-	$subject = elgg_echo('inbox:notification:subject', array($type_label), $recipient->language);
-	$notification = elgg_echo('inbox:notification:body', array(
+	$subject = elgg_echo('inbox:notification:subject', [$type_label], $recipient->language);
+	$notification = elgg_echo('inbox:notification:body', [
 		$type_label,
 		$sender->name,
 		$body,
-		elgg_view('output/url', array(
+		elgg_view('output/url', [
 			'href' => $new_message->getURL(),
-		)),
+		]),
 		$sender->name,
-		elgg_view('output/url', array(
+		elgg_view('output/url', [
 			'href' => elgg_normalize_url("messages/thread/$message_hash#reply")
-		)),
-	), $recipient->language);
+		]),
+	], $recipient->language);
 	
-	notify_user($recipient->guid, $sender->guid, $subject, $notification, array(
+	notify_user($recipient->guid, $sender->guid, $subject, $notification, [
 		'attachments' => $attachments,
 		'template' => 'messages_send',
 		'action' => 'send',
 		'object' => $new_message,
 		'recipients' => $recipients,
-	));
+	]);
 }
 
 system_message(elgg_echo('inbox:send:success'));

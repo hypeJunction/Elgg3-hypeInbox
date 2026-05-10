@@ -2,11 +2,14 @@
 
 namespace hypeJunction\Inbox;
 
+/**
+ * Ruleset class.
+ */
 class Ruleset {
 
 	/**
 	 * Message type this ruleset applies to
-	 * @var string 
+	 * @var string
 	 */
 	protected $message_type;
 
@@ -14,7 +17,7 @@ class Ruleset {
 	 * An array of policies
 	 * @var Policy[]
 	 */
-	protected $policies = array();
+	protected $policies = [];
 
 	/**
 	 * An array of English labels
@@ -30,29 +33,29 @@ class Ruleset {
 
 	/**
 	 * Flag to disable delete
-	 * @var bool 
+	 * @var bool
 	 */
 	protected $persistent;
 
 	/**
 	 * Flag to allow attachments
-	 * @var bool 
+	 * @var bool
 	 */
 	protected $attachments;
 
 	/**
 	 * Flag to disable subject line
-	 * @var type 
+	 * @var type
 	 */
 	protected $no_subject;
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $mesage_type Message type this set applies to
-	 * @param array  $ruleset     A set of rules
+	 * @param string $message_type Message type this set applies to
+	 * @param array  $ruleset      A set of rules
 	 */
-	public function __construct($message_type, array $ruleset = array()) {
+	public function __construct($message_type, array $ruleset = []) {
 
 		$ruleset = $this->normalizeRuleset($ruleset);
 		$this->message_type = $message_type;
@@ -66,32 +69,33 @@ class Ruleset {
 
 	/**
 	 * Normalizes rule set
-	 * 
+	 *
 	 * @param array $ruleset A set of rules
 	 * @return array
 	 */
-	public function normalizeRuleset(array $ruleset = array()) {
-		$defaults = array(
-			'policy' => array(),
-			'labels' => array(),
+	public function normalizeRuleset(array $ruleset = []) {
+		$defaults = [
+			'policy' => [],
+			'labels' => [],
 			'multiple' => false,
 			'persistent' => false,
 			'attachments' => false,
 			'no_subject' => false,
-		);
+		];
 		return array_merge($defaults, $ruleset);
 	}
 
 	/**
 	 * Constructs policy objects from arrays
-	 * 
+	 *
 	 * @param array $policies An array of policy clauses
 	 * @return Ruleset
 	 */
-	public function setPolicies(array $policies = array()) {
+	public function setPolicies(array $policies = []) {
 		foreach ($policies as $policy) {
 			$this->policies[] = new Policy($policy);
 		}
+
 		return $this;
 	}
 	
@@ -146,8 +150,9 @@ class Ruleset {
 		if ($language == 'en') {
 			return $this->labels['singular'];
 		} else if ($language) {
-			return elgg_echo($key, array(), $language);
+			return elgg_echo($key, [], $language);
 		}
+
 		return $key;
 	}
 	
@@ -162,8 +167,9 @@ class Ruleset {
 		if ($language == 'en') {
 			return $this->labels['plural'];
 		} else if ($language) {
-			return elgg_echo($key, array(), $language);
+			return elgg_echo($key, [], $language);
 		}
+
 		return $key;
 	}
 }

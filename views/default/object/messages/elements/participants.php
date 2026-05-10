@@ -11,13 +11,13 @@ if ($full) {
 
 $sender = $entity->getSender();
 if ($sender->guid == $logged_in->guid) {
-	$participants[$sender->guid] = elgg_format_element('span', array(
+	$participants[$sender->guid] = elgg_format_element('span', [
 		'class' => 'inbox-message-sender',
-	), elgg_echo('inbox:me'));
+	], elgg_echo('inbox:me'));
 } else {
-	$participants[$sender->guid] = elgg_format_element('span', array(
+	$participants[$sender->guid] = elgg_format_element('span', [
 		'class' => 'inbox-message-sender',
-	), $sender->name);
+	], $sender->name);
 }
 
 $recipients = $entity->getRecipients();
@@ -28,6 +28,7 @@ if ($count <= 5) {
 		if (isset($participants[$user->guid])) {
 			continue;
 		}
+
 		$participants[$user->guid] = elgg_format_element('span', [
 			'class' => 'inbox-message-participant',
 		], ($logged_in->guid == $user->guid) ? elgg_echo('inbox:me') : $user->name);
@@ -35,7 +36,7 @@ if ($count <= 5) {
 }
 
 if ($count > 5) {
-	$participants[] = elgg_echo('inbox:recipients:others', array($count));
+	$participants[] = elgg_echo('inbox:recipients:others', [$count]);
 }
 
 echo implode(', ', array_filter($participants));

@@ -13,8 +13,8 @@ if ($threaded) {
 }
 
 if ($count) {
-	echo elgg_format_element('span', array(
+	echo elgg_format_element('span', [
 		'class' => 'inbox-message-count-indicator',
-		'title' => elgg_echo('inbox:thread:count', array($count))
-			), $count);
+		'title' => elgg_echo('inbox:thread:count', [$count])
+	], $count);
 }

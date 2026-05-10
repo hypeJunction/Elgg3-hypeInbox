@@ -6,8 +6,8 @@ $entity = elgg_extract('entity', $vars);
 
 $sender = $entity->getSender();
 
-echo elgg_view_entity_icon($sender, $size, array(
+echo elgg_view_entity_icon($sender, $size, [
 	'use_hover' => elgg_extract('full_view', $vars, false),
 	'use_link' => false,
 	'href' => false,
-));
+]);

@@ -55,10 +55,10 @@ class HookHandlers {
 	/**
 	 * Message entity menu setup
 	 *
-	 * @param string $hook "register"
-	 * @param string $type "menu:entity"
-	 * @param array $return An array of menu items
-	 * @param array $params An array of additional parameters
+	 * @param string $hook   "register"
+	 * @param string $type   "menu:entity"
+	 * @param array  $return An array of menu items
+	 * @param array  $params An array of additional parameters
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -69,10 +69,10 @@ class HookHandlers {
 	/**
 	 * Inbox controls setup
 	 *
-	 * @param string $hook "register"
-	 * @param string $type "menu:inbox"
-	 * @param array $return An array of menu items
-	 * @param array $params An array of additional parameters
+	 * @param string $hook   "register"
+	 * @param string $type   "menu:inbox"
+	 * @param array  $return An array of menu items
+	 * @param array  $params An array of additional parameters
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -83,10 +83,10 @@ class HookHandlers {
 	/**
 	 * Thread controls setup
 	 *
-	 * @param string $hook "register"
-	 * @param string $type "menu:inbox:thread"
-	 * @param array $return An array of menu items
-	 * @param array $params An array of additional parameters
+	 * @param string $hook   "register"
+	 * @param string $type   "menu:inbox:thread"
+	 * @param array  $return An array of menu items
+	 * @param array  $params An array of additional parameters
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -99,8 +99,8 @@ class HookHandlers {
 	 *
 	 * @param string         $hook   "register"
 	 * @param string         $type   "menu:topbar"
-	 * @param ElggMenuItem[] $return  Menu
-	 * @param array          $params  Hook params
+	 * @param ElggMenuItem[] $return Menu
+	 * @param array          $params Hook params
 	 * @return ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
@@ -136,6 +136,13 @@ class HookHandlers {
 	}
 
 	/**
+	 * Get graph alias.
+	 *
+	 * @param string $hook   Hook name
+	 * @param string $type   Hook type
+	 * @param mixed  $return Return value
+	 * @param array  $params Hook params
+	 * @return mixed
 	 * @deprecated 6.0
 	 */
 	public function getGraphAlias($hook, $type, $return, $params) {
@@ -143,6 +150,13 @@ class HookHandlers {
 	}
 
 	/**
+	 * Get message properties.
+	 *
+	 * @param string $hook   Hook name
+	 * @param string $type   Hook type
+	 * @param mixed  $return Return value
+	 * @param array  $params Hook params
+	 * @return mixed
 	 * @deprecated 6.0
 	 */
 	public function getMessageProperties($hook, $type, $return, $params) {
@@ -176,5 +190,4 @@ class HookHandlers {
 	public function addCustomTemplate($hook, $type, $return, $params) {
 		return \hypeJunction\Inbox\Notifiations::registerCustomTemplates($hook, $type, $return, $params);
 	}
-
 }

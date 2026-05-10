@@ -6,15 +6,16 @@ if (!$page_owner || !$page_owner->canEdit()) {
 	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
 }
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
-elgg_push_breadcrumb(
-	elgg_echo('inbox'),
-	elgg_generate_url('collection:object:messages:owner', [
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_1',
+	'text' => elgg_echo('inbox'),
+	'href' => elgg_generate_url('collection:object:messages:owner', [
 		'type' => 'inbox',
 		'username' => $page_owner->username,
-	])
-);
+	]),
+]));
 
 $content = elgg_view('framework/inbox/search');
 

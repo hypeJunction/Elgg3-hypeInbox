@@ -7,15 +7,23 @@ if (!$page_owner || !$page_owner->canEdit()) {
 	forward('', '404');
 }
 
-elgg_require_js('framework/inbox/user');
+elgg_import_esm('framework/inbox/user');
 
 $message_type = get_input('message_type', Message::TYPE_PRIVATE);
 
 $type_label = elgg_echo("item:object:message:$message_type:plural");
 $type_url = "messages/sent/$page_owner->username?message_type=$message_type";
 
-elgg_push_breadcrumb(elgg_echo('inbox'), "messages/inbox/$page_owner->username");
-elgg_push_breadcrumb(elgg_echo('inbox:message_type:sent', [$type_label]), $type_url);
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_1',
+	'text' => elgg_echo('inbox'),
+	'href' => "messages/inbox/$page_owner->username",
+]));
+elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
+	'name' => 'bc_2',
+	'text' => elgg_echo('inbox:message_type:sent', [$type_label]),
+	'href' => $type_url,
+]));
 
 $layout = elgg_view_layout('default', [
 	'title' => elgg_echo('inbox:sent'),

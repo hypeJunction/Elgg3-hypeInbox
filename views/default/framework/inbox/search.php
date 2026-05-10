@@ -1,6 +1,6 @@
 <?php
 
-$options = array(
+$options = [
 	'type' => 'object',
 	'subtype' => 'messages',
 	'order_by' => 'e.time_created desc',
@@ -15,7 +15,7 @@ $options = array(
 	'pagination' => elgg_extract('pagination', $vars),
 	'owner_guid' => (int) elgg_get_page_owner_guid(),
 	'threaded' => false,
-);
+];
 
 echo elgg_view('lists/objects', [
 	'show_filter' => false,

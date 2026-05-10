@@ -11,7 +11,8 @@ if (!is_array($guids) || empty($guids)) {
 }
 
 $count = count($guids);
-$success = $notfound = 0;
+$success = 0;
+$notfound = 0;
 
 foreach ($guids as $guid) {
 	$message = get_entity($guid);
@@ -19,14 +20,15 @@ foreach ($guids as $guid) {
 		$notfound++;
 		continue;
 	}
+
 	$message->markUnread($threaded);
 	$success++;
 }
 
 if ($count > 1) {
-	$msg[] = elgg_echo('inbox:markunread:success', array($success));
+	$msg[] = elgg_echo('inbox:markunread:success', [$success]);
 	if ($notfound > 0) {
-		$msg[] = elgg_echo('inbox:error:notfound', array($notfound));
+		$msg[] = elgg_echo('inbox:error:notfound', [$notfound]);
 	}
 } else if ($success) {
 	$msg[] = elgg_echo('inbox:markunread:success:single');

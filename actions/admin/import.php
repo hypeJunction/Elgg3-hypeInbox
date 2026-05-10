@@ -8,25 +8,24 @@ $offset = get_input('offset', 0);
 $ha = access_get_show_hidden_status();
 access_show_hidden_entities(true);
 
-$messages = array();
-$batch = hypeInbox()->model->getUnhashedMessages(array(
+$messages = [];
+$batch = hypeInbox()->model->getUnhashedMessages([
 	'limit' => $limit,
 	'offset' => $offset,
-		));
+]);
 
 foreach ($batch as $message) {
 	$messages[] = $message;
 }
 
 if (empty($messages)) {
-	print json_encode(array('complete' => true));
+	print json_encode(['complete' => true]);
 	forward(REFERER);
 }
 
 $site = elgg_get_site_entity();
 
 foreach ($messages as $msg) {
-
 	if (!$msg instanceof Message) {
 		continue;
 	}
@@ -42,9 +41,9 @@ foreach ($messages as $msg) {
 	}
 }
 
-print json_encode(array(
+print json_encode([
 	'offset' => $offset
-));
+]);
 
 access_show_hidden_entities($ha);
 

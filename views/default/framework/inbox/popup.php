@@ -8,17 +8,17 @@ if (!elgg_is_logged_in()) {
 	return;
 }
 
-elgg_require_js('framework/inbox/popup');
+elgg_import_esm('framework/inbox/popup');
 
 $list = elgg_format_element('div', [
 	'id' => 'inbox-messages'
-		]);
+]);
 
-$footer = elgg_view('output/url', array(
+$footer = elgg_view('output/url', [
 	'href' => elgg_normalize_url('messages/inbox'),
 	'text' => elgg_echo('inbox:inbox'),
 	'is_trusted' => true,
-		));
+]);
 
 $footer = elgg_format_element('div', ['class' => 'elgg-foot'], $footer);
 $body = $list . $footer;
@@ -26,4 +26,4 @@ $body = $list . $footer;
 echo elgg_format_element('div', [
 	'class' => 'elgg-module elgg-module-popup elgg-inbox-popup hidden',
 	'id' => 'inbox-popup'
-		], $body);
+], $body);

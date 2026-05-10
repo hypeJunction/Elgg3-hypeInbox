@@ -3,24 +3,24 @@
 namespace hypeJunction\Inbox;
 
 use ElggEntity;
+use Elgg\Event;
 use hypeJunction\Inbox\Message;
 
+/**
+ * Router class.
+ */
 class Router {
 
 	/**
-	 * Helper handler to correctly resolve page owners
+	 * resolvePageOwner.
 	 *
-	 * @see default_page_owner_handler()
+	 * @param Event $event event
 	 *
-	 * @param string $hook   "page_owner"
-	 * @param string $type   "system"
-	 * @param int    $return Page owner guid
-	 * @param array  $params Hook params
-	 * @return int|void
+	 * @return mixed
 	 */
-	public static function resolvePageOwner($hook, $type, $return, $params) {
+	public static function resolvePageOwner(Event $event) {
 
-		if ($return) {
+		if ($event->getValue()) {
 			return;
 		}
 
@@ -31,43 +31,44 @@ class Router {
 			return;
 		}
 
-		$page = array_shift($segments) ? : 'inbox';
+		$page = array_shift($segments) ?: 'inbox';
 
 		switch ($page) {
-
-			case 'read' :
-			case 'view' :
-			case 'reply' :
-			case 'compose' :
-			case 'add' :
+			case 'read':
+			case 'view':
+			case 'reply':
+			case 'compose':
+			case 'add':
 				$guid = array_shift($segments);
 				if (!$guid) {
 					return;
 				}
+
 				$entity = get_entity($guid);
 				if (!$entity) {
 					return;
 				}
+
 				$container = $entity->getContainerEntity();
 				if (!$container) {
 					return;
 				}
 				return $container->guid;
 
-			case 'inbox' :
-			case 'incoming' :
-			case 'outbox' :
-			case 'outgoing' :
-			case 'sent' :
-			case 'received' :
-			case 'compose' :
-			case 'search' :
+			case 'inbox':
+			case 'incoming':
+			case 'outbox':
+			case 'outgoing':
+			case 'sent':
+			case 'received':
+			case 'search':
 				$username = array_shift($segments);
 				if ($username) {
-					$user = get_user_by_username($username);
+					$user = elgg_get_user_by_username($username);
 				} else {
 					$user = elgg_get_logged_in_user_entity();
 				}
+
 				if (!$user) {
 					return;
 				}
@@ -76,41 +77,37 @@ class Router {
 	}
 
 	/**
-	 * Pretty URL for message objects
+	 * messageUrlHandler.
 	 *
-	 * @param string $hook   "entity:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
-	 * @return string Filtered URL
+	 * @param Event $event event
+	 *
+	 * @return mixed
 	 */
-	public static function messageUrlHandler($hook, $type, $return, $params) {
+	public static function messageUrlHandler(Event $event) {
 
-		$entity = elgg_extract('entity', $params);
+		$entity = $event->getParam('entity');
 
 		if (!$entity instanceof Message) {
-			return $return;
+			return $event->getValue();
 		}
 
 		return elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
 	}
 
 	/**
-	 * Replace message icon with a sender icon
+	 * messageIconUrlHandler.
 	 *
-	 * @param string $hook   "entity:icon:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
-	 * @return string Filtered URL
+	 * @param Event $event event
+	 *
+	 * @return mixed
 	 */
-	public static function messageIconUrlHandler($hook, $type, $return, $params) {
+	public static function messageIconUrlHandler(Event $event) {
 
-		$entity = elgg_extract('entity', $params);
-		$size = elgg_extract('size', $params);
+		$entity = $event->getParam('entity');
+		$size = $event->getParam('size');
 
 		if (!$entity instanceof Message) {
-			return $return;
+			return $event->getValue();
 		}
 
 		$sender = $entity->getSender();
@@ -120,41 +117,41 @@ class Router {
 	}
 
 	/**
-	 * Returns page handler ID
-	 * @return string
-	 * @deprecated 6.0
+	 * getPageHandlerId.
+	 *
+	 * @return mixed
 	 */
 	public function getPageHandlerId() {
 		return hypeInbox()->config->get('pagehandler_id', 'messages');
 	}
 
 	/**
-	 * Returns normalized message URL
-	 * 
-	 * @param Message $entity Message
-	 * @return string
-	 * @deprecated 6.0
+	 * getMessageURL.
+	 *
+	 * @param Message $entity entity
+	 *
+	 * @return mixed
 	 */
 	public function getMessageURL(Message $entity) {
 		$friendly = elgg_get_friendly_title($entity->getDisplayName());
-		return $this->normalize(array('read', $entity->guid, $friendly . "#elgg-object-{$entity->guid}"));
+		return $this->normalize(['read', $entity->guid, $friendly . "#elgg-object-{$entity->guid}"]);
 	}
 
 	/**
-	 * Prefixes the URL with the page handler ID and normalizes it
+	 * normalize.
 	 *
-	 * @param mixed $url   URL as string or array of segments
-	 * @param array $query Query params to add to the URL
-	 * @return string
-	 * @deprecated 6.0
+	 * @param mixed $url   url
+	 * @param mixed $query query
+	 *
+	 * @return mixed
 	 */
-	public function normalize($url = '', $query = array()) {
+	public function normalize($url = '', $query = []) {
 
 		if (is_array($url)) {
 			$url = implode('/', $url);
 		}
 
-		$url = implode('/', array($this->getPageHandlerId(), $url));
+		$url = implode('/', [$this->getPageHandlerId(), $url]);
 
 		if (!empty($query)) {
 			$url = elgg_http_add_url_query_elements($url, $query);
@@ -164,21 +161,20 @@ class Router {
 	}
 
 	/**
-	 * Get page owner from URL segments
-	 * Defaults to logged in user
+	 * getPageOwner.
 	 *
-	 * @param array $segments URL segments
-	 * @return ElggEntity
-	 * @deprecated 6.0
+	 * @param mixed $segments segments
+	 *
+	 * @return mixed
 	 */
-	public function getPageOwner($segments = array()) {
+	public function getPageOwner($segments = []) {
 
 		$owner = elgg_get_logged_in_user_entity();
 
 		if (is_array($segments)) {
 			foreach ($segments as $segment) {
-				$user = get_user_by_username($segment);
-				if (elgg_instanceof($user)) {
+				$user = elgg_get_user_by_username($segment);
+				if ($user instanceof \ElggUser) {
 					$owner = $user;
 					break;
 				}
@@ -187,5 +183,4 @@ class Router {
 
 		return $owner;
 	}
-
 }

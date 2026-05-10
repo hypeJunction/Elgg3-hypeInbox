@@ -22,18 +22,18 @@ $inbox->setOwner($user)
 		->setDirection(Inbox::DIRECTION_SENT);
 
 $count = $inbox->getCount();
-$messages = $inbox->getMessages(array(
+$messages = $inbox->getMessages([
 	'limit' => $limit,
 	'offset' => $offset,
-		));
+]);
 
-$params = array(
+$params = [
 	'items' => $messages,
 	'limit' => $limit,
 	'offset' => $offset,
 	'count' => $count,
 	'threaded' => false,
-);
+];
 
 elgg_push_context('sent-form');
 
@@ -45,7 +45,7 @@ echo elgg_view_module('aside', null, $body, [
 	'class' => 'inbox-module has-list',
 ]);
 
-echo elgg_view('input/submit', array(
+echo elgg_view('input/submit', [
 	'class' => 'hidden',
-));
+]);
 elgg_pop_context();
