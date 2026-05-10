@@ -3,7 +3,7 @@ hypeInbox
 
 Enhanced messaging for Elgg — multiple inboxes, message threading, and real-time updates.
 
-![Elgg 5.x](https://img.shields.io/badge/Elgg-5.x-orange.svg?style=flat-square)
+![Elgg 7.x](https://img.shields.io/badge/Elgg-7.x-orange.svg?style=flat-square)
 
 ## Features
 
@@ -54,3 +54,9 @@ If you would like to allow Group exchange between members of the same group, you
  * Relationship: --blank--
  * Inverse relationship: --blank--
  * Group relationship: member
+
+## Compatibility
+
+| Plugin version | Elgg version |
+|---|---|
+| current | 7.x |
