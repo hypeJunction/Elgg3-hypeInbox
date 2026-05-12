@@ -1,0 +1,3 @@
+# Local path overrides for deps.txt — gitignored.
+# format: <plugin-id> <path>  (absolute or relative to plugin root)
+hypelists ../hypelists
