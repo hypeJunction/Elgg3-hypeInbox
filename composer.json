@@ -1,37 +1,37 @@
 {
-	"name": "hypejunction/hypeinbox",
-	"version": "8.0.2",
-	"type": "elgg-plugin",
-	"description": "Enhanced messaging capabilities",
-	"homepage": "http://hypejunction.com",
-	"keywords": [
-		"elgg",
-		"plugin",
-		"inbox",
-		"messages"
-	],
-	"license": "GPL-2.0",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
-		}
-	],
-	"extra": {
-		"installer-name": "hypeInbox"
-	},
-	"require": {
-		"composer/installers": "^1.0 || ^2.0",
-		"php": ">=7.2",
-		"elgg/elgg": "^3.0",
-		"hypejunction/acl_builder_api": "*"
-	},
-	"autoload": {
-		"psr-0": {
-			"": "classes/"
-		}
-	},
-	"require-dev": {
-		"phpunit/phpunit": "^9.6"
-	}
+    "name": "hypejunction/hypeinbox",
+    "version": "3.0.0",
+    "type": "elgg-plugin",
+    "description": "Enhanced messaging capabilities",
+    "homepage": "http://hypejunction.com",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "inbox",
+        "messages"
+    ],
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "info@hypejunction.com"
+        }
+    ],
+    "extra": {
+        "installer-name": "hypeInbox"
+    },
+    "require": {
+        "composer/installers": "^1.0 || ^2.0",
+        "php": ">=7.2",
+        "elgg/elgg": "^3.0",
+        "hypejunction/acl_builder_api": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "classes/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    }
 }
