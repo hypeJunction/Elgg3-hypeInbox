@@ -18,7 +18,7 @@
         }
     ],
     "extra": {
-        "installer-name": "hypeInbox",
+        "installer-name": "hypeinbox",
         "elgg-plugin": {
             "id": "hypeinbox"
         }
