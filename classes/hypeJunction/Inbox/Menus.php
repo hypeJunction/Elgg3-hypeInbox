@@ -175,9 +175,9 @@ class Menus {
 							$valid = true;
 							if ($relationship && $relationship != 'all') {
 								if ($inverse_relationship) {
-									$valid = (get_entity($recipient->guid)?->hasRelationship($sender->guid, $relationship) ?? false);
+									$valid = (get_entity($recipient->guid)?->getRelationship($sender->guid, $relationship) ?? null);
 								} else {
-									$valid = (get_entity($sender->guid)?->hasRelationship($recipient->guid, $relationship) ?? false);
+									$valid = (get_entity($sender->guid)?->getRelationship($recipient->guid, $relationship) ?? null);
 								}
 							}
 
