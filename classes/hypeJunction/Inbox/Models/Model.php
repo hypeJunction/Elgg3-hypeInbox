@@ -307,7 +307,7 @@ class Model {
 
 		$table = "inb$INBOX_TABLE_ITERATOR";
 
-		$relationship = sanitize_string($relationship);
+		$relationship = (string) $relationship;
 
 		$dbprefix = elgg_get_config('dbprefix');
 		return [
