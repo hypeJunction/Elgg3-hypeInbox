@@ -178,7 +178,7 @@ class Config {
 				],
 			];
 
-			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', [], $config);
 		}
 
 		return $this->userTypes;
