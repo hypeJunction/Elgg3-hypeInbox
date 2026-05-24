@@ -11,6 +11,7 @@ var inbox = {
 		if (elgg.config.inboxAdmin) {
 			return;
 		}
+
 		$(document).on('click', '#inbox-admin-import', function (e) {
 			e.preventDefault();
 
@@ -42,6 +43,7 @@ var inbox = {
 			if (!confirm(echo('question:areyousure'))) {
 				return false;
 			}
+
 			$(this).closest('.inbox-policy').fadeOut().remove();
 		});
 

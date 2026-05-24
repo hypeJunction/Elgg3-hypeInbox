@@ -14,6 +14,7 @@ var popup = {
 		if (unread > 99) {
 			unread_str = '99+';
 		}
+
 		if (unread > 0) {
 			$('#inbox-new').text(unread_str).removeClass('hidden');
 			$('#inbox-popup-link .elgg-badge').text(unread_str);
