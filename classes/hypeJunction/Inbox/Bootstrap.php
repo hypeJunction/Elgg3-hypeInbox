@@ -89,7 +89,7 @@ class Bootstrap extends PluginBootstrap {
 		];
 
 		if (is_null(\elgg_get_plugin_setting('default_message_types', 'hypeinbox'))) {
-			\elgg_set_plugin_setting('default_message_types', serialize($message_types), 'hypeinbox');
+			\elgg_get_plugin_from_id('hypeinbox')->setSetting('default_message_types', serialize($message_types));
 		}
 	}
 
