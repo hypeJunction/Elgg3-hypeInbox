@@ -172,7 +172,8 @@ class Config {
 				],
 			];
 
-			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', null, $config);
+			// Elgg 5.x typed $params as array (not nullable); replace null with [].
+			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', [], $config);
 		}
 
 		return $this->userTypes;
