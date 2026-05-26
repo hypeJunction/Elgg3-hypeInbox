@@ -59,7 +59,7 @@ class Policy {
 	 * @param array $policy An array of policy clauses
 	 */
 	public function __construct(array $policy = []) {
-		$this->dbprefix = elgg_get_config('dbprefix');
+		$this->dbprefix = \elgg_get_config('dbprefix');
 
 		$policy = $this->normalizePolicy($policy);
 		$this->setSenderType($policy['sender']);
@@ -100,8 +100,8 @@ class Policy {
 
 		$this->sender = new stdClass();
 		$this->sender->type = $type;
-		$this->sender->validator = elgg_extract('validator', $usertypes[$type]);
-		$this->sender->getter = elgg_extract('getter', $usertypes[$type]);
+		$this->sender->validator = \elgg_extract('validator', $usertypes[$type]);
+		$this->sender->getter = \elgg_extract('getter', $usertypes[$type]);
 		return $this;
 	}
 
@@ -145,8 +145,8 @@ class Policy {
 
 		$this->recipient = new stdClass();
 		$this->recipient->type = $type;
-		$this->recipient->validator = elgg_extract('validator', $usertypes[$type]);
-		$this->recipient->getter = elgg_extract('getter', $usertypes[$type]);
+		$this->recipient->validator = \elgg_extract('validator', $usertypes[$type]);
+		$this->recipient->getter = \elgg_extract('getter', $usertypes[$type]);
 		return $this;
 	}
 

@@ -62,7 +62,7 @@ class Config {
 	 * @return mixed
 	 */
 	public function get($name, $default = null) {
-		return elgg_extract($name, $this->all(), $default);
+		return \elgg_extract($name, $this->all(), $default);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Config {
 	 */
 	public function getDefaults() {
 		return [
-			'dbprefix' => elgg_get_config('dbprefix'),
+			'dbprefix' => \elgg_get_config('dbprefix'),
 			'pagehandler_id' => 'messages',
 		];
 	}
@@ -172,7 +172,7 @@ class Config {
 				],
 			];
 
-			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', [], $config);
+			$this->userTypes = \elgg_trigger_event_results('config:user_types', 'framework:inbox', [], $config);
 		}
 
 		return $this->userTypes;
@@ -261,7 +261,7 @@ class Config {
 	public static function filterUserTypes(Event $event) {
 		$return = $event->getValue();
 
-		if (elgg_is_active_plugin('roles')) {
+		if (\elgg_is_active_plugin('roles')) {
 			$roles = roles_get_all_selectable_roles();
 			foreach ($roles as $role) {
 				$return[$role->name] = [

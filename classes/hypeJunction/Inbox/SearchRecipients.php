@@ -25,8 +25,8 @@ class SearchRecipients {
 	 * @throws HttpException
 	 */
 	public function __invoke(Request $request) {
-		if (!elgg_is_xhr()) {
-			elgg_signed_request_gatekeeper();
+		if (!\elgg_is_xhr()) {
+			\elgg_signed_request_gatekeeper();
 		}
 
 		$message_type = get_input('message_type', Message::TYPE_PRIVATE);
@@ -64,10 +64,10 @@ class SearchRecipients {
 			};
 		}
 
-		$entities = elgg_get_entities($options);
+		$entities = \elgg_get_entities($options);
 
 		if (empty($entities)) {
-			return elgg_ok_response(json_encode([]));
+			return \elgg_ok_response(json_encode([]));
 		}
 
 		$data = array_map(function(ElggEntity $e) {
@@ -78,6 +78,6 @@ class SearchRecipients {
 			];
 		}, $entities);
 
-		return elgg_ok_response(json_encode($data));
+		return \elgg_ok_response(json_encode($data));
 	}
 }

@@ -31,20 +31,20 @@ class BootstrapTest extends IntegrationTestCase {
 	// --- plugin lifecycle ---
 
 	public function testPluginIsRegistered() {
-		$plugin = elgg_get_plugin_from_id('hypeinbox');
+		$plugin = \elgg_get_plugin_from_id('hypeinbox');
 		$this->assertInstanceOf(\ElggPlugin::class, $plugin);
 	}
 
 	public function testPluginIsEnabled() {
-		$this->assertTrue(elgg_get_plugin_from_id('hypeinbox')->isEnabled());
+		$this->assertTrue(\elgg_get_plugin_from_id('hypeinbox')->isEnabled());
 	}
 
 	public function testPluginIsActive() {
-		$this->assertTrue(elgg_get_plugin_from_id('hypeinbox')->isActive());
+		$this->assertTrue(\elgg_get_plugin_from_id('hypeinbox')->isActive());
 	}
 
 	public function testDependencyHypeListsActive() {
-		$p = elgg_get_plugin_from_id('hypelists');
+		$p = \elgg_get_plugin_from_id('hypelists');
 		$this->assertNotNull($p);
 		$this->assertTrue($p->isActive());
 	}
@@ -54,20 +54,20 @@ class BootstrapTest extends IntegrationTestCase {
 	public function testLowercaseIdLookupResolvesPlugin() {
 		// autoloader.php + actions/settings/save.php now use 'hypeinbox'
 		// (lowercase) so elgg_get_plugin_from_id resolves the plugin.
-		$this->assertInstanceOf(\ElggPlugin::class, elgg_get_plugin_from_id('hypeinbox'));
+		$this->assertInstanceOf(\ElggPlugin::class, \elgg_get_plugin_from_id('hypeinbox'));
 	}
 
 	public function testCamelCaseIdLookupStillReturnsNull() {
 		// Regression guard: the 3.x camelCase plugin-id form must still
 		// fail (returns null) — confirms that fixes elsewhere don't add
 		// a backwards-compat shim that papers over the underlying issue.
-		$this->assertNull(elgg_get_plugin_from_id('hypeInbox'));
+		$this->assertNull(\elgg_get_plugin_from_id('hypeInbox'));
 	}
 
 	public function testLowercasePluginSettingRoundTrips() {
 		// Pin the lowercase plugin-id callsite fix end-to-end:
 		// setSetting/getSetting on 'hypeinbox' must round-trip a value.
-		$plugin = elgg_get_plugin_from_id('hypeinbox');
+		$plugin = \elgg_get_plugin_from_id('hypeinbox');
 		$key = '__test_round_trip_' . bin2hex(random_bytes(4));
 		try {
 			$this->assertTrue($plugin->setSetting($key, 'value-42'));
@@ -79,7 +79,7 @@ class BootstrapTest extends IntegrationTestCase {
 
 	public function testLowercaseSettingReadReturnsNullForUnsetKey() {
 		// Control: lowercase lookups DO find the plugin and return null for unset keys.
-		$this->assertNull(elgg_get_plugin_from_id('hypeinbox')->getSetting('does_not_exist'));
+		$this->assertNull(\elgg_get_plugin_from_id('hypeinbox')->getSetting('does_not_exist'));
 	}
 
 	// --- class autoloading ---
@@ -129,30 +129,30 @@ class BootstrapTest extends IntegrationTestCase {
 	public function testMessageEntitySubtypeRegistered() {
 		$this->assertSame(
 			Message::class,
-			elgg_get_entity_class('object', 'messages')
+			\elgg_get_entity_class('object', 'messages')
 		);
 	}
 
 	// --- actions ---
 
 	public function testMessagesSendActionRegistered() {
-		$this->assertTrue(_elgg_services()->actions->exists('messages/send'));
+		$this->assertTrue(\_elgg_services()->actions->exists('messages/send'));
 	}
 
 	public function testMessagesDeleteActionRegistered() {
-		$this->assertTrue(_elgg_services()->actions->exists('messages/delete'));
+		$this->assertTrue(\_elgg_services()->actions->exists('messages/delete'));
 	}
 
 	public function testMessagesMarkReadActionRegistered() {
-		$this->assertTrue(_elgg_services()->actions->exists('messages/markread'));
+		$this->assertTrue(\_elgg_services()->actions->exists('messages/markread'));
 	}
 
 	public function testMessagesMarkUnreadActionRegistered() {
-		$this->assertTrue(_elgg_services()->actions->exists('messages/markunread'));
+		$this->assertTrue(\_elgg_services()->actions->exists('messages/markunread'));
 	}
 
 	public function testMessagesLoadActionRegistered() {
-		$this->assertTrue(_elgg_services()->actions->exists('messages/load'));
+		$this->assertTrue(\_elgg_services()->actions->exists('messages/load'));
 	}
 
 	public function testAdminOnlyActionsNotRegisteredInStatelessContext() {
@@ -163,7 +163,7 @@ class BootstrapTest extends IntegrationTestCase {
 		// Tests that exercise these actions must first seed + log in an
 		// admin user (via the Seeding trait). Pin the current behavior so
 		// we notice if Elgg changes the registration semantics.
-		$svc = _elgg_services()->actions;
+		$svc = \_elgg_services()->actions;
 		$this->assertFalse($svc->exists('hypeInbox/settings/save'));
 		$this->assertFalse($svc->exists('inbox/admin/import'));
 	}
@@ -171,10 +171,10 @@ class BootstrapTest extends IntegrationTestCase {
 	// --- event wiring (Bootstrap::init, Elgg 5.x uses unified events) ---
 
 	public function testPageOwnerHookHandlerWired() {
-		$this->assertTrue(_elgg_services()->events->hasHandler('page_owner', 'system'));
+		$this->assertTrue(\_elgg_services()->events->hasHandler('page_owner', 'system'));
 	}
 
 	public function testEntityUrlHookHandlerWired() {
-		$this->assertTrue(_elgg_services()->events->hasHandler('entity:url', 'object'));
+		$this->assertTrue(\_elgg_services()->events->hasHandler('entity:url', 'object'));
 	}
 }

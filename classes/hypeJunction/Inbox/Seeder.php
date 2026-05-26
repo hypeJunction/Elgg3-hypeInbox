@@ -52,7 +52,7 @@ class Seeder extends Seed {
 	}
 
 	public function unseed(): void {
-		$entities = elgg_get_entities([
+		$entities = \elgg_get_entities([
 			'type' => 'object',
 			'subtype' => 'messages',
 			'metadata_name' => '__faker',
