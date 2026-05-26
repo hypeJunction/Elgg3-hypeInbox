@@ -61,9 +61,10 @@ class Policy {
 		$policy = $this->normalizePolicy($policy);
 		$this->setSenderType($policy['sender']);
 		$this->setRecipientType($policy['recipient']);
-		$this->relationship = sanitize_string($policy['relationship']);
+		// sanitize_string() removed in Elgg 4.x; use htmlspecialchars + ENT_QUOTES.
+		$this->relationship = htmlspecialchars((string) $policy['relationship'], ENT_QUOTES, 'UTF-8');
 		$this->inverse_relationship = (bool) $policy['inverse_relationship'];
-		$this->group_relationship = sanitize_string($policy['group_relationship']);
+		$this->group_relationship = htmlspecialchars((string) $policy['group_relationship'], ENT_QUOTES, 'UTF-8');
 	}
 
 	/**

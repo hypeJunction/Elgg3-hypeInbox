@@ -300,7 +300,8 @@ class Model {
 
 		$table = "inb$INBOX_TABLE_ITERATOR";
 
-		$relationship = sanitize_string($relationship);
+		// sanitize_string() removed in Elgg 4.x; use htmlspecialchars + ENT_QUOTES.
+		$relationship = htmlspecialchars((string) $relationship, ENT_QUOTES, 'UTF-8');
 
 		$dbprefix = \elgg_get_config('dbprefix');
 		return array(
