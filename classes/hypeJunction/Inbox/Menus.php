@@ -97,7 +97,9 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupAdminPageMenu($hook, $type, $return, $params) {
+	public static function setupAdminPageMenu(\Elgg\Hook $hook) {
+		$return = $hook->getValue();
+
 
 		if (!\elgg_in_context('admin')) {
 			return;
@@ -125,9 +127,13 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupUserHoverMenu($hook, $type, $return, $params) {
+	public static function setupUserHoverMenu(\Elgg\Hook $hook) {
+		$type = $hook->getType();
 
-		$recipient = \elgg_extract('entity', $params);
+		$return = $hook->getValue();
+
+
+		$recipient = $hook->getParam('entity');
 		$sender = \elgg_get_logged_in_user_entity();
 
 		if (!$sender || !$recipient) {
@@ -271,9 +277,11 @@ class Menus {
 	 *
 	 * @return array An array of menu items
 	 */
-	public static function setupInboxMenu($hook, $type, $return, $params) {
+	public static function setupInboxMenu(\Elgg\Hook $hook) {
+		$return = $hook->getValue();
 
-		$count = \elgg_extract('count', $params);
+
+		$count = $hook->getParam('count');
 
 		if ($count) {
 			$chkbx = \elgg_view('input/checkbox', [

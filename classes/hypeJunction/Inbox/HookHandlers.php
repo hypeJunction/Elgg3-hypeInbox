@@ -20,8 +20,8 @@ class HookHandlers {
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function filterUserTypes($hook, $type, $return, $params) {
-		return Config::filterUserTypes($hook, $type, $return, $params);
+	public function filterUserTypes(\Elgg\Hook $hook) {
+		return Config::filterUserTypes($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -34,8 +34,8 @@ class HookHandlers {
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
-	public function setupPageMenu($hook, $type, $return, $params) {
-		return Menus::setupPageMenu($hook, $type, $return, $params);
+	public function setupPageMenu(\Elgg\Hook $hook) {
+		return Menus::setupPageMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -48,8 +48,8 @@ class HookHandlers {
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
-	public function setupUserHoverMenu($hook, $type, $return, $params) {
-		return Menus::setupUserHoverMenu($hook, $type, $return, $params);
+	public function setupUserHoverMenu(\Elgg\Hook $hook) {
+		return Menus::setupUserHoverMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -62,8 +62,8 @@ class HookHandlers {
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
-	public function setupMessageMenu($hook, $type, $return, $params) {
-		return Menus::setupMessageMenu($hook, $type, $return, $params);
+	public function setupMessageMenu(\Elgg\Hook $hook) {
+		return Menus::setupMessageMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -76,8 +76,8 @@ class HookHandlers {
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
-	public function setupInboxMenu($hook, $type, $return, $params) {
-		return Menus::setupInboxMenu($hook, $type, $return, $params);
+	public function setupInboxMenu(\Elgg\Hook $hook) {
+		return Menus::setupInboxMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -90,8 +90,8 @@ class HookHandlers {
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
-	public function setupInboxThreadMenu($hook, $type, $return, $params) {
-		return Menus::setupInboxThreadMenu($hook, $type, $return, $params);
+	public function setupInboxThreadMenu(\Elgg\Hook $hook) {
+		return Menus::setupInboxThreadMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -104,8 +104,8 @@ class HookHandlers {
 	 * @return ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupTopbarMenu($hook, $type, $return, $params) {
-		return Menus::setupTopbarMenu($hook, $type, $return, $params);
+	public function setupTopbarMenu(\Elgg\Hook $hook) {
+		return Menus::setupTopbarMenu($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -117,8 +117,8 @@ class HookHandlers {
 	 * @param array  $params Hook params
 	 * @return string Filtered URL
 	 */
-	public function handleMessageURL($hook, $type, $return, $params) {
-		return Router::messageUrlHandler($hook, $type, $return, $params);
+	public function handleMessageURL(\Elgg\Hook $hook) {
+		return Router::messageUrlHandler($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -131,22 +131,22 @@ class HookHandlers {
 	 * @return string Filtered URL
 	 * @deprecated 6.0
 	 */
-	public function handleMessageIconURL($hook, $type, $return, $params) {
-		return Router::messageIconUrlHandler($hook, $type, $return, $params);
+	public function handleMessageIconURL(\Elgg\Hook $hook) {
+		return Router::messageIconUrlHandler($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
 	 * @deprecated 6.0
 	 */
-	public function getGraphAlias($hook, $type, $return, $params) {
-		return Graph::getGraphAlias($hook, $type, $return, $params);
+	public function getGraphAlias(\Elgg\Hook $hook) {
+		return Graph::getGraphAlias($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
 	 * @deprecated 6.0
 	 */
-	public function getMessageProperties($hook, $type, $return, $params) {
-		return Graph::getMessageProperties($hook, $type, $return, $params);
+	public function getMessageProperties(\Elgg\Hook $hook) {
+		return Graph::getMessageProperties($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 	/**
@@ -159,7 +159,7 @@ class HookHandlers {
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function ajaxOutput($hook, $type, $return, $params) {
+	public function ajaxOutput(\Elgg\Hook $hook) {
 		return Ajax::setUnreadMessagesCount();
 	}
 
@@ -173,8 +173,8 @@ class HookHandlers {
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function addCustomTemplate($hook, $type, $return, $params) {
-		return \hypeJunction\Inbox\Notifiations::registerCustomTemplates($hook, $type, $return, $params);
+	public function addCustomTemplate(\Elgg\Hook $hook) {
+		return \hypeJunction\Inbox\Notifiations::registerCustomTemplates($hook, $hook->getType(), $hook->getValue(), $hook->getParams());
 	}
 
 }

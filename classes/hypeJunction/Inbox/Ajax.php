@@ -13,7 +13,9 @@ class Ajax {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function setUnreadMessagesCount($hook, $type, $return, $params) {
+	public static function setUnreadMessagesCount(\Elgg\Hook $hook) {
+		$return = $hook->getValue();
+
 		$return['inbox']['unread'] = (int) hypeInbox()->model->countUnreadMessages();
 		return $return;
 	}

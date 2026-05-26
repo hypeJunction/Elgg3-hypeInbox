@@ -231,7 +231,7 @@ class Policy {
 			return $clauses;
 		}
 
-		$guid = sanitize_int($sender->guid);
+		$guid = (int) $sender->guid;
 
 		if (!$this->inverse_relationship) {
 			$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON e.guid = $alias.guid_two";
@@ -262,7 +262,7 @@ class Policy {
 			return $clauses;
 		}
 
-		$guid = sanitize_int($sender->guid);
+		$guid = (int) $sender->guid;
 
 		$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON $alias.guid_one = $guid
 			AND $alias.relationship = '$this->group_relationship'";

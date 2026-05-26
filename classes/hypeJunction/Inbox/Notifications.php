@@ -13,7 +13,9 @@ class Notifications {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function registerCustomTemplates($hook, $type, $return, $params) {
+	public static function registerCustomTemplates(\Elgg\Hook $hook) {
+		$return = $hook->getValue();
+
 		$return[] = "messages_send";
 		return $return;
 	}

@@ -18,9 +18,9 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return int|void
 	 */
-	public static function resolvePageOwner($hook, $type, $return, $params) {
+	public static function resolvePageOwner(\Elgg\Hook $hook) {
 
-		if ($return) {
+		if ($hook->getValue()) {
 			return;
 		}
 
@@ -84,12 +84,12 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return string Filtered URL
 	 */
-	public static function messageUrlHandler($hook, $type, $return, $params) {
+	public static function messageUrlHandler(\Elgg\Hook $hook) {
 
-		$entity = \elgg_extract('entity', $params);
+		$entity = $hook->getParam('entity');
 
 		if (!$entity instanceof Message) {
-			return $return;
+			return $hook->getValue();
 		}
 
 		return \elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
@@ -104,13 +104,13 @@ class Router {
 	 * @param array  $params Hook params
 	 * @return string Filtered URL
 	 */
-	public static function messageIconUrlHandler($hook, $type, $return, $params) {
+	public static function messageIconUrlHandler(\Elgg\Hook $hook) {
 
-		$entity = \elgg_extract('entity', $params);
-		$size = \elgg_extract('size', $params);
+		$entity = $hook->getParam('entity');
+		$size = $hook->getParam('size');
 
 		if (!$entity instanceof Message) {
-			return $return;
+			return $hook->getValue();
 		}
 
 		$sender = $entity->getSender();

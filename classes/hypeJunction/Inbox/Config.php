@@ -234,7 +234,9 @@ class Config {
 	 * @param array  $params Hook params
 	 * @return array
 	 */
-	public static function filterUserTypes($hook, $type, $return, $params) {
+	public static function filterUserTypes(\Elgg\Hook $hook) {
+		$return = $hook->getValue();
+
 
 		if (\elgg_is_active_plugin('hypeApprove')) {
 			$return['editor'] = array(
