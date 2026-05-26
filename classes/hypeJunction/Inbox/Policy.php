@@ -64,9 +64,9 @@ class Policy {
 		$policy = $this->normalizePolicy($policy);
 		$this->setSenderType($policy['sender']);
 		$this->setRecipientType($policy['recipient']);
-		$this->relationship = sanitize_string($policy['relationship']);
+		$this->relationship = htmlspecialchars((string) $policy['relationship'], ENT_QUOTES, 'UTF-8');
 		$this->inverse_relationship = (bool) $policy['inverse_relationship'];
-		$this->group_relationship = sanitize_string($policy['group_relationship']);
+		$this->group_relationship = htmlspecialchars((string) $policy['group_relationship'], ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -235,7 +235,7 @@ class Policy {
 			return $clauses;
 		}
 
-		$guid = sanitize_int($sender->guid);
+		$guid = (int) $sender->guid;
 
 		if (!$this->inverse_relationship) {
 			$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON e.guid = $alias.guid_two";
@@ -266,7 +266,7 @@ class Policy {
 			return $clauses;
 		}
 
-		$guid = sanitize_int($sender->guid);
+		$guid = (int) $sender->guid;
 
 		$clauses['join'] = "JOIN {$this->dbprefix}entity_relationships $alias ON $alias.guid_one = $guid
 			AND $alias.relationship = '$this->group_relationship'";
