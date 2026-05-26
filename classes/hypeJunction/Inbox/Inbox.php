@@ -61,7 +61,7 @@ class Inbox {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->dbprefix = elgg_get_config('dbprefix');
+		$this->dbprefix = \elgg_get_config('dbprefix');
 	}
 
 	/**
@@ -208,7 +208,7 @@ class Inbox {
 	public function getMessages(array $options = []) {
 		$options = $this->getFilterOptions($options);
 
-		return elgg_get_entities($options);
+		return \elgg_get_entities($options);
 	}
 
 	/**
@@ -228,7 +228,7 @@ class Inbox {
 			$options['limit'] = 1;
 			$options['callback'] = [$this, 'getCountCallback'];
 
-			$messages = elgg_get_entities($options);
+			$messages = \elgg_get_entities($options);
 
 			return $messages[0]->total;
 		} else {

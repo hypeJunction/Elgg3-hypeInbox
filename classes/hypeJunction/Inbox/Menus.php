@@ -8,7 +8,7 @@ use ElggMenuItem;
 class Menus {
 
 	public static function setupPageMenu(Hook $hook) {
-		if (!elgg_in_context('messages')) {
+		if (!\elgg_in_context('messages')) {
 			return;
 		}
 
@@ -17,7 +17,7 @@ class Menus {
 			return;
 		}
 
-		$user = elgg_get_page_owner_entity();
+		$user = \elgg_get_page_owner_entity();
 
 		$menu = $hook->getValue();
 
@@ -25,8 +25,8 @@ class Menus {
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'inbox',
-			'text' => elgg_echo('inbox:inbox'),
-			'href' => count($intypes) > 1 ? false : elgg_generate_url('collection:object:messages:owner', [
+			'text' => \elgg_echo('inbox:inbox'),
+			'href' => count($intypes) > 1 ? false : \elgg_generate_url('collection:object:messages:owner', [
 				'message_type' => $intypes[0],
 			]),
 			'priority' => 100,
@@ -39,8 +39,8 @@ class Menus {
 				$menu->add(ElggMenuItem::factory([
 					'name' => "inbox:$type",
 					'parent_name' => 'inbox',
-					'text' => elgg_echo("item:object:message:$type:plural"),
-					'href' => elgg_generate_url('collection:object:messages:owner', [
+					'text' => \elgg_echo("item:object:message:$type:plural"),
+					'href' => \elgg_generate_url('collection:object:messages:owner', [
 						'message_type' => $type,
 					]),
 					'link_class' => 'inbox-load'
@@ -52,8 +52,8 @@ class Menus {
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'sentmessages',
-			'text' => elgg_echo('inbox:sent'),
-			'href' => count($outtypes) > 1 ? false : elgg_generate_url('collection:object:messages:sent', [
+			'text' => \elgg_echo('inbox:sent'),
+			'href' => count($outtypes) > 1 ? false : \elgg_generate_url('collection:object:messages:sent', [
 				'message_type' => $outtypes[0],
 			]),
 			'priority' => 500,
@@ -66,8 +66,8 @@ class Menus {
 				$menu->add(ElggMenuItem::factory([
 					'name' => "sent:$type",
 					'parent_name' => 'sentmessages',
-					'text' => elgg_echo("item:object:message:$type:plural"),
-					'href' => elgg_generate_url('collection:object:messages:sent', [
+					'text' => \elgg_echo("item:object:message:$type:plural"),
+					'href' => \elgg_generate_url('collection:object:messages:sent', [
 						'message_type' => $type,
 					]),
 					'link_class' => 'inbox-load'
@@ -77,8 +77,8 @@ class Menus {
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'inbox:search',
-			'text' => elgg_echo('inbox:search'),
-			'href' => elgg_generate_url('collection:object:messages:search'),
+			'text' => \elgg_echo('inbox:search'),
+			'href' => \elgg_generate_url('collection:object:messages:search'),
 			'priority' => 800,
 			'link_class' => 'inbox-load',
 			'icon' => 'fas fa-search',
@@ -99,13 +99,13 @@ class Menus {
 	 */
 	public static function setupAdminPageMenu($hook, $type, $return, $params) {
 
-		if (!elgg_in_context('admin')) {
+		if (!\elgg_in_context('admin')) {
 			return;
 		}
 
 		$return[] = ElggMenuItem::factory([
 			'name' => 'message_types',
-			'text' => elgg_echo('admin:inbox:message_types'),
+			'text' => \elgg_echo('admin:inbox:message_types'),
 			'href' => 'admin/inbox/message_types',
 			'priority' => 500,
 			'contexts' => ['admin'],
@@ -127,8 +127,8 @@ class Menus {
 	 */
 	public static function setupUserHoverMenu($hook, $type, $return, $params) {
 
-		$recipient = elgg_extract('entity', $params);
-		$sender = elgg_get_logged_in_user_entity();
+		$recipient = \elgg_extract('entity', $params);
+		$sender = \elgg_get_logged_in_user_entity();
 
 		if (!$sender || !$recipient) {
 			return $return;
@@ -181,8 +181,8 @@ class Menus {
 								}
 							}
 							if ($valid && $group_relationship && $group_relationship != 'all') {
-								$dbprefix = elgg_get_config('dbprefix');
-								$valid = elgg_get_entities_from_relationship([
+								$dbprefix = \elgg_get_config('dbprefix');
+								$valid = \elgg_get_entities_from_relationship([
 									'types' => 'group',
 									'relationship' => 'member',
 									'relationship_guid' => $recipient->guid,
@@ -204,8 +204,8 @@ class Menus {
 			if ($valid) {
 				$return[] = ElggMenuItem::factory([
 					'name' => "inbox:$type",
-					'text' => elgg_echo("inbox:send", [strtolower(elgg_echo("item:object:message:$type:singular"))]),
-					'href' => elgg_http_add_url_query_elements("messages/compose", [
+					'text' => \elgg_echo("inbox:send", [strtolower(\elgg_echo("item:object:message:$type:singular"))]),
+					'href' => \elgg_http_add_url_query_elements("messages/compose", [
 						'message_type' => $type,
 						'send_to' => $recipient->guid
 					]),
@@ -226,7 +226,7 @@ class Menus {
 			return;
 		}
 
-		$threaded = elgg_extract('threaded', $hook->getParams(), false);
+		$threaded = \elgg_extract('threaded', $hook->getParams(), false);
 
 		$action_params = [
 			'guids' => [$entity->guid],
@@ -239,8 +239,8 @@ class Menus {
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'forward',
 			'icon' => 'fas fa-share',
-			'text' => elgg_echo('inbox:forward'),
-			'href' => elgg_generate_url('forward:object:messages', [
+			'text' => \elgg_echo('inbox:forward'),
+			'href' => \elgg_generate_url('forward:object:messages', [
 				'guid' => $entity->guid,
 			]),
 		]));
@@ -249,9 +249,9 @@ class Menus {
 			$menu->add(ElggMenuItem::factory([
 				'name' => 'delete',
 				'icon' => 'fas fa-trash',
-				'text' => elgg_echo('inbox:delete'),
-				'href' => elgg_generate_action_url('inbox/messages/delete', $action_params),
-				'data-confirm' => ($threaded) ? elgg_echo('inbox:delete:thread:confirm') : elgg_echo('inbox:delete:message:confirm'),
+				'text' => \elgg_echo('inbox:delete'),
+				'href' => \elgg_generate_action_url('inbox/messages/delete', $action_params),
+				'data-confirm' => ($threaded) ? \elgg_echo('inbox:delete:thread:confirm') : \elgg_echo('inbox:delete:message:confirm'),
 				'is_action' => true,
 				'priority' => 900,
 				'link_class' => 'elgg-state elgg-state-danger',
@@ -273,25 +273,25 @@ class Menus {
 	 */
 	public static function setupInboxMenu($hook, $type, $return, $params) {
 
-		$count = elgg_extract('count', $params);
+		$count = \elgg_extract('count', $params);
 
 		if ($count) {
-			$chkbx = elgg_view('input/checkbox', [
+			$chkbx = \elgg_view('input/checkbox', [
 					'id' => 'inbox-form-toggle-all',
-				]) . elgg_echo('inbox:form:toggle_all');
+				]) . \elgg_echo('inbox:form:toggle_all');
 
 			$return[] = ElggMenuItem::factory([
 				'name' => 'toggle',
-				'text' => elgg_format_element('label', [], $chkbx, ['encode_text' => false]),
+				'text' => \elgg_format_element('label', [], $chkbx, ['encode_text' => false]),
 				'href' => false,
 				'priority' => 50,
 				'link_class' => 'elgg-button',
 			]);
 
-			if (!elgg_in_context('sent-form')) {
+			if (!\elgg_in_context('sent-form')) {
 				$return[] = ElggMenuItem::factory([
 					'name' => 'markread',
-					'text' => elgg_echo('inbox:markread'),
+					'text' => \elgg_echo('inbox:markread'),
 					'href' => 'action/messages/markread',
 					'data-submit' => true,
 					'priority' => 100,
@@ -300,7 +300,7 @@ class Menus {
 				]);
 				$return[] = ElggMenuItem::factory([
 					'name' => 'markunread',
-					'text' => elgg_echo('inbox:markunread'),
+					'text' => \elgg_echo('inbox:markunread'),
 					'href' => 'action/messages/markunread',
 					'link_class' => 'elgg-button elgg-button-action',
 					'data-submit' => true,
@@ -311,9 +311,9 @@ class Menus {
 
 			$return[] = ElggMenuItem::factory([
 				'name' => 'delete',
-				'text' => elgg_echo('inbox:delete'),
+				'text' => \elgg_echo('inbox:delete'),
 				'href' => 'action/messages/delete',
-				'data-confirm' => elgg_echo('inbox:delete:inbox:confirm'),
+				'data-confirm' => \elgg_echo('inbox:delete:inbox:confirm'),
 				'data-submit' => true,
 				'priority' => 300,
 				'link_class' => 'elgg-button elgg-button-delete',
@@ -341,15 +341,15 @@ class Menus {
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'reply',
 			'href' => '#reply',
-			'text' => elgg_echo('inbox:reply'),
+			'text' => \elgg_echo('inbox:reply'),
 			'priority' => 100,
 			'icon' => 'fas fa-reply',
 		]));
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'markread',
-			'href' => elgg_generate_action_url('messages/markread', $action_params),
-			'text' => elgg_echo('inbox:markread'),
+			'href' => \elgg_generate_action_url('messages/markread', $action_params),
+			'text' => \elgg_echo('inbox:markread'),
 			'is_action' => true,
 			'priority' => 200,
 			'icon' => 'fas fa-envelope-open-text',
@@ -357,8 +357,8 @@ class Menus {
 
 		$menu->add(ElggMenuItem::factory([
 			'name' => 'markunread',
-			'href' => elgg_generate_action_url('messages/markunread', $action_params),
-			'text' => elgg_echo('inbox:markunread'),
+			'href' => \elgg_generate_action_url('messages/markunread', $action_params),
+			'text' => \elgg_echo('inbox:markunread'),
 			'is_action' => true,
 			'priority' => 210,
 			'icon' => 'fas fa-envelope',
@@ -367,9 +367,9 @@ class Menus {
 		if (!$entity->isPersistent()) {
 			$menu->add(ElggMenuItem::factory([
 				'name' => 'delete',
-				'text' => elgg_echo('inbox:delete'),
-				'href' => elgg_generate_action_url('messages/delete', $action_params),
-				'data-confirm' => elgg_echo('inbox:delete:thread:confirm'),
+				'text' => \elgg_echo('inbox:delete'),
+				'href' => \elgg_generate_action_url('messages/delete', $action_params),
+				'data-confirm' => \elgg_echo('inbox:delete:thread:confirm'),
 				'is_action' => true,
 				'priority' => 900,
 				'link_class' => 'elgg-state elgg-state-danger',
@@ -381,7 +381,7 @@ class Menus {
 	}
 
 	public static function setupTopbarMenu(Hook $hook) {
-		if (!elgg_is_logged_in()) {
+		if (!\elgg_is_logged_in()) {
 			return;
 		}
 
@@ -401,7 +401,7 @@ class Menus {
 			'icon' => 'fas fa-envelope',
 			'badge' => $count,
 			'priority' => 600,
-			'tooltip' => elgg_echo('inbox:thread:unread', [$count]),
+			'tooltip' => \elgg_echo('inbox:thread:unread', [$count]),
 			'rel' => 'popup',
 			'id' => 'inbox-popup-link',
 			'data-position' => json_encode([
@@ -417,7 +417,7 @@ class Menus {
 	}
 
 	public function setupTitleMenu(Hook $hook) {
-		if (!elgg_in_context('messages')) {
+		if (!\elgg_in_context('messages')) {
 			return;
 		}
 
@@ -428,8 +428,8 @@ class Menus {
 		if (count($outgoing_message_types) === 1) {
 			$menu->add(ElggMenuItem::factory([
 				'name' => 'compose',
-				'text' => elgg_echo('inbox:compose'),
-				'href' => elgg_generate_url('add:object:messages', [
+				'text' => \elgg_echo('inbox:compose'),
+				'href' => \elgg_generate_url('add:object:messages', [
 					'message_type' => $outgoing_message_types[0],
 					'send_to' => get_input('send_to', null),
 				]),
@@ -439,7 +439,7 @@ class Menus {
 		} else if (count($outgoing_message_types) > 1) {
 			$menu->add(ElggMenuItem::factory([
 				'name' => 'compose',
-				'text' => elgg_echo('inbox:compose'),
+				'text' => \elgg_echo('inbox:compose'),
 				'href' => false,
 				'link_class' => 'elgg-button elgg-button-action',
 				'icon' => 'fas fa-plus',
@@ -456,8 +456,8 @@ class Menus {
 			foreach ($outgoing_message_types as $mt) {
 				$menu->add(ElggMenuItem::factory([
 					'name' => ($mt == HYPEINBOX_PRIVATE) ? "send" : "compose:$mt",
-					'text' => elgg_echo("item:object:message:$mt:singular"),
-					'href' => elgg_generate_url('add:object:messages', [
+					'text' => \elgg_echo("item:object:message:$mt:singular"),
+					'href' => \elgg_generate_url('add:object:messages', [
 						'message_type' => $mt,
 						'send_to' => get_input('send_to', null),
 					]),

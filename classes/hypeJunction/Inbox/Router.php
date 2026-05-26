@@ -24,7 +24,7 @@ class Router {
 			return;
 		}
 
-		$segments = _elgg_services()->request->getUrlSegments();
+		$segments = \_elgg_services()->request->getUrlSegments();
 		$identifier = array_shift($segments);
 
 		if ($identifier !== 'messages') {
@@ -66,7 +66,7 @@ class Router {
 				if ($username) {
 					$user = get_user_by_username($username);
 				} else {
-					$user = elgg_get_logged_in_user_entity();
+					$user = \elgg_get_logged_in_user_entity();
 				}
 				if (!$user) {
 					return;
@@ -86,13 +86,13 @@ class Router {
 	 */
 	public static function messageUrlHandler($hook, $type, $return, $params) {
 
-		$entity = elgg_extract('entity', $params);
+		$entity = \elgg_extract('entity', $params);
 
 		if (!$entity instanceof Message) {
 			return $return;
 		}
 
-		return elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
+		return \elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
 	}
 
 	/**
@@ -106,8 +106,8 @@ class Router {
 	 */
 	public static function messageIconUrlHandler($hook, $type, $return, $params) {
 
-		$entity = elgg_extract('entity', $params);
-		$size = elgg_extract('size', $params);
+		$entity = \elgg_extract('entity', $params);
+		$size = \elgg_extract('size', $params);
 
 		if (!$entity instanceof Message) {
 			return $return;
@@ -136,7 +136,7 @@ class Router {
 	 * @deprecated 6.0
 	 */
 	public function getMessageURL(Message $entity) {
-		$friendly = elgg_get_friendly_title($entity->getDisplayName());
+		$friendly = \elgg_get_friendly_title($entity->getDisplayName());
 		return $this->normalize(array('read', $entity->guid, $friendly . "#elgg-object-{$entity->guid}"));
 	}
 
@@ -157,10 +157,10 @@ class Router {
 		$url = implode('/', array($this->getPageHandlerId(), $url));
 
 		if (!empty($query)) {
-			$url = elgg_http_add_url_query_elements($url, $query);
+			$url = \elgg_http_add_url_query_elements($url, $query);
 		}
 
-		return elgg_normalize_url($url);
+		return \elgg_normalize_url($url);
 	}
 
 	/**
@@ -173,12 +173,12 @@ class Router {
 	 */
 	public function getPageOwner($segments = array()) {
 
-		$owner = elgg_get_logged_in_user_entity();
+		$owner = \elgg_get_logged_in_user_entity();
 
 		if (is_array($segments)) {
 			foreach ($segments as $segment) {
 				$user = get_user_by_username($segment);
-				if (elgg_instanceof($user)) {
+				if (\elgg_instanceof($user)) {
 					$owner = $user;
 					break;
 				}

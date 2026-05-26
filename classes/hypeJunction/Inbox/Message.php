@@ -50,13 +50,13 @@ class Message extends ElggObject {
 		$options = array_merge($defaults, $options);
 
 		$message = new Message;
-		$message->setSubject(elgg_extract('subject', $options))
-				->setBody(elgg_extract('body', $options))
-				->setSender(elgg_extract('sender', $options))
-				->setRecipients(elgg_extract('recipients', $options))
-				->setMessageType(elgg_extract('message_type', $options))
-				->setHash(elgg_extract('hash', $options))
-				->setAttachments(elgg_extract('attachments', $options));
+		$message->setSubject(\elgg_extract('subject', $options))
+				->setBody(\elgg_extract('body', $options))
+				->setSender(\elgg_extract('sender', $options))
+				->setRecipients(\elgg_extract('recipients', $options))
+				->setMessageType(\elgg_extract('message_type', $options))
+				->setHash(\elgg_extract('hash', $options))
+				->setAttachments(\elgg_extract('attachments', $options));
 
 		return $message;
 	}
@@ -166,9 +166,9 @@ class Message extends ElggObject {
 		if (!$subject) {
 			$recipients = $this->getRecipients();
 			if (count($recipients) == 1) {
-				return elgg_echo('inbox:conversation:user', array($recipients[0]->name));
+				return \elgg_echo('inbox:conversation:user', array($recipients[0]->name));
 			} else {
-				return elgg_echo('inbox:conversation:group');
+				return \elgg_echo('inbox:conversation:group');
 			}
 		}
 		return $subject;
@@ -199,7 +199,7 @@ class Message extends ElggObject {
 	 */
 	public function calcHash() {
 		$user_guids = $this->getParticipantGuids();
-		$prefix = elgg_echo('inbox:reply:prefix');
+		$prefix = \elgg_echo('inbox:reply:prefix');
 		$subject = trim(str_replace(strtolower($prefix), '', strtolower($this->getSubject())));
 		return sha1(implode(':', $user_guids) . $subject);
 	}
@@ -362,7 +362,7 @@ class Message extends ElggObject {
 			return $this->thread()->getAttachments($options);
 		} else {
 			$options = $this->getAttachmentsFilterOptions($options);
-			return elgg_get_entities_from_relationship($options);
+			return \elgg_get_entities_from_relationship($options);
 		}
 	}
 
@@ -388,7 +388,7 @@ class Message extends ElggObject {
 	 * @return ElggSite
 	 */
 	public function getDefaultSender() {
-		return elgg_get_site_entity();
+		return \elgg_get_site_entity();
 	}
 
 	/**
@@ -408,7 +408,7 @@ class Message extends ElggObject {
 		if (!$body) {
 			return false;
 		}
-		if (elgg_trigger_before_event('send', 'object', $this) === false) {
+		if (\elgg_trigger_before_event('send', 'object', $this) === false) {
 			return false;
 		}
 		return true;
@@ -439,7 +439,7 @@ class Message extends ElggObject {
 		$this->attach();
 
 		// Create a copy for each of the recipients
-		$ia = elgg_set_ignore_access(true);
+		$ia = \elgg_set_ignore_access(true);
 		$recipients = $this->getRecipients();
 		foreach ($recipients as $recipient) {
 			if ($recipient->guid == $owner->guid) {
@@ -453,9 +453,9 @@ class Message extends ElggObject {
 				$copy->attach();
 			}
 		}
-		elgg_set_ignore_access($ia);
+		\elgg_set_ignore_access($ia);
 
-		elgg_trigger_after_event('send', 'object', $this);
+		\elgg_trigger_after_event('send', 'object', $this);
 
 		return $guid;
 	}

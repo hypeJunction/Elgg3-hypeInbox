@@ -22,7 +22,7 @@ class EntityCrudTest extends IntegrationTestCase {
 	}
 
 	private function makeMessage(array $overrides = []): Message {
-		return elgg_call(ELGG_IGNORE_ACCESS, function () use ($overrides) {
+		return \elgg_call(ELGG_IGNORE_ACCESS, function () use ($overrides) {
 			$user = $overrides['__user'] ?? $this->createUser();
 			$msg = new Message();
 			$msg->owner_guid = $overrides['owner_guid'] ?? $user->guid;
@@ -60,24 +60,24 @@ class EntityCrudTest extends IntegrationTestCase {
 	public function testLoadedMessageIsMessageInstance(): void {
 		$msg = $this->makeMessage();
 		$guid = $msg->guid;
-		_elgg_services()->entityCache->delete($guid);
-		$loaded = elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($guid));
+		\_elgg_services()->entityCache->delete($guid);
+		$loaded = \elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($guid));
 		$this->assertInstanceOf(Message::class, $loaded);
 		$msg->delete();
 	}
 
 	public function testSubjectMetadataPersists(): void {
 		$msg = $this->makeMessage(['subject' => 'Characterization subject']);
-		_elgg_services()->entityCache->delete($msg->guid);
-		$loaded = elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
+		\_elgg_services()->entityCache->delete($msg->guid);
+		$loaded = \elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
 		$this->assertSame('Characterization subject', (string) $loaded->title);
 		$msg->delete();
 	}
 
 	public function testBodyMetadataPersists(): void {
 		$msg = $this->makeMessage(['body' => 'body goes here']);
-		_elgg_services()->entityCache->delete($msg->guid);
-		$loaded = elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
+		\_elgg_services()->entityCache->delete($msg->guid);
+		$loaded = \elgg_call(ELGG_IGNORE_ACCESS, fn() => get_entity($msg->guid));
 		$this->assertSame('body goes here', (string) $loaded->description);
 		$msg->delete();
 	}
@@ -87,12 +87,12 @@ class EntityCrudTest extends IntegrationTestCase {
 		// true for a successful save. 3.x returned an int GUID — the
 		// migration commit 22cf1a7 changed this, and this test pins the
 		// new contract so any regression shows up immediately.
-		$user = elgg_call(ELGG_IGNORE_ACCESS, fn() => $this->createUser());
+		$user = \elgg_call(ELGG_IGNORE_ACCESS, fn() => $this->createUser());
 		$msg = new Message();
 		$msg->owner_guid = $user->guid;
 		$msg->container_guid = $user->guid;
 		$msg->access_id = ACCESS_PRIVATE;
-		$result = elgg_call(ELGG_IGNORE_ACCESS, fn() => $msg->save());
+		$result = \elgg_call(ELGG_IGNORE_ACCESS, fn() => $msg->save());
 		$this->assertTrue($result);
 		$this->assertIsInt($msg->guid);
 		$this->assertGreaterThan(0, $msg->guid);
@@ -101,7 +101,7 @@ class EntityCrudTest extends IntegrationTestCase {
 
 	public function testDeleteReturnsTruthy(): void {
 		$msg = $this->makeMessage();
-		$result = elgg_call(ELGG_IGNORE_ACCESS, fn() => $msg->delete());
+		$result = \elgg_call(ELGG_IGNORE_ACCESS, fn() => $msg->delete());
 		$this->assertNotFalse($result);
 	}
 

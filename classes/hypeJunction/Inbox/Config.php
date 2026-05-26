@@ -51,7 +51,7 @@ class Config {
 	 * @return mixed
 	 */
 	public function get($name, $default = null) {
-		return elgg_extract($name, $this->all(), $default);
+		return \elgg_extract($name, $this->all(), $default);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class Config {
 	 */
 	public function getDefaults() {
 		return array(
-			'dbprefix' => elgg_get_config('dbprefix'),
+			'dbprefix' => \elgg_get_config('dbprefix'),
 			'pagehandler_id' => 'messages',
 		);
 	}
@@ -159,7 +159,7 @@ class Config {
 				),
 			);
 
-			$this->userTypes = elgg_trigger_plugin_hook('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = \elgg_trigger_plugin_hook('config:user_types', 'framework:inbox', null, $config);
 		}
 		return $this->userTypes;
 	}
@@ -236,7 +236,7 @@ class Config {
 	 */
 	public static function filterUserTypes($hook, $type, $return, $params) {
 
-		if (elgg_is_active_plugin('hypeApprove')) {
+		if (\elgg_is_active_plugin('hypeApprove')) {
 			$return['editor'] = array(
 				'validator' => array(hypeInbox()->model, 'hasRole'),
 				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
@@ -247,14 +247,14 @@ class Config {
 			);
 		}
 
-		if (elgg_is_active_plugin('hypeObserver')) {
+		if (\elgg_is_active_plugin('hypeObserver')) {
 			$return['observer'] = array(
 				'validator' => array(hypeInbox()->model, 'hasRole'),
 				'getter' => array(hypeInbox()->model, 'getDirectRelationshipTestQuery'),
 			);
 		}
 
-		if (elgg_is_active_plugin('roles')) {
+		if (\elgg_is_active_plugin('roles')) {
 			$roles = roles_get_all_selectable_roles();
 			foreach ($roles as $role) {
 				$return[$role->name] = array(

@@ -4,7 +4,7 @@ namespace hypeJunction\Inbox;
 
 use ElggUser;
 
-$user = elgg_get_page_owner_entity();
+$user = \elgg_get_page_owner_entity();
 if (!$user instanceof ElggUser) {
 	return true;
 }
@@ -12,8 +12,8 @@ if (!$user instanceof ElggUser) {
 $limit = get_input('limit', 20);
 $offset = get_input('offset', 0);
 
-$message_type = elgg_extract('message_type', $vars);
-$read = elgg_extract('read', $vars);
+$message_type = \elgg_extract('message_type', $vars);
+$read = \elgg_extract('read', $vars);
 
 $inbox = new Inbox();
 $inbox->setOwner($user)
@@ -35,17 +35,17 @@ $params = array(
 	'threaded' => false,
 );
 
-elgg_push_context('sent-form');
+\elgg_push_context('sent-form');
 
-$header = elgg_view('framework/inbox/controls/inbox', $params);
-$body = elgg_view('framework/inbox/list', $params);
+$header = \elgg_view('framework/inbox/controls/inbox', $params);
+$body = \elgg_view('framework/inbox/list', $params);
 
-echo elgg_view_module('aside', null, $body, [
+echo \elgg_view_module('aside', null, $body, [
 	'header' => $header,
 	'class' => 'inbox-module has-list',
 ]);
 
-echo elgg_view('input/submit', array(
+echo \elgg_view('input/submit', array(
 	'class' => 'hidden',
 ));
-elgg_pop_context();
+\elgg_pop_context();

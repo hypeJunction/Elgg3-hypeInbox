@@ -45,7 +45,7 @@ class Group {
 		if ($entity instanceof ElggEntity) {
 			return (int) $entity->getGUID();
 		}
-		if (elgg_entity_exists($entity)) {
+		if (\elgg_entity_exists($entity)) {
 			return (int) $entity;
 		}
 		return 0;

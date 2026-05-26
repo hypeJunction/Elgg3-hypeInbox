@@ -53,11 +53,11 @@ class Model {
 	 * @return boolean
 	 */
 	public function isAdminUser($user) {
-		if (!elgg_instanceof($user, 'user')) {
+		if (!\elgg_instanceof($user, 'user')) {
 			return false;
 		}
 
-		return elgg_is_admin_user($user->guid);
+		return \elgg_is_admin_user($user->guid);
 	}
 
 	/**
@@ -82,8 +82,8 @@ class Model {
 
 		$return = array();
 
-		if (!elgg_instanceof($user)) {
-			$user = elgg_get_logged_in_user_entity();
+		if (!\elgg_instanceof($user)) {
+			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
 			}
@@ -142,8 +142,8 @@ class Model {
 
 		$return = array();
 
-		if (!elgg_instanceof($user)) {
-			$user = elgg_get_logged_in_user_entity();
+		if (!\elgg_instanceof($user)) {
+			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
 			}
@@ -201,7 +201,7 @@ class Model {
 	 */
 	public function countUnreadMessages($message_type = null, $user = null) {
 		if (is_null($user)) {
-			$user = elgg_get_logged_in_user_entity();
+			$user = \elgg_get_logged_in_user_entity();
 		}
 		if (!$user instanceof ElggUser) {
 			return 0;
@@ -238,8 +238,8 @@ class Model {
 			'message_type' => $message_type,
 		);
 
-		if (elgg_is_sticky_form('messages')) {
-			$sticky = elgg_get_sticky_values('messages');
+		if (\elgg_is_sticky_form('messages')) {
+			$sticky = \elgg_get_sticky_values('messages');
 			foreach ($sticky as $field => $value) {
 				if ($field == 'recipients' && is_string($value)) {
 					$value = string_to_tag_array($value);
@@ -248,7 +248,7 @@ class Model {
 			}
 		}
 
-		elgg_clear_sticky_form('messages');
+		\elgg_clear_sticky_form('messages');
 		return $values;
 	}
 
@@ -302,7 +302,7 @@ class Model {
 
 		$relationship = sanitize_string($relationship);
 
-		$dbprefix = elgg_get_config('dbprefix');
+		$dbprefix = \elgg_get_config('dbprefix');
 		return array(
 			'wheres' => array(
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
@@ -323,14 +323,14 @@ class Model {
 			$role = call_user_func('roles_get_role_by_name', $role_name);
 		}
 
-		$role_guid = (elgg_instanceof($role)) ? $role->guid : ELGG_ENTITIES_NO_VALUE;
+		$role_guid = (\elgg_instanceof($role)) ? $role->guid : ELGG_ENTITIES_NO_VALUE;
 
 		global $INBOX_TABLE_ITERATOR;
 		$INBOX_TABLE_ITERATOR++;
 
 		$table = "inb$INBOX_TABLE_ITERATOR";
 
-		$dbprefix = elgg_get_config('dbprefix');
+		$dbprefix = \elgg_get_config('dbprefix');
 		return array(
 			'wheres' => array(
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
@@ -347,8 +347,8 @@ class Model {
 	 */
 	public function getUnhashedMessages(array $options = array()) {
 
-		$name_id = elgg_get_metastring_id('msgHash');
-		$dbprefix = elgg_get_config('dbprefix');
+		$name_id = \elgg_get_metastring_id('msgHash');
+		$dbprefix = \elgg_get_config('dbprefix');
 
 		$defaults = array(
 			'types' => 'object',
@@ -370,8 +370,8 @@ class Model {
 	 * @return string
 	 */
 	public function getLinkTag($entity) {
-		if (elgg_instanceof($entity)) {
-			return elgg_view('output/url', array(
+		if (\elgg_instanceof($entity)) {
+			return \elgg_view('output/url', array(
 				'text' => $entity->getDisplayName(),
 				'href' => $entity->getURL(),
 				'is_trusted' => true,
