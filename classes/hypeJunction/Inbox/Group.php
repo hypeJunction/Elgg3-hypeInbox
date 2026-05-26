@@ -78,7 +78,7 @@ class Group {
 			return (int) $entity->getGUID();
 		}
 
-		if (is_numeric($entity) && (int) $entity > 0 && elgg_entity_exists((int) $entity)) {
+		if (is_numeric($entity) && (int) $entity > 0 && \elgg_entity_exists((int) $entity)) {
 			return (int) $entity;
 		}
 

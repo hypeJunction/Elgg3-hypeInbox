@@ -150,7 +150,7 @@ class Ruleset {
 		if ($language == 'en') {
 			return $this->labels['singular'];
 		} else if ($language) {
-			return elgg_echo($key, [], $language);
+			return \elgg_echo($key, [], $language);
 		}
 
 		return $key;
@@ -167,7 +167,7 @@ class Ruleset {
 		if ($language == 'en') {
 			return $this->labels['plural'];
 		} else if ($language) {
-			return elgg_echo($key, [], $language);
+			return \elgg_echo($key, [], $language);
 		}
 
 		return $key;

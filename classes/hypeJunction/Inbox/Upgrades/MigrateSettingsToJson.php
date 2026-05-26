@@ -35,7 +35,7 @@ class MigrateSettingsToJson extends Batch {
 	}
 
 	public function run(Result $result, $offset): Result {
-		$plugin = elgg_get_plugin_from_id('hypeinbox');
+		$plugin = \elgg_get_plugin_from_id('hypeinbox');
 		if (!$plugin) {
 			$result->addFailures(count(self::ARRAY_SETTINGS));
 			return $result;

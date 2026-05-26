@@ -27,7 +27,7 @@ class Thread {
 	 */
 	public function __construct(Message $message) {
 		$this->message = $message;
-		$this->dbprefix = elgg_get_config('dbprefix');
+		$this->dbprefix = \elgg_get_config('dbprefix');
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Thread {
 	public function getMessages(array $options = []) {
 		$options = $this->getFilterOptions($options);
 
-		return elgg_get_entities($options);
+		return \elgg_get_entities($options);
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Thread {
 
 		$options['order_by'] = [new OrderByClause('e.guid', 'DESC')];
 
-		$messages = elgg_get_entities($this->getFilterOptions($options));
+		$messages = \elgg_get_entities($this->getFilterOptions($options));
 
 		if (is_array($messages)) {
 			return array_reverse($messages);
@@ -236,7 +236,7 @@ class Thread {
 			return $qb->compare('e.guid', 'gt', $this->message->guid);
 		};
 
-		return elgg_get_entities($this->getFilterOptions($options));
+		return \elgg_get_entities($this->getFilterOptions($options));
 	}
 
 	/**
@@ -271,7 +271,7 @@ class Thread {
 	public function getAttachments(array $options = []) {
 		$options = $this->getAttachmentsFilterOptions($options);
 
-		return elgg_get_entities($options);
+		return \elgg_get_entities($options);
 	}
 
 	/**

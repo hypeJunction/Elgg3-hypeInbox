@@ -63,7 +63,7 @@ class Model {
 			return false;
 		}
 
-		return elgg_is_admin_user($user->guid);
+		return \elgg_is_admin_user($user->guid);
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Model {
 		$return = [];
 
 		if (!$user instanceof \ElggUser) {
-			$user = elgg_get_logged_in_user_entity();
+			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
 			}
@@ -147,7 +147,7 @@ class Model {
 		$return = [];
 
 		if (!$user instanceof \ElggUser) {
-			$user = elgg_get_logged_in_user_entity();
+			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
 			}
@@ -204,7 +204,7 @@ class Model {
 	 */
 	public function countUnreadMessages($message_type = null, $user = null) {
 		if (is_null($user)) {
-			$user = elgg_get_logged_in_user_entity();
+			$user = \elgg_get_logged_in_user_entity();
 		}
 
 		if (!$user instanceof ElggUser) {
@@ -243,8 +243,8 @@ class Model {
 			'message_type' => $message_type,
 		];
 
-		if (elgg_is_sticky_form('messages')) {
-			$sticky = elgg_get_sticky_values('messages');
+		if (\elgg_is_sticky_form('messages')) {
+			$sticky = \elgg_get_sticky_values('messages');
 			foreach ($sticky as $field => $value) {
 				if ($field == 'recipients' && is_string($value)) {
 					$value = string_to_tag_array($value);
@@ -253,7 +253,7 @@ class Model {
 			}
 		}
 
-		elgg_clear_sticky_form('messages');
+		\elgg_clear_sticky_form('messages');
 		return $values;
 	}
 
@@ -307,7 +307,7 @@ class Model {
 
 		$relationship = htmlspecialchars((string) $relationship, ENT_QUOTES, 'UTF-8');
 
-		$dbprefix = elgg_get_config('dbprefix');
+		$dbprefix = \elgg_get_config('dbprefix');
 		return [
 			'wheres' => [
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
@@ -335,7 +335,7 @@ class Model {
 
 		$table = "inb$INBOX_TABLE_ITERATOR";
 
-		$dbprefix = elgg_get_config('dbprefix');
+		$dbprefix = \elgg_get_config('dbprefix');
 		return [
 			'wheres' => [
 				"EXISTS (SELECT * FROM {$dbprefix}entity_relationships {$table}
@@ -352,8 +352,8 @@ class Model {
 	 */
 	public function getUnhashedMessages(array $options = []) {
 
-		$name_id = elgg_get_metastring_id('msgHash');
-		$dbprefix = elgg_get_config('dbprefix');
+		$name_id = \elgg_get_metastring_id('msgHash');
+		$dbprefix = \elgg_get_config('dbprefix');
 
 		$defaults = [
 			'types' => 'object',
@@ -378,7 +378,7 @@ class Model {
 	 */
 	public function getLinkTag($entity) {
 		if ($entity instanceof \ElggEntity) {
-			return elgg_view('output/url', [
+			return \elgg_view('output/url', [
 				'text' => $entity->getDisplayName(),
 				'href' => $entity->getURL(),
 				'is_trusted' => true,

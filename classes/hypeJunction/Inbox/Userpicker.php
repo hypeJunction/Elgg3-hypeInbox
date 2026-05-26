@@ -28,7 +28,7 @@ class Userpicker {
 	public function __construct($message_type = '', $sender = null) {
 		$this->setMessageType($message_type);
 		$this->setSender($sender);
-		$this->dbprefix = elgg_get_config('dbprefix');
+		$this->dbprefix = \elgg_get_config('dbprefix');
 	}
 
 	/**
@@ -66,11 +66,11 @@ class Userpicker {
 	 */
 	public function setSender($sender = null) {
 		if (is_null($sender)) {
-			$sender = elgg_get_logged_in_user_entity();
+			$sender = \elgg_get_logged_in_user_entity();
 		}
 
 		if (!$sender) {
-			$sender = elgg_get_site_entity();
+			$sender = \elgg_get_site_entity();
 		}
 
 		$this->sender = $sender;

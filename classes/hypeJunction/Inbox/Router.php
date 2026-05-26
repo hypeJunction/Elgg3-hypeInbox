@@ -24,7 +24,7 @@ class Router {
 			return;
 		}
 
-		$segments = _elgg_services()->request->getUrlSegments();
+		$segments = \_elgg_services()->request->getUrlSegments();
 		$identifier = array_shift($segments);
 
 		if ($identifier !== 'messages') {
@@ -64,9 +64,9 @@ class Router {
 			case 'search':
 				$username = array_shift($segments);
 				if ($username) {
-					$user = elgg_get_user_by_username($username);
+					$user = \elgg_get_user_by_username($username);
 				} else {
-					$user = elgg_get_logged_in_user_entity();
+					$user = \elgg_get_logged_in_user_entity();
 				}
 
 				if (!$user) {
@@ -91,7 +91,7 @@ class Router {
 			return $event->getValue();
 		}
 
-		return elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
+		return \elgg_normalize_url("messages/read/$entity->guid#elgg-object-$entity->guid");
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Router {
 	 * @return mixed
 	 */
 	public function getMessageURL(Message $entity) {
-		$friendly = elgg_get_friendly_title($entity->getDisplayName());
+		$friendly = \elgg_get_friendly_title($entity->getDisplayName());
 		return $this->normalize(['read', $entity->guid, $friendly . "#elgg-object-{$entity->guid}"]);
 	}
 
@@ -154,10 +154,10 @@ class Router {
 		$url = implode('/', [$this->getPageHandlerId(), $url]);
 
 		if (!empty($query)) {
-			$url = elgg_http_add_url_query_elements($url, $query);
+			$url = \elgg_http_add_url_query_elements($url, $query);
 		}
 
-		return elgg_normalize_url($url);
+		return \elgg_normalize_url($url);
 	}
 
 	/**
@@ -169,11 +169,11 @@ class Router {
 	 */
 	public function getPageOwner($segments = []) {
 
-		$owner = elgg_get_logged_in_user_entity();
+		$owner = \elgg_get_logged_in_user_entity();
 
 		if (is_array($segments)) {
 			foreach ($segments as $segment) {
-				$user = elgg_get_user_by_username($segment);
+				$user = \elgg_get_user_by_username($segment);
 				if ($user instanceof \ElggUser) {
 					$owner = $user;
 					break;
