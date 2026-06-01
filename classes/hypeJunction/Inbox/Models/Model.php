@@ -348,15 +348,16 @@ class Model {
 	 */
 	public function getUnhashedMessages(array $options = array()) {
 
-		$name_id = elgg_get_metastring_id('msgHash');
 		$dbprefix = elgg_get_config('dbprefix');
 
+		// Metastrings were removed in Elgg 3.0; metadata names are stored directly
+		// on the metadata table, so match md.name instead of a metastring id.
 		$defaults = array(
 			'types' => 'object',
 			'subtypes' => Message::SUBTYPE,
 			'wheres' => array(
 				"NOT EXISTS (SELECT 1 FROM {$dbprefix}metadata md WHERE md.entity_guid = e.guid
-			AND md.name_id = {$name_id})"
+			AND md.name = 'msgHash')"
 			),
 			'order_by' => 'e.guid ASC',
 		);
