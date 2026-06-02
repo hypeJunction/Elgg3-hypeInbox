@@ -4,16 +4,22 @@ namespace hypeJunction\Inbox;
 
 class Config {
 
-	private $messageTypes;
-	private $userTypes;
-	private $userRelationships;
-	private $userGroupRelationships;
+	/** @var mixed */
+    private $messageTypes;
+	/** @var mixed */
+    private $userTypes;
+	/** @var mixed */
+    private $userRelationships;
+	/** @var mixed */
+    private $userGroupRelationships;
 
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
 
-	private $plugin;
-	private $settings;
+	/** @var mixed */
+    private $plugin;
+	/** @var mixed */
+    private $settings;
 
 	/**
 	 * Constructor

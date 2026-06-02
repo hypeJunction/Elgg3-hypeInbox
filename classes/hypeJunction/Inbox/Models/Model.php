@@ -53,11 +53,11 @@ class Model {
 	 * @return boolean
 	 */
 	public function isAdminUser($user) {
-		if (!\elgg_instanceof($user, 'user')) {
+		if (!$user instanceof \ElggUser) {
 			return false;
 		}
 
-		return \elgg_is_admin_user($user->guid);
+		return $user->isAdmin();
 	}
 
 	/**
@@ -82,7 +82,7 @@ class Model {
 
 		$return = array();
 
-		if (!\elgg_instanceof($user)) {
+		if (!$user instanceof \ElggEntity) {
 			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
@@ -142,7 +142,7 @@ class Model {
 
 		$return = array();
 
-		if (!\elgg_instanceof($user)) {
+		if (!$user instanceof \ElggEntity) {
 			$user = \elgg_get_logged_in_user_entity();
 			if (!$user) {
 				return $return;
@@ -324,7 +324,7 @@ class Model {
 			$role = call_user_func('roles_get_role_by_name', $role_name);
 		}
 
-		$role_guid = (\elgg_instanceof($role)) ? $role->guid : ELGG_ENTITIES_NO_VALUE;
+		$role_guid = ($role instanceof \ElggEntity) ? $role->guid : ELGG_ENTITIES_NO_VALUE;
 
 		global $INBOX_TABLE_ITERATOR;
 		$INBOX_TABLE_ITERATOR++;
@@ -372,7 +372,7 @@ class Model {
 	 * @return string
 	 */
 	public function getLinkTag($entity) {
-		if (\elgg_instanceof($entity)) {
+		if ($entity instanceof \ElggEntity) {
 			return \elgg_view('output/url', array(
 				'text' => $entity->getDisplayName(),
 				'href' => $entity->getURL(),

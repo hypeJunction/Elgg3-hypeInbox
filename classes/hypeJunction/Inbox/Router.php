@@ -178,7 +178,7 @@ class Router {
 		if (is_array($segments)) {
 			foreach ($segments as $segment) {
 				$user = get_user_by_username($segment);
-				if (\elgg_instanceof($user)) {
+				if ($user instanceof \ElggEntity) {
 					$owner = $user;
 					break;
 				}

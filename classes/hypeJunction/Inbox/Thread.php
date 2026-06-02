@@ -9,8 +9,10 @@ use ElggEntity;
 
 class Thread {
 
-	protected $message;
-	private $dbprefix;
+	/** @var mixed */
+    protected $message;
+	/** @var mixed */
+    private $dbprefix;
 
 	const LIMIT = 10;
 

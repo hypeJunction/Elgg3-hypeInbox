@@ -238,7 +238,11 @@ class Inbox {
 		}
 	}
 
-	public static function getCountCallback($row) {
+	/**
+     * @param mixed $row
+     * @return mixed
+     */
+    public static function getCountCallback($row) {
 		return $row;
 	}
 

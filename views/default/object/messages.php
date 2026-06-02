@@ -53,7 +53,7 @@ $summary = elgg_format_element('div', ['class' => 'inbox-message-content'], $sum
 
 $body = $checkbox . $summary;
 
-$attrs = elgg_format_attributes(array(
+$attrs = _elgg_services()->html_formatter->formatAttributes(array(
 	'data-href' => ($full) ? false : $entity->getURL(),
 	'data-guid' => $entity->guid,
 	'class' => implode(' ', array_filter(array(

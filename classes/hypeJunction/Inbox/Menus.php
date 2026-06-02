@@ -7,7 +7,11 @@ use ElggMenuItem;
 
 class Menus {
 
-	public static function setupPageMenu(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public static function setupPageMenu(Hook $hook) {
 		if (!\elgg_in_context('messages')) {
 			return;
 		}
@@ -188,7 +192,7 @@ class Menus {
 							}
 							if ($valid && $group_relationship && $group_relationship != 'all') {
 								$dbprefix = \elgg_get_config('dbprefix');
-								$valid = \elgg_get_entities_from_relationship([
+								$valid = \elgg_get_entities([
 									'types' => 'group',
 									'relationship' => 'member',
 									'relationship_guid' => $recipient->guid,
@@ -223,7 +227,11 @@ class Menus {
 		return $return;
 	}
 
-	public static function setupMessageMenu(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public static function setupMessageMenu(Hook $hook) {
 
 		$entity = $hook->getEntityParam();
 		$menu = $hook->getValue();
@@ -332,7 +340,11 @@ class Menus {
 		return $return;
 	}
 
-	public static function setupInboxThreadMenu(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public static function setupInboxThreadMenu(Hook $hook) {
 		$entity = $hook->getEntityParam();
 
 		if (!$entity instanceof Message || !$entity->canEdit()) {
@@ -388,7 +400,11 @@ class Menus {
 		return $menu;
 	}
 
-	public static function setupTopbarMenu(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public static function setupTopbarMenu(Hook $hook) {
 		if (!\elgg_is_logged_in()) {
 			return;
 		}
@@ -424,7 +440,11 @@ class Menus {
 		return $menu;
 	}
 
-	public function setupTitleMenu(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public function setupTitleMenu(Hook $hook) {
 		if (!\elgg_in_context('messages')) {
 			return;
 		}

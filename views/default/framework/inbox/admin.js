@@ -37,7 +37,7 @@ define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 
 			$(document).on('click', '.inbox-icon-minus', function (e) {
 				e.preventDefault();
-				if (!confirm(elgg.echo('question:areyousure'))) {
+				if (!confirm(i18n.echo('question:areyousure'))) {
 					return false;
 				}
 				$(this).closest('.inbox-policy').fadeOut().remove();
@@ -63,7 +63,7 @@ define(['jquery', 'elgg', 'elgg/ready'], function ($, elgg) {
 						});
 						inbox.importBatch(params);
 					} else {
-						elgg.system_message(elgg.echo('inbox:admin:import_complete'));
+						elgg.system_message(i18n.echo('inbox:admin:import_complete'));
 						$('#import-progress').progressbar({
 							value: 100
 						});

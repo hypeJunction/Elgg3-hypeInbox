@@ -11,14 +11,23 @@ use ElggEntity;
  */
 class Group {
 
-	protected $guids = [];
+	/** @var mixed */
+    protected $guids = [];
 
-	public static function create($data): self {
+	/**
+     * @param mixed $data
+     * @return self
+     */
+    public static function create($data): self {
 		$group = new static();
 		return $group->add($data);
 	}
 
-	public function add($data = null): self {
+	/**
+     * @param mixed $data
+     * @return self
+     */
+    public function add($data = null): self {
 		if (is_array($data)) {
 			foreach ($data as $elem) {
 				$this->add($elem);
@@ -33,15 +42,25 @@ class Group {
 		return $this;
 	}
 
-	public function guids(): array {
+	/**
+     * @return array
+     */
+    public function guids(): array {
 		return array_unique($this->guids);
 	}
 
-	public function entities(): array {
+	/**
+     * @return array
+     */
+    public function entities(): array {
 		return array_filter(array_map('get_entity', $this->guids()));
 	}
 
-	protected function toGuid($entity): int {
+	/**
+     * @param mixed $entity
+     * @return int
+     */
+    protected function toGuid($entity): int {
 		if ($entity instanceof ElggEntity) {
 			return (int) $entity->getGUID();
 		}

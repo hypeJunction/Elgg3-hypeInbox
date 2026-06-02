@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @return mixed
+ */
 function prepareMessageTypes() {
 
 	$config = array();

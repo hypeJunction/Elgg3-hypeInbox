@@ -7,7 +7,8 @@ use stdClass;
 
 class Policy {
 
-	private $dbprefix;
+	/** @var mixed */
+    private $dbprefix;
 
 	/**
 	 * Config object

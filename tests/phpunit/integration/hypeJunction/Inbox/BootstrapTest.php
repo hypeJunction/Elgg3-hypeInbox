@@ -21,7 +21,10 @@ use Elgg\IntegrationTestCase;
  */
 class BootstrapTest extends IntegrationTestCase {
 
-	public function getPluginID(): string {
+	/**
+     * @return string
+     */
+    public function getPluginID(): string {
 		return 'hypeinbox';
 	}
 
@@ -61,7 +64,7 @@ class BootstrapTest extends IntegrationTestCase {
 		// Regression guard: the 3.x camelCase plugin-id form must still
 		// fail (returns null) — confirms that fixes elsewhere don't add
 		// a backwards-compat shim that papers over the underlying issue.
-		$this->assertNull(\elgg_get_plugin_from_id('hypeInbox'));
+		$this->assertNull(\elgg_get_plugin_from_id('hypeinbox'));
 	}
 
 	public function testLowercasePluginSettingRoundTrips() {

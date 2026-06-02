@@ -6,7 +6,10 @@ use Elgg\PluginBootstrap;
 
 class Bootstrap extends PluginBootstrap {
 
-	public function getPath() {
+	/**
+     * @return mixed
+     */
+    public function getPath() {
 		return $this->plugin->getPath();
 	}
 
