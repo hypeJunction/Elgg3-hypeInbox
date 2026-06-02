@@ -18,8 +18,6 @@ use stdClass;
 class Model {
 
 	const EGE = 'elgg_get_entities';
-	const EGE_METADATA = 'elgg_get_entities_from_metadata';
-	const EGE_RELATIONSHIP = 'elgg_get_entities_from_relationship';
 
 	/**
 	 * Config
@@ -27,9 +25,11 @@ class Model {
 	 */
 	private $config;
 
-	private $incomingMessageTypes = [];
+	/** @var mixed */
+    private $incomingMessageTypes = [];
 
-	private $outgoingMessageTypes = [];
+	/** @var mixed */
+    private $outgoingMessageTypes = [];
 
 	/**
 	 * Constructor
@@ -247,7 +247,7 @@ class Model {
 			$sticky = \elgg_get_sticky_values('messages');
 			foreach ($sticky as $field => $value) {
 				if ($field == 'recipients' && is_string($value)) {
-					$value = string_to_tag_array($value);
+					$value = elgg_string_to_array($value);
 					$values['recipient_guids'] = $value;
 				}
 			}

@@ -11,7 +11,8 @@ use ElggEntity;
  */
 class Group {
 
-	protected $guids = [];
+	/** @var mixed */
+    protected $guids = [];
 
 	/**
 	 * create.

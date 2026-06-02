@@ -20,7 +20,7 @@ $vars['class'] = $class;
 $vars = array_merge($defaults, $vars);
 
 if ($enable_html) {
-	echo elgg_view_input('longtext', $vars);
+	echo elgg_view('input/longtext', $vars);
 } else {
-	echo elgg_view_input('plaintext', $vars);
+	echo elgg_view('input/plaintext', $vars);
 }

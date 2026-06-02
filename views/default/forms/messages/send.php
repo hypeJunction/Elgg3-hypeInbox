@@ -56,14 +56,14 @@ if (!$original_message) {
 
 if ($has_subject) {
 	if (!$original_message) {
-		echo elgg_view_input('text', [
+		echo elgg_view('input/text', [
 			'name' => 'subject',
 			'value' => $subject,
 			'label' => elgg_echo('inbox:message:subject'),
 		]);
 	} else {
 		$subject = $original_message->getReplySubject();
-		echo elgg_view_input('hidden', [
+		echo elgg_view('input/hidden', [
 			'name' => 'subject',
 			'value' => $subject,
 		]);

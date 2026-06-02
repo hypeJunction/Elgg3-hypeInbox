@@ -18,23 +18,40 @@ class MigrateSettingsToJson extends Batch {
 	/** @var string[] Setting keys that store serialized arrays */
 	const ARRAY_SETTINGS = ['default_message_types', 'message_types'];
 
-	public function getVersion(): int {
+	/**
+     * @return int
+     */
+    public function getVersion(): int {
 		return 2026042301;
 	}
 
-	public function needsIncrementOffset(): bool {
+	/**
+     * @return bool
+     */
+    public function needsIncrementOffset(): bool {
 		return false;
 	}
 
-	public function shouldBeSkipped(): bool {
+	/**
+     * @return bool
+     */
+    public function shouldBeSkipped(): bool {
 		return false;
 	}
 
-	public function countItems(): int {
+	/**
+     * @return int
+     */
+    public function countItems(): int {
 		return count(self::ARRAY_SETTINGS);
 	}
 
-	public function run(Result $result, $offset): Result {
+	/**
+     * @param Result $result
+     * @param mixed $offset
+     * @return Result
+     */
+    public function run(Result $result, $offset): Result {
 		$plugin = \elgg_get_plugin_from_id('hypeinbox');
 		if (!$plugin) {
 			$result->addFailures(count(self::ARRAY_SETTINGS));

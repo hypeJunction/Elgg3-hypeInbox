@@ -2,7 +2,7 @@
     "name": "hypejunction/hypeinbox",
     "version": "5.0.0",
     "type": "elgg-plugin",
-    "description": "Enhanced messaging for Elgg — multiple inboxes, message threading, and real-time updates.",
+    "description": "Enhanced messaging for Elgg \u2014 multiple inboxes, message threading, and real-time updates.",
     "homepage": "https://github.com/hypeJunction/hypeInbox",
     "keywords": [
         "elgg",
@@ -25,8 +25,9 @@
     },
     "require": {
         "composer/installers": "^2.0",
-        "php": ">=8.2",
-        "elgg/elgg": "^5.0"
+        "php": ">=8.1",
+        "elgg/elgg": "^5.0",
+        "ext-intl": "*"
     },
     "autoload": {
         "psr-0": {

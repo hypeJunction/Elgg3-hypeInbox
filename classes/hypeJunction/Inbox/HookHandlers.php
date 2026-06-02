@@ -2,192 +2,136 @@
 
 namespace hypeJunction\Inbox;
 
-use ElggMenuItem;
-use hypeJunction\Inbox\Config;
+use Elgg\Event;
 
 /**
- * Plugin hooks service
+ * Plugin hooks service (legacy BC shim).
+ *
+ * Elgg 5.x merged hooks into events: handlers receive a single
+ * \Elgg\Event. These methods are deprecated delegation wrappers kept for
+ * backward compatibility; the live handlers are registered directly on the
+ * delegate classes (Menus, Router, Config, Ajax, Notifications) in Bootstrap.
  */
 class HookHandlers {
 
 	/**
 	 * Add third party user types/roles to the config array
 	 *
-	 * @param string $hook   "config:user_types"
-	 * @param string $type   "framework:inbox"
-	 * @param array  $return User types config array
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function filterUserTypes($hook, $type, $return, $params) {
-		return Config::filterUserTypes($hook, $type, $return, $params);
+	public function filterUserTypes(Event $event) {
+		return Config::filterUserTypes($event);
 	}
 
 	/**
 	 * Messages page menu setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:page"
-	 * @param array  $return An array of menu items
-	 * @param array  $params Additional parameters
-	 * @return array An array of menu items
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupPageMenu($hook, $type, $return, $params) {
-		return Menus::setupPageMenu($hook, $type, $return, $params);
+	public function setupPageMenu(Event $event) {
+		return Menus::setupPageMenu($event);
 	}
 
 	/**
 	 * Register user hover menu items
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:user_hover"
-	 * @param array  $return An array of menu items
-	 * @param array  $params Additional parameters
-	 * @return array An array of menu items
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupUserHoverMenu($hook, $type, $return, $params) {
-		return Menus::setupUserHoverMenu($hook, $type, $return, $params);
+	public function setupUserHoverMenu(Event $event) {
+		return Menus::setupUserHoverMenu($event);
 	}
 
 	/**
 	 * Message entity menu setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:entity"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
-	 * @return array An array of menu items
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupMessageMenu($hook, $type, $return, $params) {
-		return Menus::setupMessageMenu($hook, $type, $return, $params);
+	public function setupMessageMenu(Event $event) {
+		return Menus::setupMessageMenu($event);
 	}
 
 	/**
 	 * Inbox controls setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:inbox"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
-	 * @return array An array of menu items
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupInboxMenu($hook, $type, $return, $params) {
-		return Menus::setupInboxMenu($hook, $type, $return, $params);
+	public function setupInboxMenu(Event $event) {
+		return Menus::setupInboxMenu($event);
 	}
 
 	/**
 	 * Thread controls setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:inbox:thread"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
-	 * @return array An array of menu items
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupInboxThreadMenu($hook, $type, $return, $params) {
-		return Menus::setupInboxThreadMenu($hook, $type, $return, $params);
+	public function setupInboxThreadMenu(Event $event) {
+		return Menus::setupInboxThreadMenu($event);
 	}
 
 	/**
 	 * Setup topbar menu
 	 *
-	 * @param string         $hook   "register"
-	 * @param string         $type   "menu:topbar"
-	 * @param ElggMenuItem[] $return Menu
-	 * @param array          $params Hook params
-	 * @return ElggMenuItem[]
+	 * @param \Elgg\Event $event Event
+	 * @return \ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
-	public function setupTopbarMenu($hook, $type, $return, $params) {
-		return Menus::setupTopbarMenu($hook, $type, $return, $params);
+	public function setupTopbarMenu(Event $event) {
+		return Menus::setupTopbarMenu($event);
 	}
 
 	/**
 	 * Pretty URL for message objects
 	 *
-	 * @param string $hook   "entity:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return string Filtered URL
+	 * @deprecated 6.0
 	 */
-	public function handleMessageURL($hook, $type, $return, $params) {
-		return Router::messageUrlHandler($hook, $type, $return, $params);
+	public function handleMessageURL(Event $event) {
+		return Router::messageUrlHandler($event);
 	}
 
 	/**
 	 * Replace message icon with a sender icon
 	 *
-	 * @param string $hook   "entity:icon:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return string Filtered URL
 	 * @deprecated 6.0
 	 */
-	public function handleMessageIconURL($hook, $type, $return, $params) {
-		return Router::messageIconUrlHandler($hook, $type, $return, $params);
-	}
-
-	/**
-	 * Get graph alias.
-	 *
-	 * @param string $hook   Hook name
-	 * @param string $type   Hook type
-	 * @param mixed  $return Return value
-	 * @param array  $params Hook params
-	 * @return mixed
-	 * @deprecated 6.0
-	 */
-	public function getGraphAlias($hook, $type, $return, $params) {
-		return Graph::getGraphAlias($hook, $type, $return, $params);
-	}
-
-	/**
-	 * Get message properties.
-	 *
-	 * @param string $hook   Hook name
-	 * @param string $type   Hook type
-	 * @param mixed  $return Return value
-	 * @param array  $params Hook params
-	 * @return mixed
-	 * @deprecated 6.0
-	 */
-	public function getMessageProperties($hook, $type, $return, $params) {
-		return Graph::getMessageProperties($hook, $type, $return, $params);
+	public function handleMessageIconURL(Event $event) {
+		return Router::messageIconUrlHandler($event);
 	}
 
 	/**
 	 * Add unread notifications count to the ajax responses
 	 *
-	 * @param string $hook   "output"
-	 * @param string $type   "ajax"
-	 * @param array  $return Ajax output
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function ajaxOutput($hook, $type, $return, $params) {
-		return Ajax::setUnreadMessagesCount();
+	public function ajaxOutput(Event $event) {
+		return Ajax::setUnreadMessagesCount($event);
 	}
 
 	/**
 	 * Register custom template
 	 *
-	 * @param string $hook   "get_templates"
-	 * @param string $type   "notifications"
-	 * @param string $return Template names
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */
-	public function addCustomTemplate($hook, $type, $return, $params) {
-		return \hypeJunction\Inbox\Notifiations::registerCustomTemplates($hook, $type, $return, $params);
+	public function addCustomTemplate(Event $event) {
+		return Notifications::registerCustomTemplates($event);
 	}
 }

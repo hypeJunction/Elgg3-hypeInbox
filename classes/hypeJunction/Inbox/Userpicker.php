@@ -9,15 +9,20 @@ use ElggEntity;
  */
 class Userpicker {
 
-	private $dbprefix;
+	/** @var mixed */
+    private $dbprefix;
 
-	protected $message_type;
+	/** @var mixed */
+    protected $message_type;
 
-	protected $sender;
+	/** @var mixed */
+    protected $sender;
 
-	protected $policies;
+	/** @var mixed */
+    protected $policies;
 
-	protected $options;
+	/** @var mixed */
+    protected $options;
 
 	/**
 	 * Constructor

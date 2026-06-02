@@ -15,7 +15,7 @@ if ($messages) {
 	]);
 }
 
-echo elgg_view_input('select', [
+echo elgg_view('input/select', [
 	'name' => 'params[enable_html]',
 	'value' => $entity->enable_html,
 	'options_values' => [
