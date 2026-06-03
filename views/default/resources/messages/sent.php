@@ -4,6 +4,7 @@ use hypeJunction\Inbox\Message;
 
 $page_owner = elgg_get_page_owner_entity();
 if (!$page_owner || !$page_owner->canEdit()) {
+	// TODO(6.x): forward('', '404') has no 1:1 replacement; throw \Elgg\Exceptions\Http\EntityNotFoundException instead
 	forward('', '404');
 }
 

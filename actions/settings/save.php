@@ -55,7 +55,7 @@ if (isset($message_types)) {
 }
 
 if (!$plugin instanceof ElggPlugin) {
-	register_error(elgg_echo('plugins:settings:save:fail', ['hypeinbox']));
+	elgg_register_error_message(elgg_echo('plugins:settings:save:fail', ['hypeinbox']));
 	return false;
 }
 
@@ -68,12 +68,12 @@ foreach ($params as $k => $v) {
 
 	$result = $plugin->setSetting($k, $v);
 	if (!$result) {
-		register_error(elgg_echo('plugins:settings:save:fail', [$plugin_name]));
+		elgg_register_error_message(elgg_echo('plugins:settings:save:fail', [$plugin_name]));
 	}
 }
 
 if ($result) {
-	system_message(elgg_echo('plugins:settings:save:ok', [$plugin_name]));
+	elgg_register_success_message(elgg_echo('plugins:settings:save:ok', [$plugin_name]));
 }
 
-elgg_flush_caches();
+elgg_clear_caches();

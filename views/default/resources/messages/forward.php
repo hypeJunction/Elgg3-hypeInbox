@@ -10,6 +10,7 @@ $guid = get_input('guid');
 $message = get_entity($guid);
 
 if (!$message instanceof Message) {
+	// TODO(6.x): forward('', '404') has no 1:1 replacement; throw \Elgg\Exceptions\Http\EntityNotFoundException instead
 	forward('', '404');
 }
 

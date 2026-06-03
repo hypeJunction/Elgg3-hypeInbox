@@ -13,13 +13,13 @@ $subject = htmlspecialchars(get_input('subject', ''), ENT_QUOTES, 'UTF-8');
 $body = get_input('body');
 
 if (empty($recipient_guids)) {
-	register_error(elgg_echo('inbox:send:error:no_recipients'));
-	forward(REFERRER);
+	elgg_register_error_message(elgg_echo('inbox:send:error:no_recipients'));
+	elgg_redirect_response(REFERRER);
 }
 
 if (empty(elgg_strip_tags($body))) {
-	register_error(elgg_echo('inbox:send:error:no_body'));
-	forward(REFERRER);
+	elgg_register_error_message(elgg_echo('inbox:send:error:no_body'));
+	elgg_redirect_response(REFERRER);
 }
 
 $enable_html = elgg_get_plugin_from_id('hypeinbox')->getSetting('enable_html');
@@ -46,8 +46,8 @@ $message = Message::factory([
 $guid = $message->send();
 
 if (!$guid) {
-	register_error(elgg_echo('inbox:send:error:generic'));
-	forward(REFERRER);
+	elgg_register_error_message(elgg_echo('inbox:send:error:generic'));
+	elgg_redirect_response(REFERRER);
 }
 
 $new_message = get_entity($guid);
@@ -90,5 +90,5 @@ foreach ($recipients as $recipient) {
 	]);
 }
 
-system_message(elgg_echo('inbox:send:success'));
-forward($new_message->getURL());
+elgg_register_success_message(elgg_echo('inbox:send:success'));
+elgg_redirect_response($new_message->getURL());

@@ -6,8 +6,8 @@ $guids = get_input('guids', []);
 $threaded = get_input('threaded');
 
 if (!is_array($guids) || empty($guids)) {
-	register_error(elgg_echo('inbox:delete:error'));
-	forward(REFERRER);
+	elgg_register_error_message(elgg_echo('inbox:delete:error'));
+	elgg_redirect_response(REFERRER);
 }
 
 $count = count($guids);
@@ -66,9 +66,9 @@ if ($count > 1) {
 
 $msg = implode('<br />', $msg);
 if ($success < $count) {
-	register_error($msg);
+	elgg_register_error_message($msg);
 } else {
-	system_message($msg);
+	elgg_register_success_message($msg);
 }
 
-forward($forward);
+elgg_redirect_response($forward);
