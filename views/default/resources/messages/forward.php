@@ -10,7 +10,7 @@ $guid = get_input('guid');
 $message = get_entity($guid);
 
 if (!$message instanceof Message) {
-	throw new \Elgg\Exceptions\Http\PageNotFoundException();
+	forward('', '404');
 }
 
 $message_type = $message->getMessageType();

@@ -20,7 +20,7 @@ foreach ($batch as $message) {
 
 if (empty($messages)) {
 	print json_encode(['complete' => true]);
-	elgg_redirect_response(REFERER);
+	forward(REFERER);
 }
 
 $site = elgg_get_site_entity();
@@ -47,4 +47,4 @@ print json_encode([
 
 access_show_hidden_entities($ha);
 
-elgg_redirect_response(REFERER);
+forward(REFERER);
