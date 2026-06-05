@@ -376,7 +376,7 @@ class Message extends ElggObject {
 			return $this->thread()->getAttachments($options);
 		} else {
 			$options = $this->getAttachmentsFilterOptions($options);
-			return elgg_get_entities_from_relationship($options);
+			return elgg_get_entities($options);
 		}
 	}
 
@@ -457,23 +457,22 @@ class Message extends ElggObject {
 		$this->attach();
 
 		// Create a copy for each of the recipients
-		$ia = elgg_set_ignore_access(true);
-		$recipients = $this->getRecipients();
-		foreach ($recipients as $recipient) {
-			if ($recipient->guid == $owner->guid) {
-				continue;
-			}
+		elgg_call(ELGG_IGNORE_ACCESS, function () use ($owner) {
+			$recipients = $this->getRecipients();
+			foreach ($recipients as $recipient) {
+				if ($recipient->guid == $owner->guid) {
+					continue;
+				}
 
-			$copy = clone $this;
-			$copy->owner_guid = $recipient->guid;
-			$copy->container_guid = $recipient->guid;
-			$copy->readYet = false;
-			if ($copy->save()) {
-				$copy->attach();
+				$copy = clone $this;
+				$copy->owner_guid = $recipient->guid;
+				$copy->container_guid = $recipient->guid;
+				$copy->readYet = false;
+				if ($copy->save()) {
+					$copy->attach();
+				}
 			}
-		}
-
-		elgg_set_ignore_access($ia);
+		});
 
 		elgg_trigger_after_event('send', 'object', $this);
 

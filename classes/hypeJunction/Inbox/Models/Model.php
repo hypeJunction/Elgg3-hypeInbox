@@ -65,7 +65,7 @@ class Model {
 			return false;
 		}
 
-		return elgg_is_admin_user($user->guid);
+		return $user->isAdmin();
 	}
 
 	/**
@@ -354,7 +354,9 @@ class Model {
 	 */
 	public function getUnhashedMessages(array $options = []) {
 
-		$name_id = elgg_get_metastring_id('msgHash');
+		// TODO(7.x): elgg_get_metastring_id() removed (internal metastrings API). The metadata.name_id
+		// column no longer exists; metadata is keyed by metadata.name directly. Rewrite this NOT EXISTS
+		// subquery to match against md.name = 'msgHash' instead of a resolved name_id.
 		$dbprefix = elgg_get_config('dbprefix');
 
 		$defaults = [
@@ -362,7 +364,7 @@ class Model {
 			'subtypes' => Message::SUBTYPE,
 			'wheres' => [
 				"NOT EXISTS (SELECT 1 FROM {$dbprefix}metadata md WHERE md.entity_guid = e.guid
-			AND md.name_id = {$name_id})"
+			AND md.name = 'msgHash')"
 			],
 			'order_by' => 'e.guid ASC',
 		];

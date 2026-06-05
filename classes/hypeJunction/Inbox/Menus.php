@@ -183,7 +183,7 @@ class Menus {
 
 							if ($valid && $group_relationship && $group_relationship != 'all') {
 								$dbprefix = elgg_get_config('dbprefix');
-								$valid = elgg_get_entities_from_relationship([
+								$valid = elgg_get_entities([
 									'types' => 'group',
 									'relationship' => 'member',
 									'relationship_guid' => $recipient->guid,
