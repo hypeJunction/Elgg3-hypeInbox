@@ -33,7 +33,7 @@ class Menus {
 
 		$intypes = hypeInbox()->model->getIncomingMessageTypes($user);
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'inbox',
 			'text' => elgg_echo('inbox:inbox'),
 			'href' => count($intypes) > 1 ? false : elgg_generate_url('collection:object:messages:owner', [
@@ -42,11 +42,11 @@ class Menus {
 			'priority' => 100,
 			'link_class' => 'inbox-load',
 			'icon' => 'fas fa-inbox',
-		]));
+		]);
 
 		if (count($intypes) > 1) {
 			foreach ($intypes as $type) {
-				$menu->add(ElggMenuItem::factory([
+				$menu[] = ElggMenuItem::factory([
 					'name' => "inbox:$type",
 					'parent_name' => 'inbox',
 					'text' => elgg_echo("item:object:message:$type:plural"),
@@ -54,13 +54,13 @@ class Menus {
 						'message_type' => $type,
 					]),
 					'link_class' => 'inbox-load'
-				]));
+				]);
 			}
 		}
 
 		$outtypes = hypeInbox()->model->getOutgoingMessageTypes($user);
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'sentmessages',
 			'text' => elgg_echo('inbox:sent'),
 			'href' => count($outtypes) > 1 ? false : elgg_generate_url('collection:object:messages:sent', [
@@ -69,11 +69,11 @@ class Menus {
 			'priority' => 500,
 			'link_class' => 'inbox-load',
 			'icon' => 'fas fa-history',
-		]));
+		]);
 
 		if (count($outtypes) > 1) {
 			foreach ($outtypes as $type) {
-				$menu->add(ElggMenuItem::factory([
+				$menu[] = ElggMenuItem::factory([
 					'name' => "sent:$type",
 					'parent_name' => 'sentmessages',
 					'text' => elgg_echo("item:object:message:$type:plural"),
@@ -81,18 +81,18 @@ class Menus {
 						'message_type' => $type,
 					]),
 					'link_class' => 'inbox-load'
-				]));
+				]);
 			}
 		}
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'inbox:search',
 			'text' => elgg_echo('inbox:search'),
 			'href' => elgg_generate_url('collection:object:messages:search'),
 			'priority' => 800,
 			'link_class' => 'inbox-load',
 			'icon' => 'fas fa-search',
-		]));
+		]);
 
 		return $menu;
 	}
@@ -245,17 +245,17 @@ class Menus {
 		$menu->remove('edit');
 		$menu->remove('delete');
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'forward',
 			'icon' => 'fas fa-share',
 			'text' => elgg_echo('inbox:forward'),
 			'href' => elgg_generate_url('forward:object:messages', [
 				'guid' => $entity->guid,
 			]),
-		]));
+		]);
 
 		if (!$entity->isPersistent()) {
-			$menu->add(ElggMenuItem::factory([
+			$menu[] = ElggMenuItem::factory([
 				'name' => 'delete',
 				'icon' => 'fas fa-trash',
 				'text' => elgg_echo('inbox:delete'),
@@ -264,7 +264,7 @@ class Menus {
 				'is_action' => true,
 				'priority' => 900,
 				'link_class' => 'elgg-state elgg-state-danger',
-			]));
+			]);
 		}
 
 		return $menu;
@@ -351,34 +351,34 @@ class Menus {
 
 		$menu = $event->getValue();
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'reply',
 			'href' => '#reply',
 			'text' => elgg_echo('inbox:reply'),
 			'priority' => 100,
 			'icon' => 'fas fa-reply',
-		]));
+		]);
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'markread',
 			'href' => elgg_generate_action_url('messages/markread', $action_params),
 			'text' => elgg_echo('inbox:markread'),
 			'is_action' => true,
 			'priority' => 200,
 			'icon' => 'fas fa-envelope-open-text',
-		]));
+		]);
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'markunread',
 			'href' => elgg_generate_action_url('messages/markunread', $action_params),
 			'text' => elgg_echo('inbox:markunread'),
 			'is_action' => true,
 			'priority' => 210,
 			'icon' => 'fas fa-envelope',
-		]));
+		]);
 
 		if (!$entity->isPersistent()) {
-			$menu->add(ElggMenuItem::factory([
+			$menu[] = ElggMenuItem::factory([
 				'name' => 'delete',
 				'text' => elgg_echo('inbox:delete'),
 				'href' => elgg_generate_action_url('messages/delete', $action_params),
@@ -387,7 +387,7 @@ class Menus {
 				'priority' => 900,
 				'link_class' => 'elgg-state elgg-state-danger',
 				'icon' => 'fas fa-trash',
-			]));
+			]);
 		}
 
 		return $menu;
@@ -414,7 +414,7 @@ class Menus {
 			$count = null;
 		}
 
-		$menu->add(ElggMenuItem::factory([
+		$menu[] = ElggMenuItem::factory([
 			'name' => 'inbox',
 			'href' => 'messages#inbox-popup',
 			'text' => '',
@@ -429,7 +429,7 @@ class Menus {
 				'of' => '.elgg-menu-topbar > .elgg-menu-item-notifications',
 				'collision' => 'fit fit',
 			]),
-		]));
+		]);
 
 		$menu->remove('messages');
 
@@ -453,7 +453,7 @@ class Menus {
 		$outgoing_message_types = hypeInbox()->model->getOutgoingMessageTypes();
 
 		if (count($outgoing_message_types) === 1) {
-			$menu->add(ElggMenuItem::factory([
+			$menu[] = ElggMenuItem::factory([
 				'name' => 'compose',
 				'text' => elgg_echo('inbox:compose'),
 				'href' => elgg_generate_url('add:object:messages', [
@@ -462,9 +462,9 @@ class Menus {
 				]),
 				'link_class' => 'elgg-button elgg-button-action',
 				'icon' => 'fas fa-plus',
-			]));
+			]);
 		} else if (count($outgoing_message_types) > 1) {
-			$menu->add(ElggMenuItem::factory([
+			$menu[] = ElggMenuItem::factory([
 				'name' => 'compose',
 				'text' => elgg_echo('inbox:compose'),
 				'href' => false,
@@ -478,10 +478,10 @@ class Menus {
 						'collision' => 'fit fit',
 					]),
 				],
-			]));
+			]);
 
 			foreach ($outgoing_message_types as $mt) {
-				$menu->add(ElggMenuItem::factory([
+				$menu[] = ElggMenuItem::factory([
 					'name' => ($mt == HYPEINBOX_PRIVATE) ? 'send' : "compose:$mt",
 					'text' => elgg_echo("item:object:message:$mt:singular"),
 					'href' => elgg_generate_url('add:object:messages', [
@@ -490,7 +490,7 @@ class Menus {
 					]),
 					'icon' => 'fas fa-plus',
 					'parent_name' => 'compose',
-				]));
+				]);
 			}
 		}
 
