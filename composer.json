@@ -1,6 +1,5 @@
 {
     "name": "hypejunction/hypeinbox",
-    "version": "6.0.7",
     "type": "elgg-plugin",
     "description": "Enhanced messaging for Elgg \u2014 multiple inboxes, message threading, and real-time updates.",
     "homepage": "https://github.com/hypeJunction/hypeInbox",

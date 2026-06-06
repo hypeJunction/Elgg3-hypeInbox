@@ -457,7 +457,7 @@ class Message extends ElggObject {
 		$this->attach();
 
 		// Create a copy for each of the recipients
-		$ia = \elgg_set_ignore_access(true);
+		$ia = _elgg_services()->session_manager->setIgnoreAccess(true);
 		$recipients = $this->getRecipients();
 		foreach ($recipients as $recipient) {
 			if ($recipient->guid == $owner->guid) {
@@ -473,7 +473,7 @@ class Message extends ElggObject {
 			}
 		}
 
-		\elgg_set_ignore_access($ia);
+		_elgg_services()->session_manager->setIgnoreAccess($ia);
 
 		\elgg_trigger_after_event('send', 'object', $this);
 
