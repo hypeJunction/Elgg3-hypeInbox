@@ -18,18 +18,18 @@ class Menus {
 	 * @return mixed
 	 */
 	public static function setupPageMenu(Event $event) {
+		$menu = $event->getValue();
+
 		if (!elgg_in_context('messages')) {
-			return;
+			return $menu;
 		}
 
 		$entity = $event->getParam('entity');
 		if ($entity instanceof \ElggEntity) {
-			return;
+			return $menu;
 		}
 
 		$user = elgg_get_page_owner_entity();
-
-		$menu = $event->getValue();
 
 		$intypes = hypeInbox()->model->getIncomingMessageTypes($user);
 
@@ -108,7 +108,7 @@ class Menus {
 		$return = $event->getValue();
 
 		if (!elgg_in_context('admin')) {
-			return;
+			return $return;
 		}
 
 		$return[] = ElggMenuItem::factory([
@@ -227,12 +227,11 @@ class Menus {
 	 * @return mixed
 	 */
 	public static function setupMessageMenu(Event $event) {
-
-		$entity = $event->getParam('entity');
 		$menu = $event->getValue();
 
+		$entity = $event->getParam('entity');
 		if (!$entity instanceof Message || !$entity->canEdit()) {
-			return;
+			return $menu;
 		}
 
 		$threaded = $event->getParam('threaded', false);
@@ -242,8 +241,14 @@ class Menus {
 			'threaded' => $threaded,
 		];
 
-		$menu->remove('edit');
-		$menu->remove('delete');
+		if ($menu instanceof \Elgg\Menu\MenuItems) {
+			$menu->remove('edit');
+			$menu->remove('delete');
+		} else {
+			$menu = array_filter((array) $menu, function($item) {
+				return !in_array($item->getName(), ['edit', 'delete'], true);
+			});
+		}
 
 		$menu[] = ElggMenuItem::factory([
 			'name' => 'forward',
@@ -338,18 +343,17 @@ class Menus {
 	 * @return mixed
 	 */
 	public static function setupInboxThreadMenu(Event $event) {
-		$entity = $event->getParam('entity');
+		$menu = $event->getValue();
 
+		$entity = $event->getParam('entity');
 		if (!$entity instanceof Message || !$entity->canEdit()) {
-			return;
+			return $menu;
 		}
 
 		$action_params = [
 			'guids' => [$entity->guid],
 			'threaded' => true,
 		];
-
-		$menu = $event->getValue();
 
 		$menu[] = ElggMenuItem::factory([
 			'name' => 'reply',
@@ -401,11 +405,11 @@ class Menus {
 	 * @return mixed
 	 */
 	public static function setupTopbarMenu(Event $event) {
-		if (!elgg_is_logged_in()) {
-			return;
-		}
-
 		$menu = $event->getValue();
+
+		if (!elgg_is_logged_in()) {
+			return $menu;
+		}
 
 		$count = hypeInbox()->model->countUnreadMessages();
 		if ($count > 99) {
@@ -431,7 +435,13 @@ class Menus {
 			]),
 		]);
 
-		$menu->remove('messages');
+		if ($menu instanceof \Elgg\Menu\MenuItems) {
+			$menu->remove('messages');
+		} else {
+			$menu = array_filter((array) $menu, function($item) {
+				return $item->getName() !== 'messages';
+			});
+		}
 
 		return $menu;
 	}
@@ -444,11 +454,11 @@ class Menus {
 	 * @return mixed
 	 */
 	public static function setupTitleMenu(Event $event) {
-		if (!elgg_in_context('messages')) {
-			return;
-		}
-
 		$menu = $event->getValue();
+
+		if (!elgg_in_context('messages')) {
+			return $menu;
+		}
 
 		$outgoing_message_types = hypeInbox()->model->getOutgoingMessageTypes();
 

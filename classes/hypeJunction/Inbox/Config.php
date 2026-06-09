@@ -199,9 +199,9 @@ class Config {
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
 				WHERE (e1.type = 'user' AND e2.type = 'user')";
 
-			$data = get_data($query);
+			$data = elgg()->db->getConnection('read')->executeQuery($query)->fetchAllAssociative();
 			foreach ($data as $rel) {
-				$relationships[] = $rel->relationship;
+				$relationships[] = $rel['relationship'];
 			}
 
 			$this->userRelationships = $relationships;
@@ -225,9 +225,9 @@ class Config {
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
 				WHERE (e1.type = 'user' AND e2.type = 'group')";
 
-			$data = get_data($query);
+			$data = elgg()->db->getConnection('read')->executeQuery($query)->fetchAllAssociative();
 			foreach ($data as $rel) {
-				$relationships[] = $rel->relationship;
+				$relationships[] = $rel['relationship'];
 			}
 
 			$this->userGroupRelationships = $relationships;

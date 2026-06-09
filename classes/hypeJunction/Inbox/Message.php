@@ -509,8 +509,8 @@ class Message extends ElggObject {
 	 * @param bool $recursive Delete recursively
 	 * @return bool
 	 */
-	public function delete(bool $recursive = true): bool {
-		return parent::delete($recursive);
+	public function delete(bool $recursive = true, ?bool $persistent = null): bool {
+		return parent::delete($recursive, $persistent);
 	}
 
 	/**

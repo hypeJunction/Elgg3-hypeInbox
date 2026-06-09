@@ -33,7 +33,7 @@ if ($threaded && $messages) {
 	foreach ($messages as $msg) {
 		$lastMsg = $msg->getVolatileData('select:lastMsg');
 		if ($lastMsg && $lastMsg != $msg->guid) {
-			$latest_messages[] = get_entity($lastMsg);
+			$latest_messages[] = get_entity((int) $lastMsg);
 		} else {
 			$latest_messages[] = $msg;
 		}

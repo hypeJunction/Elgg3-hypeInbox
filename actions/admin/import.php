@@ -5,46 +5,47 @@ use hypeJunction\Inbox\Message;
 $limit = get_input('limit', 20);
 $offset = get_input('offset', 0);
 
-$ha = access_get_show_hidden_status();
-access_show_hidden_entities(true);
+$messages = elgg_call(ELGG_SHOW_DISABLED_ENTITIES, function () use ($limit, $offset) {
+	$found = [];
+	$batch = hypeInbox()->model->getUnhashedMessages([
+		'limit' => $limit,
+		'offset' => $offset,
+	]);
 
-$messages = [];
-$batch = hypeInbox()->model->getUnhashedMessages([
-	'limit' => $limit,
-	'offset' => $offset,
-]);
+	foreach ($batch as $message) {
+		$found[] = $message;
+	}
 
-foreach ($batch as $message) {
-	$messages[] = $message;
-}
+	return $found;
+});
 
 if (empty($messages)) {
 	print json_encode(['complete' => true]);
-	return elgg_redirect_response(REFERER);
+	return elgg_redirect_response(REFERRER);
 }
 
 $site = elgg_get_site_entity();
 
-foreach ($messages as $msg) {
-	if (!$msg instanceof Message) {
-		continue;
+elgg_call(ELGG_SHOW_DISABLED_ENTITIES, function () use ($messages, &$offset) {
+	foreach ($messages as $msg) {
+		if (!$msg instanceof Message) {
+			continue;
+		}
+
+		$msg->msgHash = $msg->calcHash();
+
+		$msg->msgType = Message::TYPE_PRIVATE;
+
+		elgg_log("Updated message $msg->guid (hash : $msg->msgHash; type : $msg->msgType");
+
+		if (!$msg->save()) {
+			$offset++;
+		}
 	}
-	
-	$msg->msgHash = $msg->calcHash();
-
-	$msg->msgType = Message::TYPE_PRIVATE;
-
-	elgg_log("Updated message $msg->guid (hash : $msg->msgHash; type : $msg->msgType");
-
-	if (!$msg->save()) {
-		$offset++;
-	}
-}
+});
 
 print json_encode([
 	'offset' => $offset
 ]);
 
-access_show_hidden_entities($ha);
-
-return elgg_redirect_response(REFERER);
+return elgg_redirect_response(REFERRER);

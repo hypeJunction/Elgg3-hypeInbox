@@ -4,8 +4,10 @@ use hypeJunction\Inbox\Message;
 
 $hash = get_input('hash');
 
+$entity = null;
+
 if (is_numeric($hash)) {
-	$entity = get_entity($hash);
+	$entity = get_entity((int) $hash);
 } else if (is_string($hash)) {
 	$entities = elgg_get_entities([
 		'types' => 'object',
@@ -19,7 +21,7 @@ if (is_numeric($hash)) {
 		'limit' => 1
 	]);
 
-	$entity = $entities[0];
+	$entity = $entities[0] ?? null;
 }
 
 if ($entity instanceof Message) {

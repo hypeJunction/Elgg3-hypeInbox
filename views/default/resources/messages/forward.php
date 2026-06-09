@@ -7,7 +7,7 @@ elgg_gatekeeper();
 elgg_import_esm('framework/inbox/user');
 
 $guid = get_input('guid');
-$message = get_entity($guid);
+$message = $guid ? get_entity((int) $guid) : null;
 
 if (!$message instanceof Message) {
 	throw new \Elgg\Exceptions\Http\PageNotFoundException();

@@ -16,7 +16,7 @@ $persistent = 0;
 $notfound = 0;
 
 foreach ($guids as $guid) {
-	$message = get_entity($guid);
+	$message = get_entity((int) $guid);
 	if (!$message instanceof Message) {
 		$notfound++;
 		continue;

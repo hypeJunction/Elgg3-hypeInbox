@@ -4,7 +4,7 @@ use hypeJunction\Inbox\Group;
 use hypeJunction\Inbox\Message;
 
 $original_msg_guid = get_input('original_guid');
-$original_message = get_entity($original_msg_guid);
+$original_message = $original_msg_guid ? get_entity((int) $original_msg_guid) : null;
 
 $sender_guid = elgg_get_logged_in_user_guid();
 $recipient_guids = Group::create(get_input('recipients', []))->guids();
@@ -47,7 +47,7 @@ if (!$guid) {
 	return elgg_error_response(elgg_echo('inbox:send:error:generic'), REFERRER);
 }
 
-$new_message = get_entity($guid);
+$new_message = get_entity((int) $guid);
 
 $sender = $new_message->getSender();
 $message_type = $new_message->getMessageType();
@@ -78,13 +78,15 @@ foreach ($recipients as $recipient) {
 		]),
 	], $recipient->language);
 	
-	notify_user($recipient->guid, $sender->guid, $subject, $notification, [
-		'attachments' => $attachments,
+	elgg_notify_user($recipient, 'send', $new_message, [
+		'subject' => $subject,
+		'body' => $notification,
+		'attachments' => $attachments ?? [],
 		'template' => 'messages_send',
 		'action' => 'send',
 		'object' => $new_message,
 		'recipients' => $recipients,
-	]);
+	], $sender);
 }
 
 return elgg_ok_response('', elgg_echo('inbox:send:success'), $new_message->getURL());

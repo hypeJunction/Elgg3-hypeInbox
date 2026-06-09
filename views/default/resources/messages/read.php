@@ -1,10 +1,8 @@
 <?php
 
-$guid = elgg_extract('guid', $vars);
+$guid = (int) elgg_extract('guid', $vars);
 
-elgg_entity_gatekeeper($guid, 'object', 'messages');
-
-$message = get_entity($guid);
+$message = elgg_entity_gatekeeper($guid, 'object', 'messages');
 
 elgg_import_esm('framework/inbox/user');
 
