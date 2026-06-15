@@ -7,6 +7,6 @@ $menu = elgg_view_menu('inbox:thread', [
 	'class' => 'elgg-menu-hover',
 ]);
 
-echo elgg_view_module('aside', null, $menu, [
+echo elgg_view_module('aside', '', $menu, [
 	'class' => 'inbox-module has-list',
 ]);
