@@ -50,5 +50,6 @@ if (elgg_is_xhr()) {
 		'show_owner_block' => false,
 	]);
 
+	$title = elgg_echo('inbox:inbox');
 	echo elgg_view_page($title, $layout);
 }

@@ -31,5 +31,6 @@ if (elgg_is_xhr()) {
 		'page_menu_params' => ['sort_by' => 'priority'],
 		'show_owner_block' => false,
 	]);
+	$title = elgg_echo('inbox:search');
 	echo elgg_view_page($title, $layout);
 }
