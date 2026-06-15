@@ -55,7 +55,7 @@ elgg_push_context('inbox-form');
 $controls = elgg_view('framework/inbox/controls/inbox', $params);
 $body = elgg_view('framework/inbox/list', $params);
 
-echo elgg_view_module('aside', null, $body, [
+echo elgg_view_module('aside', '', $body, [
 	'header' => $controls,
 	'class' => 'inbox-module has-list',
 ]);
