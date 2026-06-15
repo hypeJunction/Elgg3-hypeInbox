@@ -8,6 +8,7 @@ elgg_import_esm('framework/inbox/user');
 
 $message_type = $message->msgType;
 $subject = $message->getDisplayName();
+$page_owner = elgg_get_logged_in_user_entity();
 
 elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 	'name' => 'bc_1',
@@ -67,6 +68,7 @@ if (elgg_is_xhr()) {
 		'show_owner_block' => false,
 	]);
 
+	$title = $subject;
 	echo elgg_view_page($title, $layout, 'default', [
 		'header' => false,
 	]);
