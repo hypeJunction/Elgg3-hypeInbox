@@ -1,6 +1,6 @@
 <?php
 
-$spanish = array(
+return [
 
 	'admin:inbox' => 'Configuración de la bandeja de entrada',
 	'admin:inbox:message_types' => 'Tipos de mensajes',
@@ -137,6 +137,4 @@ Para enviar un mensaje a %s, haga clic aquí:
 %s
 
 Por favor no responda a este correo.",
-);
-
-add_translation("es", $spanish);
+];
