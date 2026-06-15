@@ -40,7 +40,7 @@ elgg_push_context('sent-form');
 $header = elgg_view('framework/inbox/controls/inbox', $params);
 $body = elgg_view('framework/inbox/list', $params);
 
-echo elgg_view_module('aside', null, $body, [
+echo elgg_view_module('aside', '', $body, [
 	'header' => $header,
 	'class' => 'inbox-module has-list',
 ]);

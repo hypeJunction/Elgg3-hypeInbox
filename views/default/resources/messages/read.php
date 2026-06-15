@@ -49,7 +49,7 @@ if (elgg_is_xhr()) {
 
 	$reply = elgg_view('framework/inbox/reply', $params);
 
-	$content = elgg_view_module('aside', null, $thread, [
+	$content = elgg_view_module('aside', '', $thread, [
 		'footer' => $reply,
 		'class' => 'inbox-message-block inbox-module has-list',
 	]);
