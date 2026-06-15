@@ -29,4 +29,5 @@ $layout = elgg_view_layout('default', [
 	'show_owner_block' => false,
 ]);
 
+$title = elgg_echo('inbox:sent');
 echo elgg_view_page($title, $layout);

@@ -10,6 +10,7 @@ elgg_require_js('framework/inbox/user');
 
 $message_type = $message->msgType;
 $subject = $message->getDisplayName();
+$page_owner = elgg_get_logged_in_user_entity();
 
 elgg_push_breadcrumb(
 	elgg_echo('inbox'),
@@ -63,6 +64,7 @@ if (elgg_is_xhr()) {
 		'show_owner_block' => false,
 	]);
 
+	$title = $subject;
 	echo elgg_view_page($title, $layout, 'default', [
 		'header' => false,
 	]);
