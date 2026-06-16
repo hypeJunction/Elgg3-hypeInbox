@@ -58,7 +58,7 @@ if (!$plugin instanceof ElggPlugin) {
 	return elgg_error_response(elgg_echo('plugins:settings:save:fail', ['hypeinbox']));
 }
 
-$plugin_name = $plugin->getManifest()->getName();
+$plugin_name = $plugin->getDisplayName();
 
 foreach ($params as $k => $v) {
 	if (is_array($v)) {
