@@ -1,7 +1,7 @@
 import elgg from 'elgg';
 import $ from 'jquery';
 import i18n from 'elgg/i18n';
-import notify from 'elgg/notify';
+import notify from 'elgg/system_messages';
 
 var inbox = {
 	/**
