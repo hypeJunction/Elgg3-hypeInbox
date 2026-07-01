@@ -11,7 +11,7 @@ use stdClass;
 class Policy {
 
 	/** @var mixed */
-    private $dbprefix;
+	private $dbprefix;
 
 	/**
 	 * Config object
@@ -65,9 +65,9 @@ class Policy {
 		$policy = $this->normalizePolicy($policy);
 		$this->setSenderType($policy['sender']);
 		$this->setRecipientType($policy['recipient']);
-		$this->relationship = sanitize_string($policy['relationship']);
+		$this->relationship = (string) $policy['relationship'];
 		$this->inverse_relationship = (bool) $policy['inverse_relationship'];
-		$this->group_relationship = sanitize_string($policy['group_relationship']);
+		$this->group_relationship = (string) $policy['group_relationship'];
 	}
 
 	/**

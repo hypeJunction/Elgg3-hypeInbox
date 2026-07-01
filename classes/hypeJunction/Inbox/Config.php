@@ -10,25 +10,25 @@ use Elgg\Event;
 class Config {
 
 	/** @var mixed */
-    private $messageTypes;
+	private $messageTypes;
 
 	/** @var mixed */
-    private $userTypes;
+	private $userTypes;
 
 	/** @var mixed */
-    private $userRelationships;
+	private $userRelationships;
 
 	/** @var mixed */
-    private $userGroupRelationships;
+	private $userGroupRelationships;
 
 	const TYPE_NOTIFICATION = '__notification';
 	const TYPE_PRIVATE = '__private';
 
 	/** @var mixed */
-    private $plugin;
+	private $plugin;
 
 	/** @var mixed */
-    private $settings;
+	private $settings;
 
 	/**
 	 * Constructor
@@ -178,7 +178,7 @@ class Config {
 				],
 			];
 
-			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', null, $config);
+			$this->userTypes = elgg_trigger_event_results('config:user_types', 'framework:inbox', [], $config);
 		}
 
 		return $this->userTypes;
@@ -199,9 +199,9 @@ class Config {
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
 				WHERE (e1.type = 'user' AND e2.type = 'user')";
 
-			$data = get_data($query);
+			$data = elgg()->db->getConnection('read')->executeQuery($query)->fetchAllAssociative();
 			foreach ($data as $rel) {
-				$relationships[] = $rel->relationship;
+				$relationships[] = $rel['relationship'];
 			}
 
 			$this->userRelationships = $relationships;
@@ -225,9 +225,9 @@ class Config {
 				JOIN {$this->dbprefix}entities e2 ON e2.guid = er.guid_two
 				WHERE (e1.type = 'user' AND e2.type = 'group')";
 
-			$data = get_data($query);
+			$data = elgg()->db->getConnection('read')->executeQuery($query)->fetchAllAssociative();
 			foreach ($data as $rel) {
-				$relationships[] = $rel->relationship;
+				$relationships[] = $rel['relationship'];
 			}
 
 			$this->userGroupRelationships = $relationships;

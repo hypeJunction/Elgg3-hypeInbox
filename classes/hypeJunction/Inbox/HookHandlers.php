@@ -13,10 +13,7 @@ class HookHandlers {
 	/**
 	 * Add third party user types/roles to the config array
 	 *
-	 * @param string $hook   "config:user_types"
-	 * @param string $type   "framework:inbox"
-	 * @param array  $return User types config array
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */
@@ -27,10 +24,7 @@ class HookHandlers {
 	/**
 	 * Messages page menu setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:page"
-	 * @param array  $return An array of menu items
-	 * @param array  $params Additional parameters
+	 * @param \Elgg\Event $event Event
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -41,10 +35,7 @@ class HookHandlers {
 	/**
 	 * Register user hover menu items
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:user_hover"
-	 * @param array  $return An array of menu items
-	 * @param array  $params Additional parameters
+	 * @param \Elgg\Event $event Event
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -55,10 +46,7 @@ class HookHandlers {
 	/**
 	 * Message entity menu setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:entity"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
+	 * @param \Elgg\Event $event Event
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -69,10 +57,7 @@ class HookHandlers {
 	/**
 	 * Inbox controls setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:inbox"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
+	 * @param \Elgg\Event $event Event
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -83,10 +68,7 @@ class HookHandlers {
 	/**
 	 * Thread controls setup
 	 *
-	 * @param string $hook   "register"
-	 * @param string $type   "menu:inbox:thread"
-	 * @param array  $return An array of menu items
-	 * @param array  $params An array of additional parameters
+	 * @param \Elgg\Event $event Event
 	 * @return array An array of menu items
 	 * @deprecated 6.0
 	 */
@@ -97,10 +79,7 @@ class HookHandlers {
 	/**
 	 * Setup topbar menu
 	 *
-	 * @param string         $hook   "register"
-	 * @param string         $type   "menu:topbar"
-	 * @param ElggMenuItem[] $return Menu
-	 * @param array          $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return ElggMenuItem[]
 	 * @deprecated 6.0
 	 */
@@ -111,10 +90,7 @@ class HookHandlers {
 	/**
 	 * Pretty URL for message objects
 	 *
-	 * @param string $hook   "entity:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return string Filtered URL
 	 */
 	public function handleMessageURL(\Elgg\Event $event) {
@@ -124,10 +100,7 @@ class HookHandlers {
 	/**
 	 * Replace message icon with a sender icon
 	 *
-	 * @param string $hook   "entity:icon:url"
-	 * @param string $type   "object"
-	 * @param string $return Icon URL
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return string Filtered URL
 	 * @deprecated 6.0
 	 */
@@ -138,10 +111,7 @@ class HookHandlers {
 	/**
 	 * Get graph alias.
 	 *
-	 * @param string $hook   Hook name
-	 * @param string $type   Hook type
-	 * @param mixed  $return Return value
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return mixed
 	 * @deprecated 6.0
 	 */
@@ -152,10 +122,7 @@ class HookHandlers {
 	/**
 	 * Get message properties.
 	 *
-	 * @param string $hook   Hook name
-	 * @param string $type   Hook type
-	 * @param mixed  $return Return value
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return mixed
 	 * @deprecated 6.0
 	 */
@@ -166,10 +133,7 @@ class HookHandlers {
 	/**
 	 * Add unread notifications count to the ajax responses
 	 *
-	 * @param string $hook   "output"
-	 * @param string $type   "ajax"
-	 * @param array  $return Ajax output
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */
@@ -180,10 +144,7 @@ class HookHandlers {
 	/**
 	 * Register custom template
 	 *
-	 * @param string $hook   "get_templates"
-	 * @param string $type   "notifications"
-	 * @param string $return Template names
-	 * @param array  $params Hook params
+	 * @param \Elgg\Event $event Event
 	 * @return array
 	 * @deprecated 6.0
 	 */

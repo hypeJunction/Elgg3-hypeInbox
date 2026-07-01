@@ -44,7 +44,7 @@ class Router {
 					return;
 				}
 
-				$entity = get_entity($guid);
+				$entity = get_entity((int) $guid);
 				if (!$entity) {
 					return;
 				}

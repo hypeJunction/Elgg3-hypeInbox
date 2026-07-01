@@ -7,10 +7,10 @@ elgg_gatekeeper();
 elgg_import_esm('framework/inbox/user');
 
 $guid = get_input('guid');
-$message = get_entity($guid);
+$message = $guid ? get_entity((int) $guid) : null;
 
 if (!$message instanceof Message) {
-	forward('', '404');
+	throw new \Elgg\Exceptions\Http\PageNotFoundException();
 }
 
 $message_type = $message->getMessageType();

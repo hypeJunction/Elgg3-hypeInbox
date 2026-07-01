@@ -53,7 +53,7 @@ return [
 			],
 		],
 		'collection:object:messages:search' => [
-			'path' => '/messages/search',
+			'path' => '/messages/search/{username?}',
 			'resource' => 'messages/search',
 			'middleware' => [
 				\Elgg\Router\Middleware\Gatekeeper::class,

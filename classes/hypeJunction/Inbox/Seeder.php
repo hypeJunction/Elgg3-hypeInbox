@@ -9,10 +9,16 @@ use Elgg\Database\Seeds\Seed;
  */
 class Seeder extends Seed {
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public static function getType(): string {
 		return 'messages';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getCountOptions(): array {
 		return [
 			'type' => 'object',
@@ -20,6 +26,9 @@ class Seeder extends Seed {
 		];
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function seed(): void {
 		$this->advance($this->getCount());
 
@@ -51,6 +60,9 @@ class Seeder extends Seed {
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function unseed(): void {
 		$entities = elgg_get_entities([
 			'type' => 'object',

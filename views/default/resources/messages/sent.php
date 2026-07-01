@@ -4,7 +4,7 @@ use hypeJunction\Inbox\Message;
 
 $page_owner = elgg_get_page_owner_entity();
 if (!$page_owner || !$page_owner->canEdit()) {
-	forward('', '404');
+	throw new \Elgg\Exceptions\Http\PageNotFoundException();
 }
 
 elgg_import_esm('framework/inbox/user');
@@ -37,4 +37,5 @@ $layout = elgg_view_layout('default', [
 	'show_owner_block' => false,
 ]);
 
+$title = elgg_echo('inbox:sent');
 echo elgg_view_page($title, $layout);

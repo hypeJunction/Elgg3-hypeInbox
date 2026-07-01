@@ -6,8 +6,7 @@ $guids = get_input('guids', []);
 $threaded = get_input('threaded');
 
 if (!is_array($guids) || empty($guids)) {
-	register_error(elgg_echo('inbox:markunread:error'));
-	forward(REFERRER);
+	return elgg_error_response(elgg_echo('inbox:markunread:error'), REFERRER);
 }
 
 $count = count($guids);
@@ -15,7 +14,7 @@ $success = 0;
 $notfound = 0;
 
 foreach ($guids as $guid) {
-	$message = get_entity($guid);
+	$message = get_entity((int) $guid);
 	if (!$message instanceof Message) {
 		$notfound++;
 		continue;
@@ -39,7 +38,7 @@ if ($count > 1) {
 
 $msg = implode('<br />', $msg);
 if ($success < $count) {
-	register_error($msg);
-} else {
-	system_message($msg);
+	return elgg_error_response($msg);
 }
+
+return elgg_ok_response('', $msg);

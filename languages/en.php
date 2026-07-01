@@ -19,6 +19,13 @@ $translations = [
 		"Relationship of the sender to the group" creates an additional level of filtering, whereas 1) the Recipient must be a member of a group and 2) the Sender must have a specified relationship with that group (e.g. setting this to "member" would indicate that this type of communication can only occur between members of the same group)
 	',
 	'item:object:message:all' => 'All Messages',
+
+	// Static labels for the built-in __private message type. These are registered
+	// statically (not only via the dynamic class_exists() block below) so the
+	// default subtype label is always resolvable even when the plugin's classes/
+	// autoloader is not yet ready at language-cache compile time.
+	'item:object:message:__private:singular' => 'Private Message',
+	'item:object:message:__private:plural' => 'Private Messages',
 	'inbox:admin:import' => 'Import older messages',
 	'inbox:admin:import_stats' => '%s messages are lacking metadata information required for hypeInbox compatibility',
 	'inbox:admin:import_start' => 'Start Import',

@@ -1,15 +1,14 @@
 <?php
 
-$guid = elgg_extract('guid', $vars);
+$guid = (int) elgg_extract('guid', $vars);
 
-elgg_entity_gatekeeper($guid, 'object', 'messages');
-
-$message = get_entity($guid);
+$message = elgg_entity_gatekeeper($guid, 'object', 'messages');
 
 elgg_import_esm('framework/inbox/user');
 
 $message_type = $message->msgType;
 $subject = $message->getDisplayName();
+$page_owner = elgg_get_logged_in_user_entity();
 
 elgg_register_menu_item('breadcrumbs', \ElggMenuItem::factory([
 	'name' => 'bc_1',
@@ -54,7 +53,7 @@ if (elgg_is_xhr()) {
 
 	$reply = elgg_view('framework/inbox/reply', $params);
 
-	$content = elgg_view_module('aside', null, $thread, [
+	$content = elgg_view_module('aside', '', $thread, [
 		'footer' => $reply,
 		'class' => 'inbox-message-block inbox-module has-list',
 	]);
@@ -69,6 +68,7 @@ if (elgg_is_xhr()) {
 		'show_owner_block' => false,
 	]);
 
+	$title = $subject;
 	echo elgg_view_page($title, $layout, 'default', [
 		'header' => false,
 	]);

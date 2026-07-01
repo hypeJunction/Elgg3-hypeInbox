@@ -2,12 +2,9 @@
 
 $entity = elgg_extract('entity', $vars);
 
-$ha = access_get_show_hidden_status();
-access_show_hidden_entities(true);
-
-$messages = hypeInbox()->model->getUnhashedMessages(['count' => true]);
-
-access_show_hidden_entities($ha);
+$messages = elgg_call(ELGG_SHOW_DISABLED_ENTITIES, function () {
+	return hypeInbox()->model->getUnhashedMessages(['count' => true]);
+});
 
 if ($messages) {
 	echo elgg_view('framework/inbox/admin/import', [

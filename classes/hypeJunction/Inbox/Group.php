@@ -12,7 +12,7 @@ use ElggEntity;
 class Group {
 
 	/** @var mixed */
-    protected $guids = [];
+	protected $guids = [];
 
 	/**
 	 * create.

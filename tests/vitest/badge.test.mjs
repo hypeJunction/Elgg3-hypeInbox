@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatBadge } from './badge.js';
+import { formatBadge } from './badge.mjs';
 
 describe('formatBadge', () => {
   it('hides badge for zero unread', () => {
