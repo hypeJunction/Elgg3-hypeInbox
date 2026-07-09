@@ -138,8 +138,12 @@ $translations = [
 
 // Elgg 4.x loads language files before the plugin's classes/ autoloader is
 // fully registered, so hypeInbox() / \hypeJunction\Inbox\Plugin may not yet
-// resolve. Skip the dynamic labels in that case — they get re-registered by
-// the Bootstrap::init hook once the plugin is fully booted.
+// resolve. Skip the dynamic labels in that case rather than fataling.
+// This block is the sole registration point for the per-message-type labels;
+// it replaces Config::registerLabels(), which used the runtime translation
+// registration helper removed in Elgg 5.0. Returning the keys in the
+// $translations array below is the supported replacement. Do not delete this
+// block without providing one.
 if (class_exists(\hypeJunction\Inbox\Plugin::class)) {
 	$message_types = hypeInbox()->config->getMessageTypes();
 

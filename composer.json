@@ -30,7 +30,7 @@
   },
   "autoload": {
     "psr-4": {
-      "hypeJunction\\\\Inbox\\\\": "classes/hypeJunction/Inbox/"
+      "hypeJunction\\Inbox\\": "classes/hypeJunction/Inbox/"
     }
   },
   "config": {

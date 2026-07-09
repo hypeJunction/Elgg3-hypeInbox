@@ -110,24 +110,6 @@ class Config {
 	}
 
 	/**
-	 * Registers label translations
-	 * @return void
-	 * @deprecated 6.0
-	 */
-	public function registerLabels() {
-		$message_types = $this->getMessageTypes();
-
-		// Register label translations for custom message types
-		foreach ($message_types as $type => $options) {
-			$ruleset = $this->getRuleset($type);
-			add_translation('en', [
-				$ruleset->getSingularLabel(false) => $ruleset->getSingularLabel('en'),
-				$ruleset->getPluralLabel(false) => $ruleset->getPluralLabel('en')
-			]);
-		}
-	}
-
-	/**
 	 * Returns an array of predefined and admin defined message types
 	 * @return array
 	 */
