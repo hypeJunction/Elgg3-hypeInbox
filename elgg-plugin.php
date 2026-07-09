@@ -8,6 +8,11 @@ return [
 			'hypelists' => [
 				'position' => 'after',
 			],
+			// forms/messages/send.php renders the recipient field with
+			// #type => 'guids', a view this plugin does not own.
+			'hypeautocomplete' => [
+				'position' => 'before',
+			],
 		],
 	],
 
