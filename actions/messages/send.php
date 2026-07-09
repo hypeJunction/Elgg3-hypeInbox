@@ -16,13 +16,13 @@ if (empty($recipient_guids)) {
 	return elgg_error_response(elgg_echo('inbox:send:error:no_recipients'), REFERRER);
 }
 
-if (empty(elgg_strip_tags($body))) {
+if (empty(elgg_strip_tags((string) $body))) {
 	return elgg_error_response(elgg_echo('inbox:send:error:no_body'), REFERRER);
 }
 
 $enable_html = elgg_get_plugin_from_id('hypeinbox')->getSetting('enable_html');
 if (!$enable_html) {
-	$body = elgg_strip_tags($body);
+	$body = elgg_strip_tags((string) $body);
 }
 
 $message_hash = '';

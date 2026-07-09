@@ -27,7 +27,7 @@ if ($full) {
 			$body = search_get_highlighted_relevant_substrings($entity->description, get_input('query'), 5, 5000);
 		}
 	} else {
-		$body = elgg_get_excerpt($entity->description);
+		$body = elgg_get_excerpt((string) $entity->description);
 	}
 	
 	echo elgg_format_element('div', [
