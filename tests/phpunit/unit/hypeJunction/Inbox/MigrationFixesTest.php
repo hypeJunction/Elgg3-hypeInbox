@@ -221,6 +221,12 @@ class MigrationFixesTest extends UnitTestCase {
 	/**
 	 * MigrateSettingsToJson is an asynchronous Upgrade\Batch (abstract since
 	 * 6.x). Its item count and version are pure and must not touch the DB.
+	 *
+	 * needsIncrementOffset() MUST be true. Elgg\Upgrade\Loop::isCompleted() only
+	 * ends a `false` batch when countItems() SHRINKS TO ZERO — and this one returns
+	 * the constant 2. Asserting false here is what let the batch run forever: its
+	 * progress counter passed 1.5 million iterations on bodyology and stalled every
+	 * upgrade queued behind it, until Elgg deleted the classes of the ones waiting.
 	 */
 	public function testMigrateSettingsBatchContract(): void {
 		$batch = new MigrateSettingsToJson();
@@ -228,7 +234,10 @@ class MigrationFixesTest extends UnitTestCase {
 		$this->assertInstanceOf(\Elgg\Upgrade\Batch::class, $batch);
 		$this->assertSame(2, $batch->countItems());
 		$this->assertSame(2026042301, $batch->getVersion());
-		$this->assertFalse($batch->needsIncrementOffset());
+		$this->assertTrue(
+			$batch->needsIncrementOffset(),
+			'a constant countItems() with needsIncrementOffset() === false never terminates'
+		);
 		$this->assertFalse($batch->shouldBeSkipped());
 	}
 
