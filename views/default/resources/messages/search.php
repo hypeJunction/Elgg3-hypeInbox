@@ -1,6 +1,10 @@
 <?php
 
-$page_owner = elgg_get_page_owner_entity();
+// The route declares {username?}. When it is omitted — which is exactly what
+// Menus::topbar generates for the inbox link — Elgg leaves the page owner
+// unset, and this resource used to throw. Default to the logged-in user, the
+// Elgg convention for an optional owner segment.
+$page_owner = elgg_get_page_owner_entity() ?: elgg_get_logged_in_user_entity();
 
 if (!$page_owner || !$page_owner->canEdit()) {
 	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
