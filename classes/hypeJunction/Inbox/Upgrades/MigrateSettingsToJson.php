@@ -28,8 +28,18 @@ class MigrateSettingsToJson extends Batch {
 	/**
      * @return bool
      */
+	/**
+	 * Elgg only treats a needsIncrementOffset() === false batch as finished when
+	 * countItems() SHRINKS to zero (Upgrade\Loop::isCompleted). countItems() here is
+	 * a constant, so returning false made the runner call run() forever — the
+	 * upgrade never completed and every later upgrade, including core's
+	 * MigratePageTop, stayed pending. run() does all of its work in one pass, so
+	 * let the loop finish on processed >= count instead.
+	 *
+     * @return bool
+     */
     public function needsIncrementOffset(): bool {
-		return false;
+		return true;
 	}
 
 	/**
