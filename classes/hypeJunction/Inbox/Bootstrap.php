@@ -42,7 +42,7 @@ class Bootstrap extends PluginBootstrap {
 	 */
 	public function init() {
 		elgg_extend_view('elgg.css', 'framework/inbox.css');
-		elgg_import_esm('framework/inbox/message');
+		self::importUserAssets();
 
 		// URL and page handling
 		elgg_register_event_handler('page_owner', 'system', [Router::class, 'resolvePageOwner']);
@@ -80,6 +80,22 @@ class Bootstrap extends PluginBootstrap {
 		]);
 
 		elgg_register_event_handler('seeds', 'database', [Seeder::class, 'addSeed']);
+	}
+
+	/**
+	 * Import the client assets a user actually needs.
+	 *
+	 * framework/inbox/message only binds click handlers to .inbox-message elements,
+	 * which never render for a logged-out visitor — importing it on every anonymous
+	 * page (the homepage included) was pure dead weight in the ESM import map
+	 * (bd elgg-migrate-xhigk). Only import it for an authenticated session.
+	 *
+	 * @return void
+	 */
+	public static function importUserAssets(): void {
+		if (elgg_is_logged_in()) {
+			elgg_import_esm('framework/inbox/message');
+		}
 	}
 
 	/**
